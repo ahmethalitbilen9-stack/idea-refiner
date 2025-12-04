@@ -206,5 +206,17 @@
         window.del=(i,e)=>{e.stopPropagation();let h=JSON.parse(localStorage.getItem('aiHistory'));h.splice(i,1);localStorage.setItem('aiHistory',JSON.stringify(h));renderHistory(h);};
         window.clearAllHistory=()=>{localStorage.removeItem('aiHistory');renderHistory([]);};
     </script>
+    <footer class="w-full bg-gray-900 border-t border-gray-800 mt-12 py-8">
+        <div class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center text-sm text-gray-500">
+            <div class="mb-4 md:mb-0">
+                &copy; 2024 AI Idea Refiner. Tüm hakları saklıdır.
+            </div>
+            <div class="flex gap-6">
+                <a href="about.html" class="hover:text-blue-400 transition">Hakkımızda</a>
+                <a href="privacy.html" class="hover:text-blue-400 transition">Gizlilik Politikası</a>
+                <a href="terms.html" class="hover:text-blue-400 transition">Kullanım Koşulları</a>
+            </div>
+        </div>
+    </footer>
 </body>
 </html>
