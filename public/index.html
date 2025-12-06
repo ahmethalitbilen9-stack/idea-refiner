@@ -1,29 +1,28 @@
 <!DOCTYPE html>
-<html lang="tr" class="dark">
+<html lang="en" class="dark">
 <head>
-    <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-VJ225P5PY2"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-VJ225P5PY2');
-</script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>AI Idea Refiner</title>
     
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-VJ225P5PY2"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-VJ225P5PY2');
+    </script>
+
     <meta name="google-adsense-account" content="ca-pub-6985276543491890">
-    <meta name="description" id="meta-desc" content="Girişimcilik fikirlerinizi yapay zeka ile analiz edin.">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6985276543491890" crossorigin="anonymous"></script>
+
+    <meta name="description" id="meta-desc" content="Analyze your startup ideas instantly with AI.">
     <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/8637/8637103.png" type="image/png">
 
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6985276543491890" crossorigin="anonymous"></script>
     
     <script>
         tailwind.config = { darkMode: 'class', theme: { extend: { colors: { primary: '#2563eb', darkBg: '#0f172a', cardDark: '#1e293b' } } } }
@@ -49,11 +48,11 @@
         <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
             <div class="text-sm text-gray-300 text-center md:text-left">
                 <i class="fas fa-cookie-bite text-yellow-500 mr-2"></i>
-                <span id="cookie-text">Size daha iyi hizmet sunmak için çerezleri kullanıyoruz.</span>
+                <span id="cookie-text">We use cookies to provide a better experience.</span>
             </div>
             <div class="flex gap-3">
-                <button onclick="rejectCookies()" id="cookie-reject-btn" class="text-gray-400 hover:text-white px-4 py-2 rounded-lg text-sm font-medium transition border border-gray-600 hover:border-gray-400">Reddet</button>
-                <button onclick="acceptCookies()" id="cookie-accept-btn" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg text-sm font-bold transition shadow-lg">Kabul Et</button>
+                <button onclick="rejectCookies()" id="cookie-reject-btn" class="text-gray-400 hover:text-white px-4 py-2 rounded-lg text-sm font-medium transition border border-gray-600 hover:border-gray-400">Reject</button>
+                <button onclick="acceptCookies()" id="cookie-accept-btn" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg text-sm font-bold transition shadow-lg">Accept</button>
             </div>
         </div>
     </div>
@@ -61,20 +60,20 @@
     <div id="feedback-modal" class="fixed inset-0 z-[100] bg-black/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
         <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl w-full max-w-md border border-gray-200 dark:border-gray-700 relative overflow-hidden transform transition-all scale-95 opacity-0" id="feedback-content">
             <div class="bg-blue-600 p-4 text-white flex justify-between items-center">
-                <h3 class="font-bold text-lg"><i class="far fa-paper-plane mr-2"></i> <span id="fb-title">Öneri & İletişim</span></h3>
+                <h3 class="font-bold text-lg"><i class="far fa-paper-plane mr-2"></i> <span id="fb-title">Feedback & Contact</span></h3>
                 <button onclick="toggleFeedback()" class="hover:bg-blue-700 p-1 rounded"><i class="fas fa-times"></i></button>
             </div>
             
             <form action="https://formspree.io/f/mqarbyej" method="POST" class="p-6 space-y-4">
                 <div>
-                    <label class="block text-xs font-medium text-gray-500 mb-1" id="fb-email-label">E-Posta (Opsiyonel)</label>
-                    <input type="email" name="email" class="w-full p-3 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none" placeholder="ornek@email.com">
+                    <label class="block text-xs font-medium text-gray-500 mb-1" id="fb-email-label">Email (Optional)</label>
+                    <input type="email" name="email" class="w-full p-3 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none" placeholder="example@email.com">
                 </div>
                 <div>
-                    <label class="block text-xs font-medium text-gray-500 mb-1" id="fb-msg-label">Mesajınız</label>
-                    <textarea name="message" id="fb-msg-input" rows="4" class="w-full p-3 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none resize-none" placeholder="Fikriniz nedir?" required></textarea>
+                    <label class="block text-xs font-medium text-gray-500 mb-1" id="fb-msg-label">Message</label>
+                    <textarea name="message" id="fb-msg-input" rows="4" class="w-full p-3 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none resize-none" placeholder="What's on your mind?" required></textarea>
                 </div>
-                <button type="submit" id="fb-submit-btn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg shadow-lg transition active:scale-95">Gönder 🚀</button>
+                <button type="submit" id="fb-submit-btn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg shadow-lg transition active:scale-95">Send 🚀</button>
             </form>
         </div>
     </div>
@@ -88,11 +87,17 @@
                 </span>
             </div>
             <div class="flex items-center gap-3">
-                <a href="blog.html" class="hidden md:block text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-blue-500 transition mr-4">Blog</a>
-                <button onclick="toggleFeedback()" class="hidden md:flex items-center text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-blue-500 transition"><i class="far fa-comment-alt mr-1"></i> <span id="nav-fb-text">Öneri</span></button>
+                <a href="blog.html" class="hidden md:block text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-blue-500 transition mr-2">Blog</a>
+
+                <button onclick="toggleFeedback()" class="hidden md:flex items-center text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-blue-500 transition"><i class="far fa-comment-alt mr-1"></i> <span id="nav-fb-text">Feedback</span></button>
                 <button onclick="toggleFeedback()" class="md:hidden text-gray-600 dark:text-gray-300"><i class="far fa-comment-alt"></i></button>
                 <div class="h-4 w-[1px] bg-gray-300 dark:bg-gray-700"></div>
-                <select id="lang-select" class="bg-gray-100 dark:bg-gray-800 border-none rounded-lg px-2 py-1 text-xs font-medium focus:ring-0"><option value="tr">TR</option><option value="en">EN</option></select>
+                
+                <select id="lang-select" class="bg-gray-100 dark:bg-gray-800 border-none rounded-lg px-2 py-1 text-xs font-medium focus:ring-0">
+                    <option value="en" selected>EN</option>
+                    <option value="tr">TR</option>
+                </select>
+                
                 <button id="theme-toggle" class="w-8 h-8 rounded-lg bg-gray-100 dark:bg-gray-800 flex items-center justify-center"><i class="fas fa-moon text-sm" id="theme-icon"></i></button>
             </div>
         </div>
@@ -102,8 +107,8 @@
         <aside class="w-full md:w-1/4 hidden md:block">
             <div class="bg-white dark:bg-gray-800 rounded-xl shadow border border-gray-200 dark:border-gray-700 p-4 sticky top-20 max-h-[80vh] overflow-y-auto">
                 <div class="flex items-center justify-between mb-4 border-b border-gray-200 dark:border-gray-700 pb-2">
-                    <h3 id="history-title" class="font-bold text-xs text-gray-500">GEÇMİŞ</h3>
-                    <button onclick="clearAllHistory()" id="history-clear-btn" class="text-xs text-red-400 hover:text-red-600">Temizle</button>
+                    <h3 id="history-title" class="font-bold text-xs text-gray-500">HISTORY</h3>
+                    <button onclick="clearAllHistory()" id="history-clear-btn" class="text-xs text-red-400 hover:text-red-600">Clear</button>
                 </div>
                 <div id="history-list" class="space-y-2"></div>
             </div>
@@ -111,20 +116,27 @@
 
         <main class="w-full md:w-3/4 flex flex-col gap-6">
             <div class="text-center space-y-2 mt-2">
-                <h1 id="hero-title" class="text-3xl md:text-5xl font-extrabold tracking-tight">Fikrini <span class="text-blue-500">Gerçeğe</span> Dönüştür</h1>
-                <p id="hero-desc" class="text-sm md:text-base text-gray-500 dark:text-gray-400">Groq Llama 3.3 ile profesyonel analiz.</p>
+                <h1 id="hero-title" class="text-3xl md:text-5xl font-extrabold tracking-tight">Turn Idea into <span class="text-blue-500">Reality</span></h1>
+                <p id="hero-desc" class="text-sm md:text-base text-gray-500 dark:text-gray-400">Professional analysis with Groq Llama 3.3.</p>
             </div>
 
-            <div class="ad-space w-full h-24 bg-gray-100 dark:bg-gray-800 rounded-xl flex items-center justify-center border border-gray-200 dark:border-gray-700 text-gray-400 text-xs">
-                <span>Reklam Alanı</span>
-                </div>
+            <div class="ad-space w-full h-24 bg-gray-100 dark:bg-gray-800 rounded-xl flex items-center justify-center border border-gray-200 dark:border-gray-700 text-gray-400 text-xs overflow-hidden">
+                <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6985276543491890" crossorigin="anonymous"></script>
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-client="ca-pub-6985276543491890"
+                     data-ad-slot="auto"
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
+                <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+            </div>
 
             <div class="bg-white dark:bg-gray-800 p-2 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700">
-                <textarea id="idea-input" class="w-full h-40 p-4 bg-transparent text-base focus:outline-none resize-none rounded-lg" placeholder="Fikrinizi buraya yazın..."></textarea>
+                <textarea id="idea-input" class="w-full h-40 p-4 bg-transparent text-base focus:outline-none resize-none rounded-lg" placeholder="Type your idea here..."></textarea>
                 <div class="flex justify-between items-center px-2 pb-2">
                     <span class="text-[10px] text-gray-400"><i class="fas fa-bolt"></i> Powered by Groq</span>
                     <button id="analyze-btn" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 px-6 rounded-lg shadow-lg flex items-center gap-2 transition active:scale-95">
-                        <span id="btn-text">Analiz Et</span>
+                        <span id="btn-text">Analyze</span>
                         <div id="loading-spinner" class="w-4 h-4 border-2 border-white border-t-transparent rounded-full spinner hidden"></div>
                     </button>
                 </div>
@@ -135,16 +147,16 @@
                     <div class="p-6 md:p-10 bg-gray-900">
                         <div class="flex items-center gap-3 border-b border-gray-700 pb-4 mb-4">
                             <img src="images/logo.png" onerror="this.src='https://cdn-icons-png.flaticon.com/512/8637/8637103.png'" class="h-8 w-8 bg-white rounded-full p-0.5">
-                            <h2 id="report-title" class="text-xl font-bold">Analiz Raporu</h2>
+                            <h2 id="report-title" class="text-xl font-bold">Analysis Report</h2>
                         </div>
                         <div id="result-text" class="prose max-w-none text-sm md:text-base"></div>
                     </div>
                     <div class="bg-gray-800 p-3 flex justify-between border-t border-gray-700">
-                        <a href="https://www.buymeacoffee.com/KULLANICIADIN" target="_blank" class="text-yellow-400 hover:text-yellow-300 text-xs font-bold flex items-center">
-                            <i class="fas fa-coffee mr-1"></i> <span id="support-text">Destek Ol</span>
+                        <a href="https://www.buymeacoffee.com" target="_blank" class="text-yellow-400 hover:text-yellow-300 text-xs font-bold flex items-center">
+                            <i class="fas fa-coffee mr-1"></i> <span id="support-text">Support Us</span>
                         </a>
                         <button id="download-pdf-btn" class="bg-red-600 active:bg-red-700 text-white font-semibold py-2 px-4 rounded-lg shadow flex items-center gap-2 text-sm">
-                            <i class="fas fa-file-pdf"></i> <span id="pdf-btn-text">PDF İndir</span>
+                            <i class="fas fa-file-pdf"></i> <span id="pdf-btn-text">Download PDF</span>
                         </button>
                     </div>
                 </div>
@@ -155,35 +167,107 @@
     <footer class="w-full bg-gray-900 border-t border-gray-800 mt-12 py-8">
         <div class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center text-sm text-gray-500">
             <div class="mb-4 md:mb-0">
-                &copy; 2024 AI Idea Refiner. <span id="footer-rights">Tüm hakları saklıdır.</span>
+                &copy; 2024 AI Idea Refiner. <span id="footer-rights">All rights reserved.</span>
             </div>
             <div class="flex gap-6">
-                <a href="about.html" class="hover:text-blue-400 transition" id="footer-about">Hakkımızda</a>
-                <a href="privacy.html" class="hover:text-blue-400 transition" id="footer-privacy">Gizlilik Politikası</a>
-                <a href="terms.html" class="hover:text-blue-400 transition" id="footer-terms">Kullanım Koşulları</a>
+                <a href="about.html" class="hover:text-blue-400 transition" id="footer-about">About Us</a>
+                <a href="privacy.html" class="hover:text-blue-400 transition" id="footer-privacy">Privacy Policy</a>
+                <a href="terms.html" class="hover:text-blue-400 transition" id="footer-terms">Terms of Use</a>
             </div>
         </div>
     </footer>
 
     <script>
-        const els = { langSelect: document.getElementById('lang-select'), heroTitle: document.getElementById('hero-title'), heroDesc: document.getElementById('hero-desc'), input: document.getElementById('idea-input'), btn: document.getElementById('analyze-btn'), btnText: document.getElementById('btn-text'), reportTitle: document.getElementById('report-title'), historyTitle: document.getElementById('history-title'), pdfBtnText: document.getElementById('pdf-btn-text'), spinner: document.getElementById('loading-spinner'), resultArea: document.getElementById('result-area'), resultText: document.getElementById('result-text'), historyList: document.getElementById('history-list'), metaDesc: document.getElementById('meta-desc'), navFbText: document.getElementById('nav-fb-text'), historyClearBtn: document.getElementById('history-clear-btn'), supportText: document.getElementById('support-text'), fbTitle: document.getElementById('fb-title'), fbEmailLabel: document.getElementById('fb-email-label'), fbMsgLabel: document.getElementById('fb-msg-label'), fbMsgInput: document.getElementById('fb-msg-input'), fbSubmitBtn: document.getElementById('fb-submit-btn'), cookieText: document.getElementById('cookie-text'), cookieRejectBtn: document.getElementById('cookie-reject-btn'), cookieAcceptBtn: document.getElementById('cookie-accept-btn'), footerRights: document.getElementById('footer-rights'), footerAbout: document.getElementById('footer-about'), footerPrivacy: document.getElementById('footer-privacy'), footerTerms: document.getElementById('footer-terms') };
-
-        const trans = {
-            tr: { alert: 'Lütfen bir fikir girin!', btn: 'Analiz Et', title: 'Fikrini <span class="text-blue-500">Gerçeğe</span> Dönüştür', desc: 'Groq Llama 3.3 ile profesyonel analiz.', ph: 'Fikrinizi buraya yazın...', pdfBtn: 'PDF İndir', metaDesc: 'Girişimcilik fikirlerinizi yapay zeka ile analiz edin.', navFb: 'Öneri', histTitle: 'GEÇMİŞ', histClear: 'Temizle', repTitle: 'Analiz Raporu', support: 'Destek Ol', fbTitle: 'Öneri & İletişim', fbEmail: 'E-Posta (Opsiyonel)', fbMsg: 'Mesajınız', fbPh: 'Fikriniz nedir?', fbSubmit: 'Gönder 🚀', cookieTxt: 'Size daha iyi hizmet sunmak için çerezleri kullanıyoruz.', cookieRej: 'Reddet', cookieAcc: 'Kabul Et', fRights: 'Tüm hakları saklıdır.', fAbout: 'Hakkımızda', fPrivacy: 'Gizlilik Politikası', fTerms: 'Kullanım Koşulları' },
-            en: { alert: 'Please enter an idea!', btn: 'Analyze', title: 'Turn Idea into <span class="text-blue-500">Reality</span>', desc: 'Professional analysis with Groq Llama 3.3.', ph: 'Type your idea here...', pdfBtn: 'Download PDF', metaDesc: 'Analyze your startup ideas instantly with AI.', navFb: 'Feedback', histTitle: 'HISTORY', histClear: 'Clear', repTitle: 'Analysis Report', support: 'Support Us', fbTitle: 'Feedback & Contact', fbEmail: 'Email (Optional)', fbMsg: 'Your Message', fbPh: 'What\'s on your mind?', fbSubmit: 'Send 🚀', cookieTxt: 'We use cookies to provide a better experience.', cookieRej: 'Reject', cookieAcc: 'Accept', fRights: 'All rights reserved.', fAbout: 'About Us', fPrivacy: 'Privacy Policy', fTerms: 'Terms of Use' }
+        const els = {
+            langSelect: document.getElementById('lang-select'), heroTitle: document.getElementById('hero-title'), heroDesc: document.getElementById('hero-desc'), input: document.getElementById('idea-input'), btn: document.getElementById('analyze-btn'), btnText: document.getElementById('btn-text'), reportTitle: document.getElementById('report-title'), historyTitle: document.getElementById('history-title'), pdfBtnText: document.getElementById('pdf-btn-text'), spinner: document.getElementById('loading-spinner'), resultArea: document.getElementById('result-area'), resultText: document.getElementById('result-text'), historyList: document.getElementById('history-list'), metaDesc: document.getElementById('meta-desc'), navFbText: document.getElementById('nav-fb-text'), historyClearBtn: document.getElementById('history-clear-btn'), supportText: document.getElementById('support-text'), fbTitle: document.getElementById('fb-title'), fbEmailLabel: document.getElementById('fb-email-label'), fbMsgLabel: document.getElementById('fb-msg-label'), fbMsgInput: document.getElementById('fb-msg-input'), fbSubmitBtn: document.getElementById('fb-submit-btn'), cookieText: document.getElementById('cookie-text'), cookieRejectBtn: document.getElementById('cookie-reject-btn'), cookieAcceptBtn: document.getElementById('cookie-accept-btn'), footerRights: document.getElementById('footer-rights'), footerAbout: document.getElementById('footer-about'), footerPrivacy: document.getElementById('footer-privacy'), footerTerms: document.getElementById('footer-terms')
         };
 
-        function updateLanguage(lang) { document.documentElement.lang = lang; const t = trans[lang]; if(els.heroTitle) els.heroTitle.innerHTML = t.title; if(els.heroDesc) els.heroDesc.innerText = t.desc; if(els.btnText) els.btnText.innerText = t.btn; if(els.input) els.input.placeholder = t.ph; if(els.metaDesc) els.metaDesc.content = t.metaDesc; if(els.navFbText) els.navFbText.innerText = t.navFb; if(els.historyTitle) els.historyTitle.innerText = t.histTitle; if(els.historyClearBtn) els.historyClearBtn.innerText = t.histClear; if(els.reportTitle) els.reportTitle.innerText = t.repTitle; if(els.supportText) els.supportText.innerText = t.support; if(els.pdfBtnText) els.pdfBtnText.innerText = t.pdfBtn; if(els.fbTitle) els.fbTitle.innerText = t.fbTitle; if(els.fbEmailLabel) els.fbEmailLabel.innerText = t.fbEmail; if(els.fbMsgLabel) els.fbMsgLabel.innerText = t.fbMsg; if(els.fbMsgInput) els.fbMsgInput.placeholder = t.fbPh; if(els.fbSubmitBtn) els.fbSubmitBtn.innerText = t.fbSubmit; if(els.cookieText) els.cookieText.innerText = t.cookieTxt; if(els.cookieRejectBtn) els.cookieRejectBtn.innerText = t.cookieRej; if(els.cookieAcceptBtn) els.cookieAcceptBtn.innerText = t.cookieAcc; if(els.footerRights) els.footerRights.innerText = t.fRights; if(els.footerAbout) els.footerAbout.innerText = t.fAbout; if(els.footerPrivacy) els.footerPrivacy.innerText = t.fPrivacy; if(els.footerTerms) els.footerTerms.innerText = t.fTerms; }
+        const trans = {
+            tr: {
+                alert: 'Lütfen bir fikir girin!', btn: 'Analiz Et', title: 'Fikrini <span class="text-blue-500">Gerçeğe</span> Dönüştür', desc: 'Groq Llama 3.3 ile profesyonel analiz.', ph: 'Fikrinizi buraya yazın...', pdfBtn: 'PDF İndir', metaDesc: 'Girişimcilik fikirlerinizi yapay zeka ile analiz edin.', navFb: 'Öneri', histTitle: 'GEÇMİŞ', histClear: 'Temizle', repTitle: 'Analiz Raporu', support: 'Destek Ol', fbTitle: 'Öneri & İletişim', fbEmail: 'E-Posta (Opsiyonel)', fbMsg: 'Mesajınız', fbPh: 'Fikriniz nedir?', fbSubmit: 'Gönder 🚀', cookieTxt: 'Size daha iyi hizmet sunmak için çerezleri kullanıyoruz.', cookieRej: 'Reddet', cookieAcc: 'Kabul Et', fRights: 'Tüm hakları saklıdır.', fAbout: 'Hakkımızda', fPrivacy: 'Gizlilik Politikası', fTerms: 'Kullanım Koşulları'
+            },
+            en: {
+                alert: 'Please enter an idea!', btn: 'Analyze', title: 'Turn Idea into <span class="text-blue-500">Reality</span>', desc: 'Professional analysis with Groq Llama 3.3.', ph: 'Type your idea here...', pdfBtn: 'Download PDF', metaDesc: 'Analyze your startup ideas instantly with AI.', navFb: 'Feedback', histTitle: 'HISTORY', histClear: 'Clear', repTitle: 'Analysis Report', support: 'Support Us', fbTitle: 'Feedback & Contact', fbEmail: 'Email (Optional)', fbMsg: 'Your Message', fbPh: 'What\'s on your mind?', fbSubmit: 'Send 🚀', cookieTxt: 'We use cookies to provide a better experience.', cookieRej: 'Reject', cookieAcc: 'Accept', fRights: 'All rights reserved.', fAbout: 'About Us', fPrivacy: 'Privacy Policy', fTerms: 'Terms of Use'
+            }
+        };
 
-        if(els.langSelect) { els.langSelect.addEventListener('change', () => { updateLanguage(els.langSelect.value); }); }
+        function updateLanguage(lang) {
+            document.documentElement.lang = lang;
+            const t = trans[lang];
+            // Tüm alanları güncelle
+            if(els.heroTitle) els.heroTitle.innerHTML = t.title;
+            if(els.heroDesc) els.heroDesc.innerText = t.desc;
+            if(els.btnText) els.btnText.innerText = t.btn;
+            if(els.input) els.input.placeholder = t.ph;
+            if(els.metaDesc) els.metaDesc.content = t.metaDesc;
+            if(els.navFbText) els.navFbText.innerText = t.navFb;
+            if(els.historyTitle) els.historyTitle.innerText = t.histTitle;
+            if(els.historyClearBtn) els.historyClearBtn.innerText = t.histClear;
+            if(els.reportTitle) els.reportTitle.innerText = t.repTitle;
+            if(els.supportText) els.supportText.innerText = t.support;
+            if(els.pdfBtnText) els.pdfBtnText.innerText = t.pdfBtn;
+            if(els.fbTitle) els.fbTitle.innerText = t.fbTitle;
+            if(els.fbEmailLabel) els.fbEmailLabel.innerText = t.fbEmail;
+            if(els.fbMsgLabel) els.fbMsgLabel.innerText = t.fbMsg;
+            if(els.fbMsgInput) els.fbMsgInput.placeholder = t.fbPh;
+            if(els.fbSubmitBtn) els.fbSubmitBtn.innerText = t.fbSubmit;
+            if(els.cookieText) els.cookieText.innerText = t.cookieTxt;
+            if(els.cookieRejectBtn) els.cookieRejectBtn.innerText = t.cookieRej;
+            if(els.cookieAcceptBtn) els.cookieAcceptBtn.innerText = t.cookieAcc;
+            if(els.footerRights) els.footerRights.innerText = t.fRights;
+            if(els.footerAbout) els.footerAbout.innerText = t.fAbout;
+            if(els.footerPrivacy) els.footerPrivacy.innerText = t.fPrivacy;
+            if(els.footerTerms) els.footerTerms.innerText = t.fTerms;
+        }
+
+        if(els.langSelect) {
+            els.langSelect.addEventListener('change', () => {
+                updateLanguage(els.langSelect.value);
+            });
+        }
+
+        // --- SAYFA YÜKLENİNCE (VARSAYILAN: İNGİLİZCE) ---
+        document.addEventListener('DOMContentLoaded', () => {
+            updateLanguage('en'); 
+            loadHistorySafe();
+            checkCookies(); 
+            
+            if(els.btn) {
+                els.btn.addEventListener('click', async () => {
+                    const text = els.input.value.trim();
+                    const lang = els.langSelect.value;
+                    if(!text) return alert(trans[lang].alert);
+                    els.btn.disabled=true; els.btnText.classList.add('hidden'); els.spinner.classList.remove('hidden'); els.resultArea.classList.add('hidden');
+                    try {
+                        const res = await fetch('/api/analyze', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ idea: text, language: lang }) });
+                        const data = await res.json();
+                        if(data.error) throw new Error(data.error);
+                        if(typeof marked!=='undefined') els.resultText.innerHTML=marked.parse(data.result); else els.resultText.innerText=data.result;
+                        els.resultArea.classList.remove('hidden','opacity-0'); els.resultArea.style.display='block'; setTimeout(()=>els.resultArea.scrollIntoView({behavior:'smooth'}), 100); saveToHistory(text);
+                    } catch(e) { alert("Error: "+e.message); } 
+                    finally { els.btn.disabled=false; els.btnText.classList.remove('hidden'); els.spinner.classList.add('hidden'); }
+                });
+            }
+            
+            document.getElementById('theme-toggle').addEventListener('click', () => document.documentElement.classList.toggle('dark'));
+            
+            document.getElementById('download-pdf-btn').addEventListener('click',()=>{
+                const btn=document.getElementById('download-pdf-btn');const oldText=btn.innerHTML;btn.innerHTML='<i class="fas fa-spinner fa-spin"></i> ...';btn.disabled=true;const contentHTML=document.getElementById('result-text').innerHTML;const pdfContainer=document.getElementById('pdf-generator-container');
+                pdfContainer.innerHTML=`<div style="border-bottom: 2px solid #000; padding-bottom: 20px; margin-bottom: 30px; display: flex; align-items: center;"><img src="https://cdn-icons-png.flaticon.com/512/8637/8637103.png" style="width: 50px; height: 50px; margin-right: 15px;"><div><h1 style="font-size: 24px; color: #2563eb; margin: 0;">AI Idea Refiner - Report</h1><p style="font-size: 12px; color: #666; margin: 5px 0 0 0;">Date: ${new Date().toLocaleDateString()}</p></div></div><div class="pdf-content">${contentHTML}</div><style>.pdf-content h1 { color: #1e40af; font-size: 20px; margin-top: 25px; border-bottom: 1px solid #ccc; } .pdf-content h2 { color: #2563eb; font-size: 18px; margin-top: 20px; } .pdf-content p { color: #000; font-size: 12px; line-height: 1.5; margin-bottom: 10px; } .pdf-content ul { color: #000; padding-left: 20px; } .pdf-content li { margin-bottom: 5px; } .pdf-content strong { color: #000; font-weight: bold; }</style>`;
+                const opt={margin:0.5,filename:'Idea_Analysis.pdf',image:{type:'jpeg',quality:0.98},html2canvas:{scale:2,useCORS:true},jsPDF:{unit:'in',format:'letter',orientation:'portrait'},pagebreak:{mode:['avoid-all','css','legacy']}};
+                html2pdf().set(opt).from(pdfContainer).save().then(()=>{btn.innerHTML=oldText;btn.disabled=false;pdfContainer.innerHTML=""});
+            });
+        });
 
         function toggleFeedback(){const m=document.getElementById('feedback-modal'),c=document.getElementById('feedback-content');if(m.classList.contains('hidden')){m.classList.remove('hidden');setTimeout(()=>{c.classList.remove('scale-95','opacity-0');c.classList.add('scale-100','opacity-100')},10)}else{c.classList.remove('scale-100','opacity-100');c.classList.add('scale-95','opacity-0');setTimeout(()=>{m.classList.add('hidden')},300)}}
         function checkCookies(){const b=document.getElementById('cookie-banner');if(!localStorage.getItem('cookiePreference')){b.classList.remove('hidden');setTimeout(()=>b.classList.remove('translate-y-full'),100)}}
         function acceptCookies(){localStorage.setItem('cookiePreference','accepted');closeBanner()}
         function rejectCookies(){localStorage.setItem('cookiePreference','rejected');closeBanner()}
         function closeBanner(){const b=document.getElementById('cookie-banner');b.classList.add('translate-y-full');setTimeout(()=>b.classList.add('hidden'),500)}
-
-        document.addEventListener('DOMContentLoaded',()=>{loadHistorySafe();checkCookies();if(els.btn){els.btn.addEventListener('click',async()=>{const text=els.input.value.trim();const lang=els.langSelect.value;if(!text)return alert(trans[lang].alert);els.btn.disabled=true;if(els.btnText)els.btnText.classList.add('hidden');if(els.spinner)els.spinner.classList.remove('hidden');if(els.resultArea)els.resultArea.classList.add('hidden');try{const res=await fetch('/api/analyze',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({idea:text,language:lang})});const data=await res.json();if(data.error)throw new Error(data.error);if(typeof marked!=='undefined')els.resultText.innerHTML=marked.parse(data.result);else els.resultText.innerText=data.result;els.resultArea.classList.remove('hidden','opacity-0');els.resultArea.style.display='block';setTimeout(()=>els.resultArea.scrollIntoView({behavior:'smooth'}),100);saveToHistory(text)}catch(e){alert("Hata: "+e.message)}finally{els.btn.disabled=false;if(els.btnText)els.btnText.classList.remove('hidden');if(els.spinner)els.spinner.classList.add('hidden')}})}document.getElementById('download-pdf-btn').addEventListener('click',()=>{const btn=document.getElementById('download-pdf-btn');const oldText=btn.innerHTML;btn.innerHTML='<i class="fas fa-spinner fa-spin"></i> ...';btn.disabled=true;const contentHTML=document.getElementById('result-text').innerHTML;const pdfContainer=document.getElementById('pdf-generator-container');pdfContainer.innerHTML=`<div style="border-bottom: 2px solid #000; padding-bottom: 20px; margin-bottom: 30px; display: flex; align-items: center;"><img src="https://cdn-icons-png.flaticon.com/512/8637/8637103.png" style="width: 50px; height: 50px; margin-right: 15px;"><div><h1 style="font-size: 24px; color: #2563eb; margin: 0;">Fikir Analiz Raporu</h1><p style="font-size: 12px; color: #666; margin: 5px 0 0 0;">AI Idea Refiner tarafından oluşturuldu.</p></div></div><div class="pdf-content">${contentHTML}</div><style>.pdf-content h1 { color: #1e40af; font-size: 20px; margin-top: 25px; border-bottom: 1px solid #ccc; } .pdf-content h2 { color: #2563eb; font-size: 18px; margin-top: 20px; } .pdf-content p { color: #000; font-size: 12px; line-height: 1.5; margin-bottom: 10px; } .pdf-content ul { color: #000; padding-left: 20px; } .pdf-content li { margin-bottom: 5px; } .pdf-content strong { color: #000; font-weight: bold; }</style>`;const opt={margin:0.5,filename:'Analiz_Raporu.pdf',image:{type:'jpeg',quality:0.98},html2canvas:{scale:2,useCORS:true},jsPDF:{unit:'in',format:'letter',orientation:'portrait'},pagebreak:{mode:['avoid-all','css','legacy']}};html2pdf().set(opt).from(pdfContainer).save().then(()=>{btn.innerHTML=oldText;btn.disabled=false;pdfContainer.innerHTML=""})});document.getElementById('theme-toggle').addEventListener('click',()=>{document.documentElement.classList.toggle('dark')})});function loadHistorySafe(){try{const raw=localStorage.getItem('aiHistory');if(raw)renderHistory(JSON.parse(raw))}catch{localStorage.removeItem('aiHistory')}}function saveToHistory(idea){try{let h=JSON.parse(localStorage.getItem('aiHistory')||'[]');h=h.filter(x=>x.fullText!==idea);h.unshift({title:idea.slice(0,30)+'...',fullText:idea,date:new Date().toLocaleDateString()});if(h.length>5)h.pop();localStorage.setItem('aiHistory',JSON.stringify(h));renderHistory(h)}catch(e){}}function renderHistory(h){const l=document.getElementById('history-list');if(!l)return;l.innerHTML='';h.forEach((x,i)=>{const d=document.createElement('div');d.className="p-2 bg-gray-50 dark:bg-gray-800 rounded border border-gray-200 dark:border-gray-700 mb-2 flex justify-between cursor-pointer text-xs";d.innerHTML=`<span class="truncate w-3/4 dark:text-gray-300">${x.title}</span><button onclick="del(${i},event)" class="text-red-400"><i class="fas fa-trash"></i></button>`;d.onclick=(e)=>{if(!e.target.closest('button'))document.getElementById('idea-input').value=x.fullText||x.title};l.appendChild(d)})}window.del=(i,e)=>{e.stopPropagation();let h=JSON.parse(localStorage.getItem('aiHistory'));h.splice(i,1);localStorage.setItem('aiHistory',JSON.stringify(h));renderHistory(h)};window.clearAllHistory=()=>{localStorage.removeItem('aiHistory');renderHistory([])};
+        function loadHistorySafe(){try{const raw=localStorage.getItem('aiHistory');if(raw)renderHistory(JSON.parse(raw))}catch{localStorage.removeItem('aiHistory')}}
+        function saveToHistory(idea){try{let h=JSON.parse(localStorage.getItem('aiHistory')||'[]');h=h.filter(x=>x.fullText!==idea);h.unshift({title:idea.slice(0,30)+'...',fullText:idea,date:new Date().toLocaleDateString()});if(h.length>5)h.pop();localStorage.setItem('aiHistory',JSON.stringify(h));renderHistory(h)}catch(e){}}
+        function renderHistory(h){const l=document.getElementById('history-list');if(!l)return;l.innerHTML='';h.forEach((x,i)=>{const d=document.createElement('div');d.className="p-2 bg-gray-50 dark:bg-gray-800 rounded border border-gray-200 dark:border-gray-700 mb-2 flex justify-between cursor-pointer text-xs";d.innerHTML=`<span class="truncate w-3/4 dark:text-gray-300">${x.title}</span><button onclick="del(${i},event)" class="text-red-400"><i class="fas fa-trash"></i></button>`;d.onclick=(e)=>{if(!e.target.closest('button'))document.getElementById('idea-input').value=x.fullText||x.title};l.appendChild(d)})}
+        window.del=(i,e)=>{e.stopPropagation();let h=JSON.parse(localStorage.getItem('aiHistory'));h.splice(i,1);localStorage.setItem('aiHistory',JSON.stringify(h));renderHistory(h)};window.clearAllHistory=()=>{localStorage.removeItem('aiHistory');renderHistory([])};
     </script>
 </body>
 </html>
