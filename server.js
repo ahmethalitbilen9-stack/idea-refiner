@@ -1,4 +1,4 @@
-// server.js (EN & TR EŞİT KALİTE + BAĞLAM DUYARLI)
+// server.js (GROK ANALİZİNE GÖRE GÜÇLENDİRİLMİŞ VERSİYON)
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
@@ -11,7 +11,6 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static('public'));
 
-// Groq Bağlantısı
 const openai = new OpenAI({
     apiKey: process.env.GROQ_API_KEY, 
     baseURL: "https://api.groq.com/openai/v1" 
@@ -23,55 +22,93 @@ app.post('/api/analyze', async (req, res) => {
 
         if (!idea) return res.status(400).json({ error: "Fikir boş olamaz." });
 
-        // --- MASTER PROMPT (İKİ DİL İÇİN DE EŞİT DETAY) ---
-        const trPrompt = `GÖREV: Sen dünyanın en iyi Girişim Stratejisti ve Ürün Yöneticisisin.
+        // --- MASTER PROMPT (GROK ELEŞTİRİLERİNE GÖRE GÜNCELLENDİ) ---
+        const systemPrompt = language === 'tr' 
+            ? `GÖREV: Sen dünyanın en iyi Girişim Stratejisti, Veri Analisti ve Ürün Yöneticisisin.
 
-        🚨 1. BAĞLAM ANALİZİ (MANTIK):
-        - SENARYO A (YÜKSEK TEKNOLOJİ): Fikir AI, SaaS, App ise -> Stack: Python, React, AWS. Süre: 3-9 Ay.
-        - SENARYO B (FİZİKSEL/BASİT): Fikir Kafe, Al-Sat, Stand ise -> Stack: Instagram, WhatsApp, Excel (Kodlama önerme!). Süre: Günler/Haftalar.
+               🚨 KRİTİK MANTIK VE VERİ KURALLARI (BUNLARA UY):
+               1. VERİ ODAKLI OL: Pazar analizi yaparken genel konuşma. Sektörün tahmini büyüklüğünü ($ Milyar) ve Büyüme Oranını (CAGR %) ver.
+               2. TUTARLILIK: "Maliyet" bölümündeki süre tahmini ile "Yol Haritası" bölümündeki süre BİREBİR AYNI olmalı. (Örn: Maliyet 6 ay diyorsa, Roadmap 4 hafta olamaz, 24 hafta olmalı).
+               3. BAKIM MALİYETİ: Sadece geliştirme ücretini değil, aylık "Sunucu, AI Token ve Bakım" giderlerini de hesapla.
+               4. GERÇEKÇİ GELİR: "İlk yıl 1 Milyon Dolar" gibi uçuk tahminler yapma. Pazarlama bütçesi (CAC) düştükten sonraki gerçekçi kârı tahmin et.
+               5. ÇOKLU PERSONA: Tek bir hedef kitle yazma. En az 2 farklı Persona (Birincil ve İkincil Müşteri) belirle.
 
-        🚨 2. DİL VE ÜSLUP:
-        - Çıktı %100 AKICI ve DOĞAL TÜRKÇE olmalı.
-        - ASLA KISA CEVAP VERME. Her başlığı detaylı paragraflarla, neden-sonuç ilişkisi kurarak açıkla.
+               🚨 DİL: %100 Akıcı Türkçe. Yabancı karakter yok.
 
-        ÇIKTI FORMATI (Markdown):
-        # 📊 İnovasyon ve Pazar Analizi (1-10)
-        # 📉 Zorluk ve Maliyet Gerçeği (Bütçe & Süre)
-        # ✨ Kritik İyileştirme Önerileri (3 Somut Madde)
-        # 🎯 Hedef Kitle (Detaylı Persona)
-        # ⚔️ Rekabet Analizi (Gerçek Rakipler)
-        # 💰 Gelir Modeli ve Fiyatlandırma (Rakamlı)
-        # 🛠 Teknik ve Operasyonel Araçlar
-        # ⚖️ Etik ve Yasal Riskler
-        # 🚀 Gerçekçi Yol Haritası (Haftalık Plan)
-        # 💡 Son Karar`;
+               ÇIKTI FORMATI (Markdown - Detaylı):
+               
+               # 📊 Veri Odaklı Pazar Analizi (1-10)
+               *(Pazar Büyüklüğü $, CAGR % ve Trend Verileri ile)*
+               
+               # 📉 Teknik Zorluk, Bütçe ve Bakım Maliyeti
+               *(Geliştirme Maliyeti + Aylık Bakım Gideri + Süre Tutarlılığı)*
+               
+               # ✨ Kritik İyileştirme Önerileri ve Maliyet Etkisi
+               *(Özelliği öner ama bunun maliyeti/süreyi nasıl etkileyeceğini de yaz)*
+               
+               # 🎯 Hedef Kitle (Çoklu Persona)
+               *(Persona 1: [Detay], Persona 2: [Detay])*
+               
+               # ⚔️ Rekabet Analizi (Metriklerle)
+               *(Rakiplerin tahmini kullanıcı sayıları veya gelirleri ile kıyasla)*
+               
+               # 💰 Gerçekçi Gelir Modeli ve CAC Analizi
+               *(Fiyatlandırma - Müşteri Edinme Maliyeti = Tahmini Net)*
+               
+               # 🛠 Teknik Stack ve Ölçeklenebilirlik
+               *(Kullanıcı sayısı artınca sistem nasıl büyüyecek?)*
+               
+               # ⚖️ Etik Riskler ve Çözüm Stratejileri
+               *(Sadece riski yazma, nasıl çözüleceğini de yaz. Örn: AI Bias için veri temizliği)*
+               
+               # 🚀 Gerçekçi Yol Haritası (Zaman Çizelgesi Uyumlu)
+               *(Ar-Ge süresini uzun tut. Maliyet bölümündeki süreyle aynı uzunlukta olsun)*
+               
+               # 💡 Son Karar ve Başarı KPI'ları`
+            
+            : `ROLE: World-class Startup Strategist & Data Analyst.
 
-        const enPrompt = `ROLE: You are the world's best Startup Strategist and Senior Product Manager.
+               🚨 CRITICAL LOGIC & DATA RULES:
+               1. BE DATA-DRIVEN: Include estimated Market Size ($ Billions) and Growth Rate (CAGR %).
+               2. CONSISTENCY CHECK: The timeline in "Budget" MUST match the "Roadmap" length. (e.g., Don't say 6 months budget and 4 weeks roadmap).
+               3. MAINTENANCE COST: Include monthly Server, AI Token, and Maintenance costs, not just dev costs.
+               4. REALISTIC REVENUE: Deduct Customer Acquisition Cost (CAC) from revenue. Don't be overly optimistic.
+               5. MULTI-PERSONA: Define at least 2 distinct Target Personas.
 
-        🚨 1. CONTEXT ANALYSIS (LOGIC):
-        - SCENARIO A (HIGH TECH): If idea is AI, SaaS, App -> Stack: Python, React, AWS. Timeline: 3-9 Months.
-        - SCENARIO B (PHYSICAL/SIMPLE): If idea is Cafe, Shop, Stand -> Stack: Instagram, WhatsApp, Excel (NO Coding!). Timeline: Days/Weeks.
+               🚨 LANGUAGE: 100% Fluent English.
 
-        🚨 2. LANGUAGE & STYLE:
-        - Output must be 100% FLUENT ENGLISH.
-        - NEVER BE BRIEF. Explain every section with detailed paragraphs, just like a professional consultant report.
+               OUTPUT FORMAT (Markdown - Detailed): 
+               
+               # 📊 Data-Driven Market Analysis (1-10)
+               *(Include Market Size $, CAGR %, Trends)*
+               
+               # 📉 Difficulty, Budget & Maintenance Costs
+               *(Dev Cost + Monthly Running Costs + Consistent Timeline)*
+               
+               # ✨ Critical Suggestions & Cost Impact
+               *(Feature suggestion + How it affects budget/time)*
+               
+               # 🎯 Target Audience (Multi-Persona)
+               *(Persona 1 & Persona 2)*
+               
+               # ⚔️ Competitive Analysis (With Metrics)
+               *(Compare using estimated user base or revenue)*
+               
+               # 💰 Realistic Revenue Model & CAC Analysis
+               *(Pricing - CAC = Net Potential)*
+               
+               # 🛠 Tech Stack & Scalability
+               *(How to handle 100k+ users?)*
+               
+               # ⚖️ Ethics & Mitigation Strategies
+               *(Risk + Solution)*
+               
+               # 🚀 Realistic Roadmap (Time-Aligned)
+               *(Must match the duration in the Budget section)*
+               
+               # 💡 Final Verdict & KPIs`;
 
-        OUTPUT FORMAT (Markdown): 
-        # 📊 Innovation & Market Analysis (1-10)
-        # 📉 Difficulty & Cost Reality (Budget & Time)
-        # ✨ Critical Improvement Suggestions (3 Concrete Items)
-        # 🎯 Target Audience (Detailed Persona)
-        # ⚔️ Competitive Analysis (Real Rivals)
-        # 💰 Revenue Model & Pricing (With Numbers)
-        # 🛠 Technical & Operational Stack
-        # ⚖️ Ethics & Legal Risks
-        # 🚀 Realistic Roadmap (Weekly Plan)
-        # 💡 Final Verdict`;
-
-        // Dil Seçimine Göre Prompt Belirle
-        const systemPrompt = language === 'tr' ? trPrompt : enPrompt;
-
-        console.log(`Groq çalışıyor... Dil: ${language}`);
+        console.log(`Groq çalışıyor... (Grok Optimizasyonlu)`);
 
         const completion = await openai.chat.completions.create({
             messages: [
@@ -79,16 +116,15 @@ app.post('/api/analyze', async (req, res) => {
                 { role: "user", content: `IDEA: ${idea}` }
             ],
             model: "llama-3.3-70b-versatile",
-            temperature: 0.7, 
+            temperature: 0.6, 
             max_tokens: 4096 
         });
 
         let analysis = completion.choices[0].message.content;
 
-        // TEMİZLİK (Asya karakterleri vb.)
+        // Temizlik
         analysis = analysis.replace(/[\u4E00-\u9FFF\u3040-\u30FF\uAC00-\uD7AF\u0400-\u04FF]/g, "");
         
-        console.log("Cevap gönderildi.");
         res.json({ result: analysis });
 
     } catch (error) {
