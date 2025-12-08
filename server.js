@@ -1,4 +1,4 @@
-// server.js (GROK ANALİZİNE GÖRE GÜÇLENDİRİLMİŞ VERSİYON)
+// server.js (GROK GERİBİLDİRİMLERİ İLE GÜÇLENDİRİLMİŞ FİNAL VERSİYON)
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
@@ -22,68 +22,73 @@ app.post('/api/analyze', async (req, res) => {
 
         if (!idea) return res.status(400).json({ error: "Fikir boş olamaz." });
 
+        // [GÜNCELLEME]: Dinamik tarih eklendi, böylece AI her zaman güncel yılı bilir.
+        const currentYear = new Date().getFullYear(); 
+
         // --- MASTER PROMPT (GROK ELEŞTİRİLERİNE GÖRE GÜNCELLENDİ) ---
         const systemPrompt = language === 'tr' 
-            ? `GÖREV: Sen dünyanın en iyi Girişim Stratejisti, Veri Analisti ve Ürün Yöneticisisin.
+            ? `GÖREV: Sen dünyanın en iyi Girişim Stratejisti, Veri Analisti ve Ürün Yöneticisisin. Şu an ${currentYear} yılındayız.
 
-               🚨 KRİTİK MANTIK VE VERİ KURALLARI (BUNLARA UY):
-               1. VERİ ODAKLI OL: Pazar analizi yaparken genel konuşma. Sektörün tahmini büyüklüğünü ($ Milyar) ve Büyüme Oranını (CAGR %) ver.
-               2. TUTARLILIK: "Maliyet" bölümündeki süre tahmini ile "Yol Haritası" bölümündeki süre BİREBİR AYNI olmalı. (Örn: Maliyet 6 ay diyorsa, Roadmap 4 hafta olamaz, 24 hafta olmalı).
-               3. BAKIM MALİYETİ: Sadece geliştirme ücretini değil, aylık "Sunucu, AI Token ve Bakım" giderlerini de hesapla.
-               4. GERÇEKÇİ GELİR: "İlk yıl 1 Milyon Dolar" gibi uçuk tahminler yapma. Pazarlama bütçesi (CAC) düştükten sonraki gerçekçi kârı tahmin et.
-               5. ÇOKLU PERSONA: Tek bir hedef kitle yazma. En az 2 farklı Persona (Birincil ve İkincil Müşteri) belirle.
+               🚨 KRİTİK MANTIK VE VERİ KURALLARI (KESİN UY):
+               1. VERİ GÜNCELLİĞİ (ÇOK ÖNEMLİ): Asla 2020-2021 verisi kullanma. Analizlerini 2024-2025 pazar verilerine dayandır. (Örn: AI pazarı 2020'de 62B$ değil, 2024'te çok daha büyüktür, bunu araştırarak yaz).
+               2. RAKİP METRİKLERİ: Rakiplerin (Woebot, Wysa, Calm vb.) kullanıcı sayılarını tahmin ederken güncel verilere bak (Örn: Wysa 500K değil, 6M+ indirmeye sahip). Metrikleri düşük gösterme.
+               3. TUTARLILIK: "Maliyet" bölümündeki süre tahmini ile "Yol Haritası" bölümündeki süre BİREBİR AYNI olmalı.
+               4. BAKIM MALİYETİ: Sadece kodlama ücretini değil; Cloud (AWS/Google), LLM Token maliyetleri (OpenAI API vb.) ve Pazarlama giderlerini aylık olarak hesapla.
+               5. GERÇEKÇİ GELİR (MUHAFAZAKAR OL): "İlk yıl 1 Milyon Dolar" gibi uçuk tahminler yapma. Yüksek CAC (Müşteri Edinme Maliyeti) düştükten sonraki net kârı hesapla.
+               6. ÇOKLU PERSONA: Tek tip müşteri yok. En az 2 farklı Persona (Birincil ve İkincil Müşteri) için detay ver.
 
                🚨 DİL: %100 Akıcı Türkçe. Yabancı karakter yok.
 
                ÇIKTI FORMATI (Markdown - Detaylı):
                
                # 📊 Veri Odaklı Pazar Analizi (1-10)
-               *(Pazar Büyüklüğü $, CAGR % ve Trend Verileri ile)*
+               *(2024-2025 Pazar Büyüklüğü $, Güncel CAGR % ve Trend Verileri)*
                
                # 📉 Teknik Zorluk, Bütçe ve Bakım Maliyeti
-               *(Geliştirme Maliyeti + Aylık Bakım Gideri + Süre Tutarlılığı)*
+               *(Geliştirme Maliyeti + Aylık Sunucu/API/Pazarlama Gideri + Süre Tutarlılığı)*
                
                # ✨ Kritik İyileştirme Önerileri ve Maliyet Etkisi
-               *(Özelliği öner ama bunun maliyeti/süreyi nasıl etkileyeceğini de yaz)*
+               *(Özelliği öner ama bunun maliyeti/süreyi nasıl artıracağını da belirt)*
                
                # 🎯 Hedef Kitle (Çoklu Persona)
-               *(Persona 1: [Detay], Persona 2: [Detay])*
+               *(Persona 1: [Detaylı Profil], Persona 2: [Detaylı Profil])*
                
-               # ⚔️ Rekabet Analizi (Metriklerle)
-               *(Rakiplerin tahmini kullanıcı sayıları veya gelirleri ile kıyasla)*
+               # ⚔️ Rekabet Analizi (Gerçekçi Metriklerle)
+               *(Rakiplerin GÜNCEL indirme/kullanıcı sayıları ve onlardan nasıl ayrışılacağı)*
                
                # 💰 Gerçekçi Gelir Modeli ve CAC Analizi
-               *(Fiyatlandırma - Müşteri Edinme Maliyeti = Tahmini Net)*
+               *(Fiyatlandırma - (Yüksek Pazarlama Gideri + Operasyon) = Tahmini Net)*
                
                # 🛠 Teknik Stack ve Ölçeklenebilirlik
-               *(Kullanıcı sayısı artınca sistem nasıl büyüyecek?)*
+               *(100K+ kullanıcı için AWS/Docker/Kubernetes gibi somut teknolojiler)*
                
                # ⚖️ Etik Riskler ve Çözüm Stratejileri
-               *(Sadece riski yazma, nasıl çözüleceğini de yaz. Örn: AI Bias için veri temizliği)*
+               *(AI Bias, Veri Gizliliği ve Bağımlılık risklerine karşı somut çözümler)*
                
                # 🚀 Gerçekçi Yol Haritası (Zaman Çizelgesi Uyumlu)
-               *(Ar-Ge süresini uzun tut. Maliyet bölümündeki süreyle aynı uzunlukta olsun)*
+               *(Ar-Ge, MVP ve Test süreçleri. Bütçe kısmındaki süreyle uyumlu olsun)*
                
                # 💡 Son Karar ve Başarı KPI'ları`
             
-            : `ROLE: World-class Startup Strategist & Data Analyst.
+            : `ROLE: World-class Startup Strategist & Data Analyst. Current Year is ${currentYear}.
 
                🚨 CRITICAL LOGIC & DATA RULES:
-               1. BE DATA-DRIVEN: Include estimated Market Size ($ Billions) and Growth Rate (CAGR %).
-               2. CONSISTENCY CHECK: The timeline in "Budget" MUST match the "Roadmap" length. (e.g., Don't say 6 months budget and 4 weeks roadmap).
-               3. MAINTENANCE COST: Include monthly Server, AI Token, and Maintenance costs, not just dev costs.
-               4. REALISTIC REVENUE: Deduct Customer Acquisition Cost (CAC) from revenue. Don't be overly optimistic.
-               5. MULTI-PERSONA: Define at least 2 distinct Target Personas.
+               1. DATA FRESHNESS: Do NOT use data from 2020. Use 2024-2025 Market Data and CAGR projections.
+               2. COMPETITOR ACCURACY: Use real-world, current user metrics for competitors (e.g., Don't underreport Wysa/Woebot user bases; use 2024 stats).
+               3. CONSISTENCY CHECK: The timeline in "Budget" MUST match the "Roadmap" length completely.
+               4. RUNNING COSTS: Include monthly Server, AI Token usage, and Marketing costs in the budget, not just development fees.
+               5. REALISTIC REVENUE (BE CONSERVATIVE): Deduct high Customer Acquisition Cost (CAC) from revenue. Avoid over-optimistic "1M revenue in year 1" claims.
+               6. MULTI-PERSONA: Define at least 2 distinct Target Personas.
 
                🚨 LANGUAGE: 100% Fluent English.
 
                OUTPUT FORMAT (Markdown - Detailed): 
                
                # 📊 Data-Driven Market Analysis (1-10)
-               *(Include Market Size $, CAGR %, Trends)*
+               *(2024-2025 Market Size $, CAGR %, Trends)*
                
                # 📉 Difficulty, Budget & Maintenance Costs
-               *(Dev Cost + Monthly Running Costs + Consistent Timeline)*
+               *(Dev Cost + Monthly Running Costs including API/Marketing + Consistent Timeline)*
                
                # ✨ Critical Suggestions & Cost Impact
                *(Feature suggestion + How it affects budget/time)*
@@ -91,24 +96,24 @@ app.post('/api/analyze', async (req, res) => {
                # 🎯 Target Audience (Multi-Persona)
                *(Persona 1 & Persona 2)*
                
-               # ⚔️ Competitive Analysis (With Metrics)
-               *(Compare using estimated user base or revenue)*
+               # ⚔️ Competitive Analysis (With Real Metrics)
+               *(Compare using CURRENT estimated user base/downloads)*
                
                # 💰 Realistic Revenue Model & CAC Analysis
-               *(Pricing - CAC = Net Potential)*
+               *(Pricing - High CAC = Net Potential)*
                
                # 🛠 Tech Stack & Scalability
-               *(How to handle 100k+ users?)*
+               *(Specific tools like AWS, K8s, Docker for 100k+ users)*
                
                # ⚖️ Ethics & Mitigation Strategies
-               *(Risk + Solution)*
+               *(Risk + Concrete Solution)*
                
                # 🚀 Realistic Roadmap (Time-Aligned)
-               *(Must match the duration in the Budget section)*
+               *(Must match the duration in the Budget section exactly)*
                
                # 💡 Final Verdict & KPIs`;
 
-        console.log(`Groq çalışıyor... (Grok Optimizasyonlu)`);
+        console.log(`Groq çalışıyor... (Grok Optimizasyonlu - Yıl: ${currentYear})`);
 
         const completion = await openai.chat.completions.create({
             messages: [
