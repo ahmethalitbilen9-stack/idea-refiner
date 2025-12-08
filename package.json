@@ -1,7 +1,7 @@
 {
   "name": "ai-idea-refiner",
   "version": "1.0.0",
-  "description": "AI Idea Refiner - Node + Express + OpenAI",
+  "description": "AI Idea Refiner - Node + Express + Gemini",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
@@ -10,10 +10,10 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "@google/generative-ai": "^0.24.1",
     "cors": "^2.8.5",
     "dotenv": "^16.6.1",
-    "express": "^4.21.2",
-    "openai": "^6.9.1"
+    "express": "^4.21.2"
   },
   "type": "commonjs"
 }
