@@ -88,12 +88,6 @@ async function getGoogleTrendsData(idea) {
     }
 }
 
-const app = express();
-const port = process.env.PORT || 3000;
-
-app.use(cors());
-app.use(express.json());
-app.use(express.static('public'));
 
 // === ANALYSIS ENHANCEMENT #3: CACHING SYSTEM ===
 // In-memory cache for analysis results (24 hour TTL)
