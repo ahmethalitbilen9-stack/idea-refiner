@@ -337,6 +337,101 @@
                                 class="h-8 w-8 bg-white rounded-full p-0.5">
                             <h2 id="report-title" class="text-xl font-bold">Analysis Report</h2>
                         </div>
+
+                        <!-- Score Breakdown Card (Analysis Enhancement #1) -->
+                        <div id="score-card"
+                            class="hidden mb-6 bg-gradient-to-r from-blue-900 to-purple-900 rounded-xl p-6 border border-blue-700">
+                            <div class="text-center mb-4">
+                                <div class="text-6xl font-bold text-white mb-2" id="overall-score">7.5</div>
+                                <div class="text-sm text-gray-300">Genel Skor (10 üzerinden)</div>
+                                <div class="mt-2">
+                                    <span id="risk-badge"
+                                        class="px-3 py-1 rounded-full text-xs font-bold bg-yellow-500 text-black">Orta
+                                        Risk</span>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-4">
+                                <!-- Market Size -->
+                                <div class="bg-white/10 rounded-lg p-3">
+                                    <div class="flex justify-between items-center mb-2">
+                                        <span class="text-sm font-semibold text-white">📊 Pazar Büyüklüğü</span>
+                                        <span class="text-sm font-bold text-white" id="score-market">8</span>
+                                    </div>
+                                    <div class="w-full bg-gray-700 rounded-full h-2">
+                                        <div id="bar-market"
+                                            class="bg-green-400 h-2 rounded-full transition-all duration-500"
+                                            style="width: 80%"></div>
+                                    </div>
+                                </div>
+
+                                <!-- Competition -->
+                                <div class="bg-white/10 rounded-lg p-3">
+                                    <div class="flex justify-between items-center mb-2">
+                                        <span class="text-sm font-semibold text-white">⚔️ Rekabet</span>
+                                        <span class="text-sm font-bold text-white" id="score-competition">6</span>
+                                    </div>
+                                    <div class="w-full bg-gray-700 rounded-full h-2">
+                                        <div id="bar-competition"
+                                            class="bg-yellow-400 h-2 rounded-full transition-all duration-500"
+                                            style="width: 60%"></div>
+                                    </div>
+                                </div>
+
+                                <!-- Feasibility -->
+                                <div class="bg-white/10 rounded-lg p-3">
+                                    <div class="flex justify-between items-center mb-2">
+                                        <span class="text-sm font-semibold text-white">🛠 Uygulanabilirlik</span>
+                                        <span class="text-sm font-bold text-white" id="score-feasibility">7</span>
+                                    </div>
+                                    <div class="w-full bg-gray-700 rounded-full h-2">
+                                        <div id="bar-feasibility"
+                                            class="bg-blue-400 h-2 rounded-full transition-all duration-500"
+                                            style="width: 70%"></div>
+                                    </div>
+                                </div>
+
+                                <!-- Profitability -->
+                                <div class="bg-white/10 rounded-lg p-3">
+                                    <div class="flex justify-between items-center mb-2">
+                                        <span class="text-sm font-semibold text-white">💰 Kârlılık</span>
+                                        <span class="text-sm font-bold text-white" id="score-profitability">8</span>
+                                    </div>
+                                    <div class="w-full bg-gray-700 rounded-full h-2">
+                                        <div id="bar-profitability"
+                                            class="bg-green-400 h-2 rounded-full transition-all duration-500"
+                                            style="width: 80%"></div>
+                                    </div>
+                                </div>
+
+                                <!-- Innovation -->
+                                <div class="bg-white/10 rounded-lg p-3">
+                                    <div class="flex justify-between items-center mb-2">
+                                        <span class="text-sm font-semibold text-white">💡 Yenilikçilik</span>
+                                        <span class="text-sm font-bold text-white" id="score-innovation">9</span>
+                                    </div>
+                                    <div class="w-full bg-gray-700 rounded-full h-2">
+                                        <div id="bar-innovation"
+                                            class="bg-purple-400 h-2 rounded-full transition-all duration-500"
+                                            style="width: 90%"></div>
+                                    </div>
+                                </div>
+
+                                <!-- Timing -->
+                                <div class="bg-white/10 rounded-lg p-3">
+                                    <div class="flex justify-between items-center mb-2">
+                                        <span class="text-sm font-semibold text-white">⏰ Zamanlama</span>
+                                        <span class="text-sm font-bold text-white" id="score-timing">7</span>
+                                    </div>
+                                    <div class="w-full bg-gray-700 rounded-full h-2">
+                                        <div id="bar-timing"
+                                            class="bg-blue-400 h-2 rounded-full transition-all duration-500"
+                                            style="width: 70%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         <div id="result-text" class="prose max-w-none text-sm md:text-base"></div>
 
                         <!-- Email Capture Form (Phase 2) -->
@@ -527,6 +622,11 @@
                         saveToHistory(text);
                         incrementAnalysisCounter();
                         gtag('event', 'result_viewed');
+
+                        // Update score card (Analysis Enhancement #1)
+                        if (data.scoring) {
+                            updateScoreCard(data.scoring);
+                        }
 
                         // Increment usage (Phase 3)
                         incrementUsage();
@@ -771,6 +871,52 @@ Beslenme ve sağlık teknolojileri pazarı hızla büyüyor. Özellikle AI deste
                 alert('Bir hata oluştu. Lütfen tekrar deneyin.');
             }
         });
+
+        // === ANALYSIS ENHANCEMENT #1: SCORE BREAKDOWN ===
+
+        function updateScoreCard(scoring) {
+            const scoreCard = document.getElementById('score-card');
+            scoreCard.classList.remove('hidden');
+
+            // Update overall score
+            document.getElementById('overall-score').textContent = scoring.overall_score.toFixed(1);
+
+            // Update risk badge
+            const riskBadge = document.getElementById('risk-badge');
+            const riskText = {
+                'low': 'Düşük Risk',
+                'medium': 'Orta Risk',
+                'high': 'Yüksek Risk'
+            };
+            const riskColors = {
+                'low': 'bg-green-500',
+                'medium': 'bg-yellow-500',
+                'high': 'bg-red-500'
+            };
+
+            riskBadge.textContent = riskText[scoring.risk_level] || 'Orta Risk';
+            riskBadge.className = `px-3 py-1 rounded-full text-xs font-bold ${riskColors[scoring.risk_level] || 'bg-yellow-500'} text-black`;
+
+            // Update breakdown scores with animation
+            const breakdown = scoring.breakdown;
+            const metrics = ['market', 'competition', 'feasibility', 'profitability', 'innovation', 'timing'];
+
+            metrics.forEach(metric => {
+                const value = breakdown[`${metric}_size`] || breakdown[metric];
+                document.getElementById(`score-${metric}`).textContent = value;
+
+                // Animate progress bar
+                setTimeout(() => {
+                    document.getElementById(`bar-${metric}`).style.width = `${value * 10}%`;
+                }, 300);
+            });
+
+            // Track analytics
+            gtag('event', 'score_card_displayed', {
+                overall_score: scoring.overall_score,
+                risk_level: scoring.risk_level
+            });
+        }
 
         // === PHASE 3: GAMIFICATION & FREEMIUM ===
 

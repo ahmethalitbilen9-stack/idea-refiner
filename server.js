@@ -80,6 +80,7 @@ app.post('/api/analyze', async (req, res) => {
 
         console.log(`Groq çalışıyor... (Model: llama-3.3-70b - Yıl: ${currentYear})`);
 
+        // First get the detailed analysis
         const completion = await openai.chat.completions.create({
             messages: [
                 { role: "system", content: systemPrompt },
@@ -92,10 +93,84 @@ app.post('/api/analyze', async (req, res) => {
 
         let analysis = completion.choices[0].message.content;
 
+        // Get structured scoring (separate request for better accuracy)
+        const scoringPrompt = language === 'tr'
+            ? `Aşağıdaki startup fikri için detaylı skorlama yap. SADECE JSON formatında cevap ver, başka hiçbir metin ekleme.
+
+Fikir: ${idea}
+
+JSON formatı (SADECE bu formatı kullan):
+{
+  "overall_score": 7.5,
+  "breakdown": {
+    "market_size": 8,
+    "competition": 6,
+    "feasibility": 7,
+    "profitability": 8,
+    "innovation": 9,
+    "timing": 7
+  },
+  "risk_level": "medium"
+}`
+            : `Score this startup idea in detail. Respond ONLY in JSON format, no other text.
+
+Idea: ${idea}
+
+JSON format (USE ONLY this format):
+{
+  "overall_score": 7.5,
+  "breakdown": {
+    "market_size": 8,
+    "competition": 6,
+    "feasibility": 7,
+    "profitability": 8,
+    "innovation": 9,
+    "timing": 7
+  },
+  "risk_level": "medium"
+}`;
+
+        const scoringCompletion = await openai.chat.completions.create({
+            messages: [
+                { role: "user", content: scoringPrompt }
+            ],
+            model: "llama-3.3-70b-versatile",
+            temperature: 0.3,
+            max_tokens: 500
+        });
+
+        let scoringData = {};
+        try {
+            const scoringText = scoringCompletion.choices[0].message.content.trim();
+            // Extract JSON from response (in case AI adds extra text)
+            const jsonMatch = scoringText.match(/\{[\s\S]*\}/);
+            if (jsonMatch) {
+                scoringData = JSON.parse(jsonMatch[0]);
+            }
+        } catch (err) {
+            console.error('Scoring parse error:', err);
+            // Fallback to basic scoring
+            scoringData = {
+                overall_score: 7.0,
+                breakdown: {
+                    market_size: 7,
+                    competition: 7,
+                    feasibility: 7,
+                    profitability: 7,
+                    innovation: 7,
+                    timing: 7
+                },
+                risk_level: "medium"
+            };
+        }
+
         // Temizlik
         analysis = analysis.replace(/[\u4E00-\u9FFF\u3040-\u30FF\uAC00-\uD7AF\u0400-\u04FF]/g, "");
         
-        res.json({ result: analysis });
+        res.json({ 
+            result: analysis,
+            scoring: scoringData
+        });
 
     } catch (error) {
         console.error("HATA:", error);
