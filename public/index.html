@@ -880,6 +880,11 @@
                             renderCharts(data.charts);
                         }
 
+                        // Render Google Trends (Analysis Enhancement #9)
+                        if (data.trends) {
+                            renderTrendsCard(data.trends);
+                        }
+
                         // Increment usage (Phase 3)
                         incrementUsage();
 
@@ -1311,6 +1316,89 @@ Beslenme ve sağlık teknolojileri pazarı hızla büyüyor. Özellikle AI deste
             // Track analytics
             gtag('event', 'charts_displayed', {
                 has_competitors: chartData.competitors?.length > 0
+            });
+        }
+
+        // === ANALYSIS ENHANCEMENT #9: GOOGLE TRENDS VISUALIZATION ===
+
+        let trendsChart = null;
+
+        function renderTrendsCard(trends) {
+            const trendsCard = document.getElementById('trends-card');
+            trendsCard.classList.remove('hidden');
+
+            // Update keyword
+            document.getElementById('trends-keyword').textContent = trends.keyword || 'N/A';
+
+            // Update trend direction
+            const directionEl = document.getElementById('trends-direction');
+            const directionIcons = {
+                rising: '⬆️ Yükselişte',
+                falling: '⬇️ Düşüşte',
+                stable: '➡️ Stabil'
+            };
+            directionEl.textContent = directionIcons[trends.trendDirection] || '➡️ Stabil';
+            directionEl.className = `font-bold text-lg ${trends.trendDirection === 'rising' ? 'text-green-600' :
+                trends.trendDirection === 'falling' ? 'text-red-600' :
+                    'text-gray-600'
+                }`;
+
+            // Render interest chart
+            if (trendsChart) trendsChart.destroy();
+
+            const isDark = document.documentElement.classList.contains('dark');
+            const textColor = isDark ? '#e5e7eb' : '#1f2937';
+            const gridColor = isDark ? '#374151' : '#e5e7eb';
+
+            const ctx = document.getElementById('trends-interest-chart').getContext('2d');
+            trendsChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: Array.from({ length: trends.interestOverTime.length }, (_, i) => i + 1),
+                    datasets: [{
+                        label: 'İlgi Düzeyi',
+                        data: trends.interestOverTime || [50, 52, 55, 58, 60, 62, 65, 63, 61, 59, 57, 55],
+                        borderColor: '#ef4444',
+                        backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100,
+                            ticks: { color: textColor },
+                            grid: { color: gridColor }
+                        },
+                        x: {
+                            ticks: { color: textColor },
+                            grid: { color: gridColor }
+                        }
+                    }
+                }
+            });
+
+            // Update related queries
+            const relatedDiv = document.getElementById('trends-related');
+            relatedDiv.innerHTML = '';
+            (trends.relatedQueries || []).forEach(query => {
+                const badge = document.createElement('span');
+                badge.className = 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300 px-3 py-1 rounded-full text-xs font-semibold';
+                badge.textContent = query;
+                relatedDiv.appendChild(badge);
+            });
+
+            // Track analytics
+            gtag('event', 'trends_data_displayed', {
+                keyword: trends.keyword,
+                trend_direction: trends.trendDirection
             });
         }
 
