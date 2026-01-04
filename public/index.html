@@ -598,6 +598,48 @@
                             </div>
                         </div>
 
+                        <!-- Google Trends Card (Analysis Enhancement #9) -->
+                        <div id="trends-card"
+                            class="hidden mt-6 bg-gradient-to-r from-red-50 to-orange-50 dark:from-red-900/20 dark:to-orange-900/20 rounded-xl p-6 border-2 border-red-300 dark:border-red-700">
+                            <div class="flex items-center gap-3 mb-4">
+                                <div class="text-4xl">🔥</div>
+                                <div>
+                                    <h3 class="text-xl font-bold text-gray-900 dark:text-white">Google Trends Analizi
+                                    </h3>
+                                    <p class="text-xs text-gray-600 dark:text-gray-400">Gerçek zamanlı pazar trendi</p>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                <div class="bg-white dark:bg-gray-800 rounded-lg p-4">
+                                    <div class="text-sm text-gray-600 dark:text-gray-400 mb-1">Anahtar Kelime</div>
+                                    <div class="font-bold text-lg dark:text-white" id="trends-keyword">-</div>
+                                </div>
+                                <div class="bg-white dark:bg-gray-800 rounded-lg p-4">
+                                    <div class="text-sm text-gray-600 dark:text-gray-400 mb-1">Trend Durumu</div>
+                                    <div class="flex items-center gap-2">
+                                        <span id="trends-direction" class="font-bold text-lg">⬆️ Yükselişte</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="bg-white dark:bg-gray-800 rounded-lg p-4 mb-4">
+                                <div class="text-sm font-semibold mb-2 dark:text-white">İlgi Düzeyi (Son 12 Ay)</div>
+                                <canvas id="trends-interest-chart" height="80"></canvas>
+                            </div>
+
+                            <div class="bg-white dark:bg-gray-800 rounded-lg p-4">
+                                <div class="text-sm font-semibold mb-2 dark:text-white">İlgili Aramalar</div>
+                                <div id="trends-related" class="flex flex-wrap gap-2">
+                                    <!-- Will be populated -->
+                                </div>
+                            </div>
+
+                            <div class="text-xs text-gray-500 dark:text-gray-400 mt-3 text-center">
+                                📊 Kaynak: Google Trends
+                            </div>
+                        </div>
+
                         <!-- Email Capture Form (Phase 2) -->
                         <div id="email-capture-section"
                             class="bg-yellow-50 dark:bg-yellow-900/20 border-2 border-yellow-400 rounded-xl p-4 md:p-6 mt-6 hidden">
