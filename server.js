@@ -53,6 +53,118 @@ const openai = new OpenAI({
     baseURL: "https://api.groq.com/openai/v1"
 });
 
+// === ANALYSIS ENHANCEMENT #5: CATEGORY-SPECIFIC PROMPTS ===
+function detectCategory(idea) {
+    const lowerIdea = idea.toLowerCase();
+
+    // Keyword patterns for each category
+    const categories = {
+        saas: ['saas', 'software', 'platform', 'cloud', 'subscription', 'dashboard', 'api', 'web app', 'crm', 'analytics'],
+        ecommerce: ['ecommerce', 'e-commerce', 'shop', 'store', 'marketplace', 'sell', 'product', 'inventory', 'checkout', 'cart'],
+        mobile: ['mobile app', 'ios', 'android', 'app store', 'play store', 'smartphone', 'tablet', 'mobile'],
+        ai: ['ai', 'artificial intelligence', 'machine learning', 'ml', 'nlp', 'deep learning', 'neural', 'chatbot', 'gpt', 'llm'],
+        hardware: ['hardware', 'device', 'iot', 'sensor', 'wearable', 'gadget', 'physical product', 'manufacturing']
+    };
+
+    let scores = {};
+    for (let [category, keywords] of Object.entries(categories)) {
+        scores[category] = keywords.filter(keyword => lowerIdea.includes(keyword)).length;
+    }
+
+    // Find category with highest score
+    let maxCategory = 'general';
+    let maxScore = 0;
+    for (let [category, score] of Object.entries(scores)) {
+        if (score > maxScore) {
+            maxScore = score;
+            maxCategory = category;
+        }
+    }
+
+    return maxScore > 0 ? maxCategory : 'general';
+}
+
+function getCategorySpecificInstructions(category, language) {
+    const instructions = {
+        tr: {
+            saas: `
+🎯 SaaS ÖZEL ANALİZ:
+- MRR/ARR hedefleri ve churn rate tahminleri
+- Müşteri edinme maliyeti (CAC) vs Lifetime Value (LTV) oranı
+- Freemium vs Premium model karşılaştırması
+- API entegrasyonları ve teknik stack
+- Abonelik fiyatlandırma stratejisi (aylık/yıllık)`,
+            ecommerce: `
+🎯 E-TİCARET ÖZEL ANALİZ:
+- Ortalama sipariş değeri (AOV) ve conversion rate tahminleri
+- Lojistik ve stok yönetimi maliyetleri
+- Pazaryeri vs kendi site karşılaştırması
+- Ödeme sistemleri ve komisyon oranları
+- Müşteri iade politikaları`,
+            mobile: `
+🎯 MOBİL UYGULAMA ÖZEL ANALİZ:
+- DAU/MAU oranları ve retention metrikleri
+- App Store / Play Store optimizasyon stratejisi
+- In-app purchase vs reklam geliri modeli
+- Push notification stratejisi
+- Platform seçimi (iOS first vs Android first vs cross-platform)`,
+            ai: `
+🎯 AI/ML ÖZEL ANALİZ:
+- Model accuracy ve performans metrikleri
+- API token maliyetleri (OpenAI, Google, etc.)
+- Veri toplama ve etiketleme gereksinimleri
+- Model eğitim maliyetleri ve süresi
+- Ethical AI ve bias prevention stratejileri`,
+            hardware: `
+🎯 DONANIM ÖZEL ANALİZ:
+- Prototip geliştirme ve üretim maliyetleri
+- Tedarik zinciri ve üretici seçimi
+- Sertifikasyon gereksinimleri (CE, FCC, etc.)
+- Minimum order quantity (MOQ) ve stok yönetimi
+- After-sales servis ve garanti maliyetleri`
+        },
+        en: {
+            saas: `
+🎯 SaaS SPECIFIC ANALYSIS:
+- MRR/ARR targets and churn rate predictions
+- Customer Acquisition Cost (CAC) vs Lifetime Value (LTV)
+- Freemium vs Premium model comparison
+- API integrations and tech stack
+- Subscription pricing strategy (monthly/annual)`,
+            ecommerce: `
+🎯 E-COMMERCE SPECIFIC ANALYSIS:
+- Average Order Value (AOV) and conversion rate estimates
+- Logistics and inventory management costs
+- Marketplace vs own website comparison
+- Payment systems and commission rates
+- Customer return policies`,
+            mobile: `
+🎯 MOBILE APP SPECIFIC ANALYSIS:
+- DAU/MAU ratios and retention metrics
+- App Store / Play Store optimization strategy
+- In-app purchase vs ad revenue model
+- Push notification strategy
+- Platform choice (iOS first vs Android first vs cross-platform)`,
+            ai: `
+🎯 AI/ML SPECIFIC ANALYSIS:
+- Model accuracy and performance metrics
+- API token costs (OpenAI, Google, etc.)
+- Data collection and labeling requirements
+- Model training costs and duration
+- Ethical AI and bias prevention strategies`,
+            hardware: `
+🎯 HARDWARE SPECIFIC ANALYSIS:
+- Prototype development and manufacturing costs
+- Supply chain and manufacturer selection
+- Certification requirements (CE, FCC, etc.)
+- Minimum order quantity (MOQ) and inventory
+- After-sales service and warranty costs`
+        }
+    };
+
+    return instructions[language][category] || '';
+}
+
 app.post('/api/analyze', async (req, res) => {
     try {
         const { idea, language } = req.body;
@@ -75,6 +187,11 @@ app.post('/api/analyze', async (req, res) => {
         // Tarihi dinamik alıyoruz
         const currentYear = new Date().getFullYear();
 
+        // Detect category and get specific instructions (Analysis Enhancement #5)
+        const category = detectCategory(idea);
+        const categoryInstructions = getCategorySpecificInstructions(category, language);
+        console.log(`📂 Detected category: ${category.toUpperCase()}`);
+
         // --- MASTER PROMPT (GROQ İÇİN OPTİMİZE EDİLDİ) ---
         const systemPrompt = language === 'tr'
             ? `GÖREV: Sen dünyanın en iyi Girişim Stratejisti, Veri Analisti ve Ürün Yöneticisisin. Şu an ${currentYear} yılındayız.
@@ -88,6 +205,8 @@ app.post('/api/analyze', async (req, res) => {
                6. ÇOKLU PERSONA: En az 2 farklı Persona belirle.
 
                🚨 DİL: %100 Akıcı Türkçe.
+               
+               ${categoryInstructions}
 
                ÇIKTI FORMATI (Markdown - Detaylı):
                # 📊 Veri Odaklı Pazar Analizi (1-10)
