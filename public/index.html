@@ -104,8 +104,8 @@
         <div class="bg-white dark:bg-gray-800 p-8 rounded-2xl max-w-md w-full mx-4 shadow-2xl">
             <div class="text-center mb-4">
                 <div class="text-5xl mb-3" id="loading-emoji">🔍</div>
-                <h3 class="font-bold text-xl mb-2" id="loading-title">Analiz Ediliyor...</h3>
-                <p class="text-sm text-gray-500 dark:text-gray-400" id="loading-message">Pazar verileri toplanıyor</p>
+                <h3 class="font-bold text-xl mb-2" id="loading-title">Analyzing...</h3>
+                <p class="text-sm text-gray-500 dark:text-gray-400" id="loading-message">Gathering market data</p>
             </div>
 
             <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3 mb-4 overflow-hidden">
@@ -114,7 +114,7 @@
                     style="width: 0%"></div>
             </div>
 
-            <p class="text-xs text-gray-400 text-center">⏱️ Ortalama süre: 15-20 saniye</p>
+            <p class="text-xs text-gray-400 text-center" id="loading-sub">⏱️ Average time: 15-20 seconds</p>
         </div>
     </div>
 
@@ -316,49 +316,36 @@
         <main class="w-full md:w-3/4 flex flex-col gap-6">
             <div class="text-center space-y-4 mt-2">
                 <h1 id="hero-title" class="text-4xl md:text-6xl font-extrabold tracking-tight leading-tight">
-                    🚀 Girişimcilik Fikrinizi <br class="md:hidden" />
-                    <span class="text-blue-500">60 Saniyede</span> Detaylı Analiz Edin
+                    Analyze Your <span class="text-blue-500">Startup Idea</span> in 60 Seconds
                 </h1>
                 <div
                     class="flex flex-wrap gap-3 md:gap-6 justify-center text-xs md:text-sm text-gray-600 dark:text-gray-300">
                     <span class="flex items-center gap-2 bg-green-50 dark:bg-green-900/20 px-3 py-1.5 rounded-full">
-                        <span class="text-green-600 dark:text-green-400">✅</span> Pazar Analizi
+                        <span class="text-green-600 dark:text-green-400">✅</span> <span id="feat-1">Market
+                            Analysis</span>
                     </span>
                     <span class="flex items-center gap-2 bg-blue-50 dark:bg-blue-900/20 px-3 py-1.5 rounded-full">
-                        <span class="text-blue-600 dark:text-blue-400">✅</span> Rakip Karşılaştırması
+                        <span class="text-blue-600 dark:text-blue-400">✅</span> <span id="feat-2">Competitor
+                            Analysis</span>
                     </span>
                     <span class="flex items-center gap-2 bg-purple-50 dark:bg-purple-900/20 px-3 py-1.5 rounded-full">
-                        <span class="text-purple-600 dark:text-purple-400">✅</span> Maliyet Tahmini
+                        <span class="text-purple-600 dark:text-purple-400">✅</span> <span id="feat-3">Cost
+                            Estimation</span>
                     </span>
                 </div>
                 <div class="mt-6 flex gap-3 justify-center flex-wrap">
-                    <button onclick="scrollToInput()"
+                    <button onclick="scrollToInput()" id="hero-analyze-btn"
                         class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-lg shadow-lg transition active:scale-95">
-                        ÜCRETSİZ ANALİZ ET
+                        ANALYZE FOR FREE
                     </button>
-                    <button onclick="showExampleReport()"
+                    <button onclick="showExampleReport()" id="hero-example-btn"
                         class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-3 px-8 rounded-lg shadow-lg transition active:scale-95">
-                        ÖRNEK RAPOR GÖR
+                        SEE EXAMPLE REPORT
                     </button>
                 </div>
             </div>
 
-            <div class="stats-banner bg-gradient-to-r from-blue-900 to-purple-900 py-6 px-4 rounded-2xl my-8 shadow-lg">
-                <div class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 text-center text-white">
-                    <div>
-                        <div class="text-3xl md:text-4xl font-bold" id="total-analyses">1,247</div>
-                        <div class="text-xs md:text-sm text-gray-300 mt-1">Toplam Analiz</div>
-                    </div>
-                    <div>
-                        <div class="text-3xl md:text-4xl font-bold">⭐ 4.8/5.0</div>
-                        <div class="text-xs md:text-sm text-gray-300 mt-1">Kullanıcı Memnuniyeti</div>
-                    </div>
-                    <div>
-                        <div class="text-3xl md:text-4xl font-bold">🌍 52</div>
-                        <div class="text-xs md:text-sm text-gray-300 mt-1">Farklı Ülkeden Girişimci</div>
-                    </div>
-                </div>
-            </div>
+
 
             <div
                 class="ad-space w-full h-24 bg-gray-100 dark:bg-gray-800 rounded-xl flex items-center justify-center border border-gray-200 dark:border-gray-700 text-gray-400 text-xs overflow-hidden">
@@ -381,8 +368,9 @@
                         class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-3 mb-2">
                         <div class="flex items-center justify-between mb-2">
                             <div class="flex items-center gap-2">
-                                <span class="text-sm font-semibold text-gray-700 dark:text-gray-300">Fikir
-                                    Kalitesi:</span>
+                                <span id="quality-title-label"
+                                    class="text-sm font-semibold text-gray-700 dark:text-gray-300">Idea
+                                    Quality:</span>
                                 <div class="flex gap-1" id="quality-stars">
                                     <span class="text-yellow-500">⭐</span>
                                     <span class="text-yellow-500">⭐</span>
@@ -391,7 +379,7 @@
                                     <span class="text-gray-300">⭐</span>
                                 </div>
                             </div>
-                            <span class="text-xs text-gray-500 dark:text-gray-400" id="word-count">0 kelime</span>
+                            <span class="text-xs text-gray-500 dark:text-gray-400" id="word-count">0 words</span>
                         </div>
                         <div id="quality-suggestions" class="text-xs space-y-1">
                             <!-- Suggestions will be added here dynamically -->
@@ -430,7 +418,7 @@
                                 </div>
                                 <div class="mt-2">
                                     <span id="risk-badge"
-                                        class="px-3 py-1 rounded-full text-xs font-bold bg-yellow-500 text-black">Orta
+                                        class="px-3 py-1 rounded-full text-xs font-bold bg-yellow-500 text-black">Medium
                                         Risk</span>
                                 </div>
                             </div>
@@ -525,7 +513,8 @@
                             <!-- Market Growth Chart -->
                             <div
                                 class="bg-white dark:bg-gray-800 rounded-xl p-4 border border-gray-200 dark:border-gray-700">
-                                <h3 class="text-lg font-bold mb-4 text-gray-900 dark:text-white">📈 Pazar Büyüme Trendi
+                                <h3 id="chart-market-title"
+                                    class="text-lg font-bold mb-4 text-gray-900 dark:text-white">📈 Market Growth Trend
                                 </h3>
                                 <canvas id="market-growth-chart"></canvas>
                             </div>
@@ -533,25 +522,33 @@
                             <!-- Revenue Projection Chart -->
                             <div
                                 class="bg-white dark:bg-gray-800 rounded-xl p-4 border border-gray-200 dark:border-gray-700">
-                                <h3 class="text-lg font-bold mb-4 text-gray-900 dark:text-white">💰 Gelir Projeksiyonu
-                                    (İlk Yıl)</h3>
+                                <h3 id="chart-revenue-title"
+                                    class="text-lg font-bold mb-4 text-gray-900 dark:text-white">💰 Revenue Projection
+                                    (First Year)</h3>
                                 <canvas id="revenue-chart"></canvas>
                             </div>
 
                             <!-- Competitor Comparison -->
                             <div id="competitor-section"
                                 class="bg-white dark:bg-gray-800 rounded-xl p-4 border border-gray-200 dark:border-gray-700 hidden">
-                                <h3 class="text-lg font-bold mb-4 text-gray-900 dark:text-white">⚔️ Rakip
-                                    Karşılaştırması</h3>
+                                <h3 id="comp-table-title" class="text-lg font-bold mb-4 text-gray-900 dark:text-white">
+                                    ⚔️ Competitor
+                                    Comparison</h3>
                                 <div class="overflow-x-auto">
                                     <table class="w-full text-sm">
                                         <thead>
                                             <tr class="border-b border-gray-200 dark:border-gray-700">
-                                                <th class="text-left py-2 px-3 text-gray-900 dark:text-white">Rakip</th>
-                                                <th class="text-left py-2 px-3 text-gray-900 dark:text-white">Kullanıcı
+                                                <th id="th-comp"
+                                                    class="text-left py-2 px-3 text-gray-900 dark:text-white">Competitor
                                                 </th>
-                                                <th class="text-left py-2 px-3 text-gray-900 dark:text-white">Gelir</th>
-                                                <th class="text-left py-2 px-3 text-gray-900 dark:text-white">Skor</th>
+                                                <th id="th-user"
+                                                    class="text-left py-2 px-3 text-gray-900 dark:text-white">User
+                                                </th>
+                                                <th id="th-rev"
+                                                    class="text-left py-2 px-3 text-gray-900 dark:text-white">Revenue
+                                                </th>
+                                                <th id="th-score"
+                                                    class="text-left py-2 px-3 text-gray-900 dark:text-white">Score</th>
                                             </tr>
                                         </thead>
                                         <tbody id="competitor-table-body">
@@ -605,8 +602,8 @@
                                 </div>
                             </div>
 
-                            <div class="text-xs text-gray-500 dark:text-gray-400 mt-3 text-center">
-                                📊 Kaynak: Google Trends
+                            <div class="text-xs text-gray-500 dark:text-gray-400 mt-3 text-center" id="trends-source">
+                                📊 Source: Google Trends
                             </div>
                         </div>
 
@@ -688,7 +685,7 @@
                             </button>
                         </div>
                         <div class="border-t border-gray-700 pt-3">
-                            <p class="text-xs text-gray-400 mb-2" id="share-title">Paylaş:</p>
+                            <p class="text-xs text-gray-400 mb-2" id="share-title">Share:</p>
                             <div class="flex flex-wrap gap-2">
                                 <button onclick="shareToTwitter()"
                                     class="bg-blue-400 hover:bg-blue-500 text-white px-3 py-2 rounded-lg flex items-center gap-2 text-xs font-semibold transition">
@@ -700,7 +697,7 @@
                                 </button>
                                 <button onclick="copyLink()"
                                     class="bg-gray-600 hover:bg-gray-700 text-white px-3 py-2 rounded-lg flex items-center gap-2 text-xs font-semibold transition">
-                                    <i class="fas fa-link"></i> <span id="copy-link-text">Link Kopyala</span>
+                                    <i class="fas fa-link"></i> <span id="copy-link-text">Copy Link</span>
                                 </button>
                             </div>
                         </div>
@@ -809,7 +806,33 @@
                 quickQ1: 'What is my advantage?',
                 quickQ2: 'How to find first customer?',
                 quickQ3: 'Biggest risks?',
-                loading: 'Thinking...'
+                loading: 'Thinking...',
+                lTitle: 'Analyzing...',
+                lMsg: 'Gathering market data',
+                lSub: '⏱️ Average time: 15-20 seconds',
+                feat1: 'Market Analysis',
+                feat2: 'Competitor Analysis',
+                feat3: 'Cost Estimation',
+                heroAnalyze: 'ANALYZE FOR FREE',
+                heroExample: 'SEE EXAMPLE REPORT',
+                trendRising: 'Rising',
+                trendFalling: 'Falling',
+                trendStable: 'Stable',
+                chartMarketLabel: 'Market Value (Index)',
+                chartValue: 'Value',
+                chartRevenueLabel: 'Revenue ($)',
+                chartRevenue: 'Revenue',
+                chartInterestLabel: 'Interest Level',
+                chartMarketTitle: '📈 Market Growth Trend',
+                chartRevenueTitle: '💰 Revenue Projection (First Year)',
+                compTableTitle: '⚔️ Competitor Comparison',
+                thComp: 'Competitor',
+                thUser: 'Users',
+                thRev: 'Revenue',
+                thScore: 'Score',
+                trendsSource: '📊 Source: Google Trends',
+                shareTitle: 'Share:',
+                copyLink: 'Copy Link'
             },
             tr: {
                 alert: 'Lütfen bir fikir girin!',
@@ -866,7 +889,33 @@
                 quickQ1: 'Avantajım ne?',
                 quickQ2: 'İlk müşteriyi nasıl bulurum?',
                 quickQ3: 'En büyük riskler?',
-                loading: 'Düşünüyorum...'
+                loading: 'Düşünüyorum...',
+                lTitle: 'Analiz Ediliyor...',
+                lMsg: 'Pazar verileri toplanıyor',
+                lSub: '⏱️ Ortalama süre: 15-20 saniye',
+                feat1: 'Pazar Analizi',
+                feat2: 'Rakip Karşılaştırması',
+                feat3: 'Maliyet Tahmini',
+                heroAnalyze: 'ÜCRETSİZ ANALİZ ET',
+                heroExample: 'ÖRNEK RAPOR GÖR',
+                trendRising: 'Yükselişte',
+                trendFalling: 'Düşüşte',
+                trendStable: 'Stabil',
+                chartMarketLabel: 'Pazar Değeri (Endeks)',
+                chartValue: 'Değer',
+                chartRevenueLabel: 'Gelir ($)',
+                chartRevenue: 'Gelir',
+                chartInterestLabel: 'İlgi Düzeyi',
+                chartMarketTitle: '📈 Pazar Büyüme Trendi',
+                chartRevenueTitle: '💰 Gelir Projeksiyonu (İlk Yıl)',
+                compTableTitle: '⚔️ Rakip Karşılaştırması',
+                thComp: 'Rakip',
+                thUser: 'Kullanıcı',
+                thRev: 'Gelir',
+                thScore: 'Skor',
+                trendsSource: '📊 Kaynak: Google Trends',
+                shareTitle: 'Paylaş:',
+                copyLink: 'Link Kopyala'
             }
         };
 
@@ -898,10 +947,30 @@
             if (els.footerPrivacy) els.footerPrivacy.innerText = t.fPrivacy;
             if (els.footerTerms) els.footerTerms.innerText = t.fTerms;
 
-            // New Features Translations
+            // Missing UI elements
             const updateIfExists = (id, text) => { const el = document.getElementById(id); if (el) el.innerText = text; };
-            const updateHTMLIfExists = (id, html) => { const el = document.getElementById(id); if (el) el.innerHTML = html; };
+            updateIfExists('loading-title', t.lTitle);
+            updateIfExists('loading-message', t.lMsg);
+            updateIfExists('loading-sub', t.lSub);
+            updateIfExists('feat-1', t.feat1);
+            updateIfExists('feat-2', t.feat2);
+            updateIfExists('feat-3', t.feat3);
+            updateIfExists('hero-analyze-btn', t.heroAnalyze);
+            updateIfExists('hero-example-btn', t.heroExample);
+            updateIfExists('quality-title-label', t.qualityLabel);
+            updateIfExists('share-title', t.shareTitle);
+            updateIfExists('copy-link-text', t.copyLink);
 
+            // Charts & Tables
+            updateIfExists('chart-market-title', t.chartMarketTitle);
+            updateIfExists('chart-revenue-title', t.chartRevenueTitle);
+            updateIfExists('comp-table-title', t.compTableTitle);
+            updateIfExists('th-comp', t.thComp);
+            updateIfExists('th-user', t.thUser);
+            updateIfExists('th-rev', t.thRev);
+            updateIfExists('th-score', t.thScore);
+
+            // New Features Translations
             updateIfExists('nav-compare', t.navCompare);
             updateIfExists('compare-title', t.compareTitle);
             updateIfExists('compare-label-a', t.compA);
@@ -921,15 +990,13 @@
             updateIfExists('score-innovation-label', t.innovation);
             updateIfExists('score-timing-label', t.timing);
 
-            const ql = document.querySelector('#quality-feedback span.font-semibold');
-            if (ql) ql.innerText = t.qualityLabel;
-
             updateIfExists('trends-title-text', t.trendsTitle);
             updateIfExists('trends-subtitle-text', t.trendsSubtitle);
             updateIfExists('trends-keyword-label', t.trendsKeyword);
             updateIfExists('trends-status-label', t.trendsStatus);
             updateIfExists('trends-history-label', t.trendsHistory);
             updateIfExists('trends-related-label', t.trendsRelated);
+            updateIfExists('trends-source', t.trendsSource);
 
             updateIfExists('qa-title-text', t.qaTitle);
             updateIfExists('qa-btn', t.qaBtn);
@@ -1298,15 +1365,18 @@ Beslenme ve sağlık teknolojileri pazarı hızla büyüyor. Özellikle AI deste
 
         function renderCharts(chartData) {
             const chartsSection = document.getElementById('charts-section');
-            chartsSection.classList.remove('hidden');
-
-            // Destroy existing charts if they exist
-            if (marketChart) marketChart.destroy();
-            if (revenueChart) revenueChart.destroy();
+            if (chartsSection) chartsSection.classList.remove('hidden');
 
             const isDark = document.documentElement.classList.contains('dark');
             const textColor = isDark ? '#e5e7eb' : '#1f2937';
             const gridColor = isDark ? '#374151' : '#e5e7eb';
+
+            const lang = document.getElementById('lang-select').value;
+            const t = trans[lang];
+
+            // Destroy existing charts if they exist
+            if (marketChart) marketChart.destroy();
+            if (revenueChart) revenueChart.destroy();
 
             // Market Growth Chart (Line)
             const marketCtx = document.getElementById('market-growth-chart').getContext('2d');
@@ -1315,7 +1385,7 @@ Beslenme ve sağlık teknolojileri pazarı hızla büyüyor. Özellikle AI deste
                 data: {
                     labels: chartData.market_growth?.years || [2024, 2025, 2026, 2027, 2028],
                     datasets: [{
-                        label: 'Pazar Değeri (Endeks)',
+                        label: t.chartMarketLabel,
                         data: chartData.market_growth?.values || [100, 120, 145, 175, 210],
                         borderColor: '#3b82f6',
                         backgroundColor: 'rgba(59, 130, 246, 0.1)',
@@ -1329,7 +1399,7 @@ Beslenme ve sağlık teknolojileri pazarı hızla büyüyor. Özellikle AI deste
                         legend: { display: false },
                         tooltip: {
                             callbacks: {
-                                label: (context) => `Değer: ${context.parsed.y}`
+                                label: (context) => `${t.chartValue}: ${context.parsed.y}`
                             }
                         }
                     },
@@ -1354,7 +1424,7 @@ Beslenme ve sağlık teknolojileri pazarı hızla büyüyor. Özellikle AI deste
                 data: {
                     labels: chartData.revenue_projection?.months || ['M 1-3', 'M 4-6', 'M 7-9', 'M 10-12'],
                     datasets: [{
-                        label: 'Gelir ($)',
+                        label: t.chartRevenueLabel,
                         data: chartData.revenue_projection?.values || [1000, 3000, 7000, 15000],
                         backgroundColor: [
                             'rgba(34, 197, 94, 0.8)',
@@ -1377,7 +1447,7 @@ Beslenme ve sağlık teknolojileri pazarı hızla büyüyor. Özellikle AI deste
                         legend: { display: false },
                         tooltip: {
                             callbacks: {
-                                label: (context) => `Gelir: $${context.parsed.y.toLocaleString()}`
+                                label: (context) => `${t.chartRevenue}: $${context.parsed.y.toLocaleString()}`
                             }
                         }
                     },
@@ -1440,17 +1510,20 @@ Beslenme ve sağlık teknolojileri pazarı hızla büyüyor. Özellikle AI deste
             const trendsCard = document.getElementById('trends-card');
             trendsCard.classList.remove('hidden');
 
+            const lang = document.getElementById('lang-select').value;
+            const t = trans[lang];
+
             // Update keyword
             document.getElementById('trends-keyword').textContent = trends.keyword || 'N/A';
 
             // Update trend direction
             const directionEl = document.getElementById('trends-direction');
             const directionIcons = {
-                rising: '⬆️ Yükselişte',
-                falling: '⬇️ Düşüşte',
-                stable: '➡️ Stabil'
+                rising: `⬆️ ${t.trendRising}`,
+                falling: `⬇️ ${t.trendFalling}`,
+                stable: `➡️ ${t.trendStable}`
             };
-            directionEl.textContent = directionIcons[trends.trendDirection] || '➡️ Stabil';
+            directionEl.textContent = directionIcons[trends.trendDirection] || `➡️ ${t.trendStable}`;
             directionEl.className = `font-bold text-lg ${trends.trendDirection === 'rising' ? 'text-green-600' :
                 trends.trendDirection === 'falling' ? 'text-red-600' :
                     'text-gray-600'
@@ -1469,7 +1542,7 @@ Beslenme ve sağlık teknolojileri pazarı hızla büyüyor. Özellikle AI deste
                 data: {
                     labels: Array.from({ length: trends.interestOverTime.length }, (_, i) => i + 1),
                     datasets: [{
-                        label: 'İlgi Düzeyi',
+                        label: t.chartInterestLabel,
                         data: trends.interestOverTime || [50, 52, 55, 58, 60, 62, 65, 63, 61, 59, 57, 55],
                         borderColor: '#ef4444',
                         backgroundColor: 'rgba(239, 68, 68, 0.1)',
@@ -1594,6 +1667,7 @@ Beslenme ve sağlık teknolojileri pazarı hızla büyüyor. Özellikle AI deste
         function showLimitModal() { }
         function closeLimitModal() { }
         function checkAndAwardBadges() { }
+        function incrementAnalysisCounter() { }
 
         // === ANALYSIS ENHANCEMENT #7: COMPARISON MODE ===
 
