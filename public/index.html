@@ -26,6 +26,10 @@
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
+    <!-- Chart.js for Analysis Enhancement #4 -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+    <link rel="stylesheet" href="style.css">
     <script>
         tailwind.config = { darkMode: 'class', theme: { extend: { colors: { primary: '#2563eb', darkBg: '#0f172a', cardDark: '#1e293b' } } } }
     </script>
@@ -459,6 +463,48 @@
 
                         <div id="result-text" class="prose max-w-none text-sm md:text-base"></div>
 
+                        <!-- Charts Section (Analysis Enhancement #4) -->
+                        <div id="charts-section" class="hidden mt-6 space-y-4">
+                            <!-- Market Growth Chart -->
+                            <div
+                                class="bg-white dark:bg-gray-800 rounded-xl p-4 border border-gray-200 dark:border-gray-700">
+                                <h3 class="text-lg font-bold mb-4 text-gray-900 dark:text-white">📈 Pazar Büyüme Trendi
+                                </h3>
+                                <canvas id="market-growth-chart"></canvas>
+                            </div>
+
+                            <!-- Revenue Projection Chart -->
+                            <div
+                                class="bg-white dark:bg-gray-800 rounded-xl p-4 border border-gray-200 dark:border-gray-700">
+                                <h3 class="text-lg font-bold mb-4 text-gray-900 dark:text-white">💰 Gelir Projeksiyonu
+                                    (İlk Yıl)</h3>
+                                <canvas id="revenue-chart"></canvas>
+                            </div>
+
+                            <!-- Competitor Comparison -->
+                            <div id="competitor-section"
+                                class="bg-white dark:bg-gray-800 rounded-xl p-4 border border-gray-200 dark:border-gray-700 hidden">
+                                <h3 class="text-lg font-bold mb-4 text-gray-900 dark:text-white">⚔️ Rakip
+                                    Karşılaştırması</h3>
+                                <div class="overflow-x-auto">
+                                    <table class="w-full text-sm">
+                                        <thead>
+                                            <tr class="border-b border-gray-200 dark:border-gray-700">
+                                                <th class="text-left py-2 px-3 text-gray-900 dark:text-white">Rakip</th>
+                                                <th class="text-left py-2 px-3 text-gray-900 dark:text-white">Kullanıcı
+                                                </th>
+                                                <th class="text-left py-2 px-3 text-gray-900 dark:text-white">Gelir</th>
+                                                <th class="text-left py-2 px-3 text-gray-900 dark:text-white">Skor</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="competitor-table-body">
+                                            <!-- Will be populated dynamically -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
                         <!-- Email Capture Form (Phase 2) -->
                         <div id="email-capture-section"
                             class="bg-yellow-50 dark:bg-yellow-900/20 border-2 border-yellow-400 rounded-xl p-4 md:p-6 mt-6 hidden">
@@ -651,6 +697,11 @@
                         // Update score card (Analysis Enhancement #1)
                         if (data.scoring) {
                             updateScoreCard(data.scoring);
+                        }
+
+                        // Render charts (Analysis Enhancement #4)
+                        if (data.charts) {
+                            renderCharts(data.charts);
                         }
 
                         // Increment usage (Phase 3)
@@ -940,6 +991,147 @@ Beslenme ve sağlık teknolojileri pazarı hızla büyüyor. Özellikle AI deste
             gtag('event', 'score_card_displayed', {
                 overall_score: scoring.overall_score,
                 risk_level: scoring.risk_level
+            });
+        }
+
+        // === ANALYSIS ENHANCEMENT #4: CHART VISUALIZATION ===
+
+        let marketChart = null;
+        let revenueChart = null;
+
+        function renderCharts(chartData) {
+            const chartsSection = document.getElementById('charts-section');
+            chartsSection.classList.remove('hidden');
+
+            // Destroy existing charts if they exist
+            if (marketChart) marketChart.destroy();
+            if (revenueChart) revenueChart.destroy();
+
+            const isDark = document.documentElement.classList.contains('dark');
+            const textColor = isDark ? '#e5e7eb' : '#1f2937';
+            const gridColor = isDark ? '#374151' : '#e5e7eb';
+
+            // Market Growth Chart (Line)
+            const marketCtx = document.getElementById('market-growth-chart').getContext('2d');
+            marketChart = new Chart(marketCtx, {
+                type: 'line',
+                data: {
+                    labels: chartData.market_growth?.years || [2024, 2025, 2026, 2027, 2028],
+                    datasets: [{
+                        label: 'Pazar Değeri (Endeks)',
+                        data: chartData.market_growth?.values || [100, 120, 145, 175, 210],
+                        borderColor: '#3b82f6',
+                        backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: (context) => `Değer: ${context.parsed.y}`
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: { color: textColor },
+                            grid: { color: gridColor }
+                        },
+                        x: {
+                            ticks: { color: textColor },
+                            grid: { color: gridColor }
+                        }
+                    }
+                }
+            });
+
+            // Revenue Projection Chart (Bar)
+            const revenueCtx = document.getElementById('revenue-chart').getContext('2d');
+            revenueChart = new Chart(revenueCtx, {
+                type: 'bar',
+                data: {
+                    labels: chartData.revenue_projection?.months || ['M 1-3', 'M 4-6', 'M 7-9', 'M 10-12'],
+                    datasets: [{
+                        label: 'Gelir ($)',
+                        data: chartData.revenue_projection?.values || [1000, 3000, 7000, 15000],
+                        backgroundColor: [
+                            'rgba(34, 197, 94, 0.8)',
+                            'rgba(59, 130, 246, 0.8)',
+                            'rgba(168, 85, 247, 0.8)',
+                            'rgba(236, 72, 153, 0.8)'
+                        ],
+                        borderColor: [
+                            '#22c55e',
+                            '#3b82f6',
+                            '#a855f7',
+                            '#ec4899'
+                        ],
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: (context) => `Gelir: $${context.parsed.y.toLocaleString()}`
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                color: textColor,
+                                callback: (value) => '$' + value.toLocaleString()
+                            },
+                            grid: { color: gridColor }
+                        },
+                        x: {
+                            ticks: { color: textColor },
+                            grid: { color: gridColor }
+                        }
+                    }
+                }
+            });
+
+            // Competitor Table
+            if (chartData.competitors && chartData.competitors.length > 0) {
+                const competitorSection = document.getElementById('competitor-section');
+                const tableBody = document.getElementById('competitor-table-body');
+
+                competitorSection.classList.remove('hidden');
+                tableBody.innerHTML = '';
+
+                chartData.competitors.forEach(comp => {
+                    const row = document.createElement('tr');
+                    row.className = 'border-b border-gray-200 dark:border-gray-700';
+                    row.innerHTML = `
+                        <td class="py-2 px-3 text-gray-900 dark:text-white font-semibold">${comp.name}</td>
+                        <td class="py-2 px-3 text-gray-700 dark:text-gray-300">${comp.users}</td>
+                        <td class="py-2 px-3 text-gray-700 dark:text-gray-300">${comp.revenue}</td>
+                        <td class="py-2 px-3">
+                            <div class="flex items-center gap-2">
+                                <div class="w-16 bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                                    <div class="bg-blue-500 h-2 rounded-full" style="width: ${comp.score}%"></div>
+                                </div>
+                                <span class="text-xs text-gray-600 dark:text-gray-400">${comp.score}</span>
+                            </div>
+                        </td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+            }
+
+            // Track analytics
+            gtag('event', 'charts_displayed', {
+                has_competitors: chartData.competitors?.length > 0
             });
         }
 

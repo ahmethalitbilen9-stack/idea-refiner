@@ -213,12 +213,80 @@ JSON format (USE ONLY this format):
             };
         }
 
+        // Get chart data (Analysis Enhancement #4)
+        const chartPrompt = language === 'tr'
+            ? `Aşağıdaki startup fikri için grafik verileri üret. SADECE JSON formatında cevap ver.
+
+Fikir: ${idea}
+
+JSON formatı (SADECE bu formatı kullan):
+{
+  "market_growth": {
+    "years": [2024, 2025, 2026, 2027, 2028],
+    "values": [100, 125, 155, 190, 230]
+  },
+  "revenue_projection": {
+    "months": ["Ay 1-3", "Ay 4-6", "Ay 7-9", "Ay 10-12"],
+    "values": [500, 2000, 5000, 12000]
+  },
+  "competitors": [
+    {"name": "Rakip A", "users": "50M", "revenue": "$100M", "score": 85},
+    {"name": "Rakip B", "users": "30M", "revenue": "$80M", "score": 75}
+  ]
+}`
+            : `Generate chart data for this startup idea. Respond ONLY in JSON format.
+
+Idea: ${idea}
+
+JSON format (USE ONLY this format):
+{
+  "market_growth": {
+    "years": [2024, 2025, 2026, 2027, 2028],
+    "values": [100, 125, 155, 190, 230]
+  },
+  "revenue_projection": {
+    "months": ["Month 1-3", "Month 4-6", "Month 7-9", "Month 10-12"],
+    "values": [500, 2000, 5000, 12000]
+  },
+  "competitors": [
+    {"name": "Competitor A", "users": "50M", "revenue": "$100M", "score": 85},
+    {"name": "Competitor B", "users": "30M", "revenue": "$80M", "score": 75}
+  ]
+}`;
+
+        const chartCompletion = await openai.chat.completions.create({
+            messages: [
+                { role: "user", content: chartPrompt }
+            ],
+            model: "llama-3.3-70b-versatile",
+            temperature: 0.5,
+            max_tokens: 800
+        });
+
+        let chartData = {};
+        try {
+            const chartText = chartCompletion.choices[0].message.content.trim();
+            const jsonMatch = chartText.match(/\{[\s\S]*\}/);
+            if (jsonMatch) {
+                chartData = JSON.parse(jsonMatch[0]);
+            }
+        } catch (err) {
+            console.error('Chart data parse error:', err);
+            // Fallback to empty chart data
+            chartData = {
+                market_growth: { years: [2024, 2025, 2026, 2027, 2028], values: [100, 120, 145, 175, 210] },
+                revenue_projection: { months: ["M 1-3", "M 4-6", "M 7-9", "M 10-12"], values: [1000, 3000, 7000, 15000] },
+                competitors: []
+            };
+        }
+
         // Temizlik
         analysis = analysis.replace(/[\u4E00-\u9FFF\u3040-\u30FF\uAC00-\uD7AF\u0400-\u04FF]/g, "");
 
         const responseData = {
             result: analysis,
-            scoring: scoringData
+            scoring: scoringData,
+            charts: chartData
         };
 
         // Save to cache (Analysis Enhancement #3)
