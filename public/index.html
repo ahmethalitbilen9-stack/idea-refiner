@@ -1097,8 +1097,74 @@
 
         // === PHASE 1 NEW FUNCTIONS ===
 
-        // Example Report Data
-        const exampleReport = `# 📊 Veri Odaklı Pazar Analizi: 8/10
+        // Example Report Data (Bilingual)
+        const exampleReportEN = `# 📊 Data-Driven Market Analysis: 8/10
+
+**Market Size (2025):** $12.5 Billion  
+**Annual Growth Rate:** 23.4% CAGR  
+**Trend Score:** ⭐⭐⭐⭐⭐ (5/5)
+
+The nutrition and health tech market is growing rapidly. AI-powered personalization solutions are in high demand during 2024-2025.
+
+# 🎯 Target Audience
+
+**Primary Persona:**
+- Urban professionals aged 25-45
+- People following healthy lifestyle trends
+- Above-average income level
+
+**Secondary Persona:**
+- Regular gym-goers
+- People on diets
+
+# ⚔️ Competitive Analysis
+
+**Main Competitors:**
+- MyFitnessPal (200M+ users)
+- Noom (50M+ users)
+- Yazio (10M+ users)
+
+**Opportunity:** Existing apps are not personalized enough. You can differentiate with an AI-based recommendation system.
+
+# 💰 Realistic Revenue Model
+
+**Freemium Model:**
+- Free: Basic features
+- Premium ($9.99/month): AI-powered custom diet plan
+
+**First Year Estimate:**
+- 5,000 active users
+- 10% premium conversion
+- Monthly revenue: ~$5,000
+
+# 📉 Technical Difficulty & Budget
+
+**Difficulty Level:** Medium (6/10)  
+**Development Time:** 4-6 months  
+**Initial Budget:** $25,000 - $40,000
+
+**Monthly Expenses:**
+- Server: $100-200
+- AI API: $300-500
+- Marketing: $500-1,000
+
+# 🚀 Roadmap
+
+**Month 1-2:** MVP development  
+**Month 3-4:** Beta testing  
+**Month 5-6:** Market launch  
+
+# 💡 Final Verdict
+
+✅ **Recommended:** This idea has success potential. You can start small and scale up.
+
+**Critical Success Factors:**
+- AI algorithm quality
+- User experience
+- Early marketing strategy
+`;
+
+        const exampleReportTR = `# 📊 Veri Odaklı Pazar Analizi: 8/10
 
 **Pazar Büyüklüğü (2025):** $12.5 Milyar  
 **Yıllık Büyüme Oranı:** %23.4 CAGR  
@@ -1166,16 +1232,23 @@ Beslenme ve sağlık teknolojileri pazarı hızla büyüyor. Özellikle AI deste
 
         function showExampleReport() {
             gtag('event', 'example_report_viewed');
+            const lang = document.getElementById('lang-select').value;
+            const report = lang === 'tr' ? exampleReportTR : exampleReportEN;
+
             if (typeof marked !== 'undefined') {
-                els.resultText.innerHTML = marked.parse(exampleReport);
+                els.resultText.innerHTML = marked.parse(report);
             } else {
-                els.resultText.innerText = exampleReport;
+                els.resultText.innerText = report;
             }
 
-            // Show notification banner
+            // Show notification banner (bilingual)
+            const bannerText = lang === 'tr'
+                ? '📌 Bu bir örnek rapor. Kendi fikrinizi analiz etmek için aşağıdaki kutuya yazın.'
+                : '📌 This is an example report. Enter your own idea in the text box below to analyze it.';
+
             const banner = document.createElement('div');
             banner.className = 'bg-yellow-50 dark:bg-yellow-900/20 border-2 border-yellow-400 rounded-xl p-4 mb-4';
-            banner.innerHTML = '<p class="text-sm font-bold text-yellow-800 dark:text-yellow-200">📌 Bu bir örnek rapor. Kendi fikrinizi analiz etmek için aşağıdaki kutuya yazın.</p>';
+            banner.innerHTML = `<p class="text-sm font-bold text-yellow-800 dark:text-yellow-200">${bannerText}</p>`;
             els.resultArea.querySelector('.bg-gray-900').prepend(banner);
 
             els.resultArea.classList.remove('hidden', 'opacity-0');
@@ -1190,7 +1263,10 @@ Beslenme ve sağlık teknolojileri pazarı hızla büyüyor. Özellikle AI deste
         }
 
         function shareToTwitter() {
-            const text = `Girişimcilik fikrimi AI ile analiz ettim! 🚀\n\n✅ Pazar Analizi\n✅ Rakip Karşılaştırması\n✅ Gelir Modeli\n\nSen de dene:`;
+            const lang = document.getElementById('lang-select').value;
+            const textEN = `I analyzed my startup idea with AI! 🚀\n\n✅ Market Analysis\n✅ Competitor Comparison\n✅ Revenue Model\n\nTry it yourself:`;
+            const textTR = `Girişimcilik fikrimi AI ile analiz ettim! 🚀\n\n✅ Pazar Analizi\n✅ Rakip Karşılaştırması\n✅ Gelir Modeli\n\nSen de dene:`;
+            const text = lang === 'tr' ? textTR : textEN;
             const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(window.location.href)}`;
             window.open(url, '_blank', 'width=550,height=420');
             gtag('event', 'share', { method: 'Twitter' });
