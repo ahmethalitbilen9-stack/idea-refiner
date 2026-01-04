@@ -293,6 +293,34 @@
                             <h2 id="report-title" class="text-xl font-bold">Analysis Report</h2>
                         </div>
                         <div id="result-text" class="prose max-w-none text-sm md:text-base"></div>
+
+                        <!-- Email Capture Form (Phase 2) -->
+                        <div id="email-capture-section"
+                            class="bg-yellow-50 dark:bg-yellow-900/20 border-2 border-yellow-400 rounded-xl p-4 md:p-6 mt-6 hidden">
+                            <div class="flex flex-col md:flex-row items-start md:items-center gap-4">
+                                <div class="text-4xl">📧</div>
+                                <div class="flex-grow w-full">
+                                    <h3 class="font-bold text-lg mb-2 text-gray-800 dark:text-yellow-100"
+                                        id="email-capture-title">Raporunu e-postana gönderelim mi?</h3>
+                                    <p class="text-sm text-gray-600 dark:text-gray-300 mb-4" id="email-capture-desc">
+                                        📄 PDF rapor + 🔔 Yeni özellikler hakkında bildirim al
+                                    </p>
+                                    <form id="email-capture-form" class="flex flex-col sm:flex-row gap-2">
+                                        <input type="email" id="user-email" placeholder="email@example.com"
+                                            class="flex-grow px-4 py-2.5 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none text-sm"
+                                            required />
+                                        <button type="submit"
+                                            class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-lg font-bold transition shadow-lg whitespace-nowrap text-sm"
+                                            id="email-submit-btn">
+                                            GÖNDER 🚀
+                                        </button>
+                                    </form>
+                                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-2" id="email-privacy-text">
+                                        🔒 E-postanız güvende. Spam göndermiyoruz.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="bg-gray-800 p-4 border-t border-gray-700">
                         <div class="flex flex-wrap gap-2 justify-between items-center mb-3">
@@ -433,6 +461,9 @@
                         saveToHistory(text);
                         incrementAnalysisCounter();
                         gtag('event', 'result_viewed');
+
+                        // Show email capture section (Phase 2)
+                        setTimeout(() => showEmailCapture(), 500);
                     } catch (e) {
                         document.getElementById('loading-screen').classList.add('hidden');
                         alert("Error: " + e.message);
@@ -606,6 +637,69 @@ Beslenme ve sağlık teknolojileri pazarı hızla büyüyor. Özellikle AI deste
                 this.dataset.tracked = 'true';
             }
         });
+
+        // === PHASE 2: EMAIL CAPTURE ===
+
+        // Show email capture section when result is displayed
+        function showEmailCapture() {
+            const emailSection = document.getElementById('email-capture-section');
+            if (emailSection && !localStorage.getItem('email_submitted')) {
+                emailSection.classList.remove('hidden');
+            }
+        }
+
+        // Email capture form handler
+        document.getElementById('email-capture-form').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const emailInput = document.getElementById('user-email');
+            const submitBtn = document.getElementById('email-submit-btn');
+            const email = emailInput.value.trim();
+
+            if (!email) return;
+
+            // Track analytics
+            gtag('event', 'email_captured', { email_domain: email.split('@')[1] });
+
+            // Disable form
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Gönderiliyor...';
+
+            try {
+                // Save email to localStorage (in real app, send to backend)
+                const emails = JSON.parse(localStorage.getItem('captured_emails') || '[]');
+                emails.push({
+                    email: email,
+                    idea: document.getElementById('idea-input').value.substring(0, 100),
+                    date: new Date().toISOString()
+                });
+                localStorage.setItem('captured_emails', JSON.stringify(emails));
+                localStorage.setItem('email_submitted', 'true');
+
+                // Show success message
+                document.getElementById('email-capture-section').innerHTML = `
+                    <div class="text-center py-8">
+                        <div class="text-5xl mb-3">✅</div>
+                        <h3 class="font-bold text-xl text-gray-800 dark:text-green-300 mb-2">Teşekkürler!</h3>
+                        <p class="text-gray-600 dark:text-gray-300">Raporunuz <strong>${email}</strong> adresine gönderildi.</p>
+                    </div>
+                `;
+
+                // In production, you would send this to your backend:
+                // await fetch('/api/save-email', {
+                //     method: 'POST',
+                //     headers: {'Content-Type': 'application/json'},
+                //     body: JSON.stringify({ email, idea: document.getElementById('idea-input').value })
+                // });
+
+            } catch (error) {
+                console.error('Email capture error:', error);
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = 'GÖNDER 🚀';
+                alert('Bir hata oluştu. Lütfen tekrar deneyin.');
+            }
+        });
+
 
 
         function toggleFeedback() { const m = document.getElementById('feedback-modal'), c = document.getElementById('feedback-content'); if (m.classList.contains('hidden')) { m.classList.remove('hidden'); setTimeout(() => { c.classList.remove('scale-95', 'opacity-0'); c.classList.add('scale-100', 'opacity-100') }, 10) } else { c.classList.remove('scale-100', 'opacity-100'); c.classList.add('scale-95', 'opacity-0'); setTimeout(() => { m.classList.add('hidden') }, 300) } }

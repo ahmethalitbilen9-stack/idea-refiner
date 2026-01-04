@@ -1,69 +1,107 @@
 <!DOCTYPE html>
 <html lang="tr" class="dark">
+
 <head>
-    <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Girişimcilik Rehberi - AI Idea Refiner Blog</title>
+
+    <!-- SEO Meta Tags (Phase 2) -->
+    <meta name="description"
+        content="Startup fikirleri, MVP geliştirme, yapay zeka araçları ve girişimcilik hakkında güncel rehberler. AI Idea Refiner ile fikirlerinizi analiz edin.">
+    <meta name="keywords"
+        content="startup fikirleri, girişimcilik, MVP, yapay zeka, AI tools, idea analizi, pazar analizi, girişim stratejisi">
+    <meta name="author" content="AI Idea Refiner">
+
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="Girişimcilik Rehberi - AI Idea Refiner">
+    <meta property="og:description"
+        content="Startup fikirleri, MVP geliştirme ve yapay zeka araçları hakkında en güncel ipuçları.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://yoursite.com/blog.html">
+    <meta property="og:image" content="https://cdn-icons-png.flaticon.com/512/8637/8637103.png">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Girişimcilik Rehberi - AI Idea Refiner">
+    <meta name="twitter:description" content="Startup fikirleri ve girişimcilik rehberleri">
+
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-VJ225P5PY2"></script>
     <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'G-VJ225P5PY2');
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-VJ225P5PY2');
     </script>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blog - AI Idea Refiner</title>
-    
+
     <meta name="google-adsense-account" content="ca-pub-6985276543491890">
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6985276543491890" crossorigin="anonymous"></script>
-    
-    ...
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blog - AI Idea Refiner</title>
-    
-    <meta name="google-adsense-account" content="ca-pub-6985276543491890">
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6985276543491890" crossorigin="anonymous"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6985276543491890"
+        crossorigin="anonymous"></script>
+
     <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/8637/8637103.png" type="image/png">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script>
         tailwind.config = { darkMode: 'class', theme: { extend: { colors: { primary: '#2563eb', darkBg: '#0f172a', cardDark: '#1e293b' } } } }
     </script>
-    <style>@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap'); body { font-family: 'Inter', sans-serif; transition: all 0.3s; }</style>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s;
+        }
+    </style>
 </head>
+
 <body class="bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100 min-h-screen flex flex-col">
 
-    <nav class="w-full bg-white/95 dark:bg-gray-900/95 backdrop-blur-md sticky top-0 z-50 border-b border-gray-200 dark:border-gray-800">
+    <nav
+        class="w-full bg-white/95 dark:bg-gray-900/95 backdrop-blur-md sticky top-0 z-50 border-b border-gray-200 dark:border-gray-800">
         <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
             <a href="index.html" class="flex items-center gap-2">
-                <img src="images/logo.png" onerror="this.src='https://cdn-icons-png.flaticon.com/512/8637/8637103.png'" class="h-8 w-8 rounded-full shadow-lg bg-white p-0.5">
-                <span class="text-lg font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-purple-600">AI Idea Refiner</span>
+                <img src="images/logo.png" onerror="this.src='https://cdn-icons-png.flaticon.com/512/8637/8637103.png'"
+                    class="h-8 w-8 rounded-full shadow-lg bg-white p-0.5">
+                <span
+                    class="text-lg font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-purple-600">AI
+                    Idea Refiner</span>
             </a>
             <div class="flex items-center gap-3">
-                <select id="lang-select" class="bg-gray-100 dark:bg-gray-800 border-none rounded-lg px-2 py-1 text-xs font-medium cursor-pointer"><option value="tr">TR</option><option value="en">EN</option></select>
-                <button id="theme-toggle" class="w-8 h-8 rounded-lg bg-gray-100 dark:bg-gray-800 flex items-center justify-center"><i class="fas fa-moon text-sm" id="theme-icon"></i></button>
+                <select id="lang-select"
+                    class="bg-gray-100 dark:bg-gray-800 border-none rounded-lg px-2 py-1 text-xs font-medium cursor-pointer">
+                    <option value="tr">TR</option>
+                    <option value="en">EN</option>
+                </select>
+                <button id="theme-toggle"
+                    class="w-8 h-8 rounded-lg bg-gray-100 dark:bg-gray-800 flex items-center justify-center"><i
+                        class="fas fa-moon text-sm" id="theme-icon"></i></button>
             </div>
         </div>
     </nav>
 
     <div class="text-center py-16 px-4 bg-gradient-to-b from-gray-900 to-gray-800 border-b border-gray-700">
-        <h1 id="blog-hero-title" class="text-4xl md:text-5xl font-extrabold text-white mb-4">Girişimcilik Rehberi 🚀</h1>
-        <p id="blog-hero-desc" class="text-gray-400 max-w-2xl mx-auto">Startup fikirleri, MVP geliştirme ve yapay zeka araçları hakkında en güncel ipuçları.</p>
+        <h1 id="blog-hero-title" class="text-4xl md:text-5xl font-extrabold text-white mb-4">Girişimcilik Rehberi 🚀
+        </h1>
+        <p id="blog-hero-desc" class="text-gray-400 max-w-2xl mx-auto">Startup fikirleri, MVP geliştirme ve yapay zeka
+            araçları hakkında en güncel ipuçları.</p>
     </div>
 
     <main class="max-w-7xl mx-auto px-4 py-12 w-full flex-grow">
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            
-            <article class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden border border-gray-200 dark:border-gray-700 hover:shadow-2xl transition group">
+
+            <article
+                class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden border border-gray-200 dark:border-gray-700 hover:shadow-2xl transition group">
                 <div class="h-48 bg-blue-900 flex items-center justify-center">
-                    <i class="fas fa-lightbulb text-6xl text-yellow-400 group-hover:scale-110 transition duration-500"></i>
+                    <i
+                        class="fas fa-lightbulb text-6xl text-yellow-400 group-hover:scale-110 transition duration-500"></i>
                 </div>
                 <div class="p-6">
                     <div id="cat-1" class="text-xs text-blue-500 font-bold mb-2 uppercase">Rehber</div>
-                    <h2 id="title-1" class="text-xl font-bold mb-3 group-hover:text-blue-400 transition">Milyar Dolarlık Startup Fikri Nasıl Bulunur?</h2>
+                    <h2 id="title-1" class="text-xl font-bold mb-3 group-hover:text-blue-400 transition">Milyar Dolarlık
+                        Startup Fikri Nasıl Bulunur?</h2>
                     <p id="desc-1" class="text-gray-500 dark:text-gray-400 text-sm mb-4 line-clamp-3">
-                        İyi bir fikir bulmak şans değil, bir süreçtir. İşte pazar analizi yaparak fikir bulmanın yolları.
+                        İyi bir fikir bulmak şans değil, bir süreçtir. İşte pazar analizi yaparak fikir bulmanın
+                        yolları.
                     </p>
                     <a href="article-1.html" class="inline-flex items-center text-blue-500 font-bold hover:underline">
                         <span class="read-more">Devamını Oku</span> <i class="fas fa-arrow-right ml-2"></i>
@@ -71,13 +109,15 @@
                 </div>
             </article>
 
-            <article class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden border border-gray-200 dark:border-gray-700 hover:shadow-2xl transition group opacity-75">
+            <article
+                class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden border border-gray-200 dark:border-gray-700 hover:shadow-2xl transition group opacity-75">
                 <div class="h-48 bg-purple-900 flex items-center justify-center">
                     <i class="fas fa-rocket text-6xl text-pink-400 group-hover:scale-110 transition duration-500"></i>
                 </div>
                 <div class="p-6">
                     <div id="cat-2" class="text-xs text-purple-500 font-bold mb-2 uppercase">Teknik</div>
-                    <h2 id="title-2" class="text-xl font-bold mb-3 group-hover:text-purple-400 transition">MVP Nedir? En Hızlı Nasıl Yapılır?</h2>
+                    <h2 id="title-2" class="text-xl font-bold mb-3 group-hover:text-purple-400 transition">MVP Nedir? En
+                        Hızlı Nasıl Yapılır?</h2>
                     <p id="desc-2" class="text-gray-500 dark:text-gray-400 text-sm mb-4 line-clamp-3">
                         Minimum Uygulanabilir Ürün (MVP) ile paranızı harcamadan fikrinizi test edin.
                     </p>
@@ -89,7 +129,8 @@
     </main>
 
     <footer class="w-full bg-gray-900 border-t border-gray-800 py-8 text-center text-sm text-gray-500">
-        &copy; 2024 AI Idea Refiner. <a href="index.html" class="text-blue-500 hover:underline back-home">Analiz Aracına Dön</a>
+        &copy; 2024 AI Idea Refiner. <a href="index.html" class="text-blue-500 hover:underline back-home">Analiz Aracına
+            Dön</a>
     </footer>
 
     <script>
@@ -124,7 +165,7 @@
             els.heroDesc.innerText = t.heroDesc;
             els.cat1.innerText = t.cat1; els.title1.innerText = t.title1; els.desc1.innerText = t.desc1;
             els.cat2.innerText = t.cat2; els.title2.innerText = t.title2; els.desc2.innerText = t.desc2;
-            
+
             document.querySelectorAll('.read-more').forEach(el => el.innerText = t.readMore);
             document.querySelectorAll('.coming-soon').forEach(el => el.innerText = t.comingSoon);
             document.querySelectorAll('.back-home').forEach(el => el.innerText = t.backHome);
@@ -133,4 +174,5 @@
         document.getElementById('theme-toggle').addEventListener('click', () => document.documentElement.classList.toggle('dark'));
     </script>
 </body>
+
 </html>

@@ -1,16 +1,95 @@
 /* Custom glassmorphism tweaks */
-:root{--glass-bg: rgba(255,255,255,0.04);}
+:root {
+    --glass-bg: rgba(255, 255, 255, 0.04);
+}
 
-body { font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; }
+body {
+    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+}
 
-.prose { max-width: 100%; }
+.prose {
+    max-width: 100%;
+}
 
-.bg-white\/5 { background-color: rgba(255,255,255,0.05); }
-.bg-white\/3 { background-color: rgba(255,255,255,0.03); }
+.bg-white\/5 {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.bg-white\/3 {
+    background-color: rgba(255, 255, 255, 0.03);
+}
 
 /* Make textarea autofill look consistent */
-textarea { resize: vertical; }
+textarea {
+    resize: vertical;
+}
 
 /* small utility */
-button:disabled { opacity: 0.6; cursor: not-allowed; }
+button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
 
+/* === PHASE 2: MOBILE OPTIMIZATIONS === */
+
+@media (max-width: 768px) {
+
+    /* Reduce textarea height on mobile */
+    #idea-input {
+        height: 100px !important;
+        font-size: 14px;
+    }
+
+    /* Hero section typography */
+    h1 {
+        font-size: 2rem !important;
+        line-height: 1.2;
+    }
+
+    /* Stats banner text sizing */
+    .stats-banner .text-3xl,
+    .stats-banner .text-4xl {
+        font-size: 1.875rem;
+    }
+
+    /* Cookie banner padding */
+    #cookie-banner {
+        padding: 0.75rem !important;
+    }
+
+    /* Email capture form mobile */
+    #email-capture-form {
+        flex-direction: column;
+    }
+
+    #email-capture-form input,
+    #email-capture-form button {
+        width: 100%;
+    }
+
+    /* Result area spacing */
+    .result-area .p-6,
+    .result-area .md\:p-10 {
+        padding: 1rem !important;
+    }
+
+    /* Loading screen */
+    #loading-screen .p-8 {
+        padding: 1.5rem !important;
+    }
+}
+
+/* Tablet adjustments */
+@media (min-width: 769px) and (max-width: 1024px) {
+    #idea-input {
+        height: 120px;
+    }
+}
+
+/* Smooth transitions for all interactive elements */
+button,
+a,
+input,
+textarea {
+    transition: all 0.2s ease-in-out;
+}
