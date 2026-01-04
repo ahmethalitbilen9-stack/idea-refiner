@@ -508,6 +508,40 @@ JSON format (USE ONLY this format):
     }
 });
 
+// === ANALYSIS ENHANCEMENT #8: FOLLOW-UP QUESTIONS ===
+app.post('/api/ask-followup', async (req, res) => {
+    try {
+        const { original_idea, original_analysis, question, language } = req.body;
+
+        if (!question) return res.status(400).json({ error: "Soru boş olamaz." });
+
+        console.log('❓ Answering follow-up question...');
+
+        const systemPrompt = language === 'tr'
+            ? `Sen bir startup danışmanısın. Daha önce verdiğin analiz hakkında kullanıcının sorusunu yanıtla. KISA ve NET cevap ver (max 3-4 cümle).`
+            : `You are a startup advisor. Answer the user's question about your previous analysis. Keep it SHORT and CLEAR (max 3-4 sentences).`;
+
+        const answer = await openai.chat.completions.create({
+            messages: [
+                { role: "system", content: systemPrompt },
+                { role: "assistant", content: `Önceki analiz:\n${original_analysis.substring(0, 2000)}...` },
+                { role: "user", content: question }
+            ],
+            model: "llama-3.3-70b-versatile",
+            temperature: 0.6,
+            max_tokens: 500
+        });
+
+        const answerText = answer.choices[0].message.content;
+
+        res.json({ answer: answerText });
+
+    } catch (error) {
+        console.error("FOLLOWUP ERROR:", error);
+        res.status(500).json({ error: "Soru yanıtlanamadı.", details: error.message });
+    }
+});
+
 app.listen(port, () => {
     console.log(`🚀 Sunucu çalışıyor: http://localhost:${port}`);
 });

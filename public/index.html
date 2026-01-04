@@ -626,6 +626,43 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- Follow-up Questions Section (Analysis Enhancement #8) -->
+                    <div id="qa-section"
+                        class="hidden mt-6 bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
+                        <h3 class="text-lg font-bold mb-4 text-gray-900 dark:text-white">💬 Rapor Hakkında Soru Sor</h3>
+
+                        <!-- Quick Questions -->
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <button onclick="askQuickQuestion('Rakiplere nasıl üstünlük sağlarım?')"
+                                class="text-xs bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 px-3 py-1.5 rounded-full hover:bg-blue-200 dark:hover:bg-blue-900/50">
+                                Rakiplere karşı avantajım ne?
+                            </button>
+                            <button onclick="askQuickQuestion('İlk müşterimi nasıl bulurum?')"
+                                class="text-xs bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 px-3 py-1.5 rounded-full hover:bg-green-200 dark:hover:bg-green-900/50">
+                                İlk müşterimi nasıl bulurum?
+                            </button>
+                            <button onclick="askQuickQuestion('En büyük risk nedir?')"
+                                class="text-xs bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300 px-3 py-1.5 rounded-full hover:bg-orange-200 dark:hover:bg-orange-900/50">
+                                En büyük riskler?
+                            </button>
+                        </div>
+
+                        <!-- Chat Messages -->
+                        <div id="qa-chat" class="space-y-3 mb-4 max-h-60 overflow-y-auto"></div>
+
+                        <!-- Input -->
+                        <div class="flex gap-2">
+                            <input type="text" id="qa-input" placeholder="Sorunuzu yazın..."
+                                class="flex-1 px-4 py-2 border rounded-lg dark:bg-gray-700 dark:text-white dark:border-gray-600 text-sm"
+                                onkeypress="if(event.key==='Enter') askFollowupQuestion()" />
+                            <button onclick="askFollowupQuestion()" id="qa-btn"
+                                class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-semibold">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
+                    </div>
+
                     <div class="bg-gray-800 p-4 border-t border-gray-700">
                         <div class="flex flex-wrap gap-2 justify-between items-center mb-3">
                             <a href="https://www.buymeacoffee.com" target="_blank"
@@ -778,6 +815,10 @@
                         if (data.error) throw new Error(data.error);
                         if (typeof marked !== 'undefined') els.resultText.innerHTML = marked.parse(data.result); else els.resultText.innerText = data.result;
 
+                        // Store for Q&A (Analysis Enhancement #8)
+                        currentAnalysis = data.result;
+                        currentIdea = text;
+
                         // Hide loading screen
                         document.getElementById('loading-screen').classList.add('hidden');
 
@@ -805,6 +846,9 @@
 
                         // Check and award badges (Phase 3)
                         setTimeout(() => checkAndAwardBadges(), 1500);
+
+                        // Show Q&A section (Analysis Enhancement #8)
+                        setTimeout(() => showQASection(), 2000);
                     } catch (e) {
                         document.getElementById('loading-screen').classList.add('hidden');
                         alert("Error: " + e.message);
@@ -1582,6 +1626,95 @@ Beslenme ve sağlık teknolojileri pazarı hızla büyüyor. Özellikle AI deste
             }
         });
 
+
+        // === ANALYSIS ENHANCEMENT #8: FOLLOW-UP QUESTIONS ===
+
+        let currentAnalysis = '';
+        let currentIdea = '';
+
+        function showQASection() {
+            document.getElementById('qa-section').classList.remove('hidden');
+        }
+
+        function askQuickQuestion(question) {
+            document.getElementById('qa-input').value = question;
+            askFollowupQuestion();
+        }
+
+        async function askFollowupQuestion() {
+            const question = document.getElementById('qa-input').value.trim();
+            if (!question) return;
+
+            const lang = document.getElementById('lang-select').value;
+            const chat = document.getElementById('qa-chat');
+            const btn = document.getElementById('qa-btn');
+
+            // Add user message
+            const userMsg = document.createElement('div');
+            userMsg.className = 'flex justify-end';
+            userMsg.innerHTML = `
+                <div class="bg-blue-600 text-white px-4 py-2 rounded-lg max-w-[80%] text-sm">
+                    ${question}
+                </div>
+            `;
+            chat.appendChild(userMsg);
+
+            // Clear input
+            document.getElementById('qa-input').value = '';
+
+            // Show loading
+            const loadingMsg = document.createElement('div');
+            loadingMsg.className = 'flex justify-start';
+            loadingMsg.id = 'loading-msg';
+            loadingMsg.innerHTML = `
+                <div class="bg-gray-200 dark:bg-gray-700 px-4 py-2 rounded-lg text-sm">
+                    <i class="fas fa-spinner fa-spin"></i> Düşünüyorum...
+                </div>
+            `;
+            chat.appendChild(loadingMsg);
+            chat.scrollTop = chat.scrollHeight;
+
+            btn.disabled = true;
+
+            try {
+                const res = await fetch('/api/ask-followup', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        original_idea: currentIdea,
+                        original_analysis: currentAnalysis,
+                        question,
+                        language: lang
+                    })
+                });
+
+                const data = await res.json();
+
+                // Remove loading
+                document.getElementById('loading-msg').remove();
+
+                // Add AI response
+                const aiMsg = document.createElement('div');
+                aiMsg.className = 'flex justify-start';
+                aiMsg.innerHTML = `
+                    <div class="bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white px-4 py-2 rounded-lg max-w-[80%] text-sm">
+                        ${data.answer}
+                    </div>
+                `;
+                chat.appendChild(aiMsg);
+                chat.scrollTop = chat.scrollHeight;
+
+                // Track analytics
+                gtag('event', 'followup_question_asked', { question_length: question.length });
+
+            } catch (error) {
+                document.getElementById('loading-msg').remove();
+                alert('Hata: ' + error.message);
+                console.error(error);
+            } finally {
+                btn.disabled = false;
+            }
+        }
 
         function toggleFeedback() { const m = document.getElementById('feedback-modal'), c = document.getElementById('feedback-content'); if (m.classList.contains('hidden')) { m.classList.remove('hidden'); setTimeout(() => { c.classList.remove('scale-95', 'opacity-0'); c.classList.add('scale-100', 'opacity-100') }, 10) } else { c.classList.remove('scale-100', 'opacity-100'); c.classList.add('scale-95', 'opacity-0'); setTimeout(() => { m.classList.add('hidden') }, 300) } }
         function checkCookies() { const b = document.getElementById('cookie-banner'); if (!localStorage.getItem('cookiePreference')) { b.classList.remove('hidden'); setTimeout(() => b.classList.remove('translate-y-full'), 100) } }
