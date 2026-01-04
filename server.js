@@ -3,6 +3,7 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const OpenAI = require('openai');
+const crypto = require('crypto');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -11,10 +12,45 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static('public'));
 
+// === ANALYSIS ENHANCEMENT #3: CACHING SYSTEM ===
+// In-memory cache for analysis results (24 hour TTL)
+const analysisCache = new Map();
+const CACHE_TTL = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+
+function getCacheKey(idea, language) {
+    const normalized = idea.toLowerCase().trim().replace(/\s+/g, ' ');
+    return crypto.createHash('md5').update(`${normalized}_${language}`).digest('hex');
+}
+
+function getCachedAnalysis(cacheKey) {
+    const cached = analysisCache.get(cacheKey);
+    if (cached && Date.now() - cached.timestamp < CACHE_TTL) {
+        return cached.data;
+    }
+    // Remove expired cache
+    if (cached) {
+        analysisCache.delete(cacheKey);
+    }
+    return null;
+}
+
+function setCachedAnalysis(cacheKey, data) {
+    analysisCache.set(cacheKey, {
+        data,
+        timestamp: Date.now()
+    });
+
+    // Auto-cleanup: remove oldest entries if cache is too large (max 1000 entries)
+    if (analysisCache.size > 1000) {
+        const firstKey = analysisCache.keys().next().value;
+        analysisCache.delete(firstKey);
+    }
+}
+
 // Groq Bağlantısı
 const openai = new OpenAI({
-    apiKey: process.env.GROQ_API_KEY, 
-    baseURL: "https://api.groq.com/openai/v1" 
+    apiKey: process.env.GROQ_API_KEY,
+    baseURL: "https://api.groq.com/openai/v1"
 });
 
 app.post('/api/analyze', async (req, res) => {
@@ -23,11 +59,24 @@ app.post('/api/analyze', async (req, res) => {
 
         if (!idea) return res.status(400).json({ error: "Fikir boş olamaz." });
 
+        // Check cache first (Analysis Enhancement #3)
+        const cacheKey = getCacheKey(idea, language);
+        const cachedResult = getCachedAnalysis(cacheKey);
+
+        if (cachedResult) {
+            console.log('✅ Returning cached analysis');
+            return res.json({
+                ...cachedResult,
+                cached: true,
+                cache_timestamp: analysisCache.get(cacheKey).timestamp
+            });
+        }
+
         // Tarihi dinamik alıyoruz
-        const currentYear = new Date().getFullYear(); 
+        const currentYear = new Date().getFullYear();
 
         // --- MASTER PROMPT (GROQ İÇİN OPTİMİZE EDİLDİ) ---
-        const systemPrompt = language === 'tr' 
+        const systemPrompt = language === 'tr'
             ? `GÖREV: Sen dünyanın en iyi Girişim Stratejisti, Veri Analisti ve Ürün Yöneticisisin. Şu an ${currentYear} yılındayız.
 
                🚨 KRİTİK MANTIK VE VERİ KURALLARI (KESİN UY):
@@ -53,7 +102,7 @@ app.post('/api/analyze', async (req, res) => {
                # ⚖️ Etik Riskler ve Çözüm Stratejileri
                # 🚀 Gerçekçi Yol Haritası (Zaman Çizelgesi Uyumlu)
                # 💡 Son Karar ve Başarı KPI'ları`
-            
+
             : `ROLE: World-class Startup Strategist. Current Year is ${currentYear}.
 
                🚨 CRITICAL RULES:
@@ -87,8 +136,8 @@ app.post('/api/analyze', async (req, res) => {
                 { role: "user", content: `IDEA: ${idea}` }
             ],
             model: "llama-3.3-70b-versatile",
-            temperature: 0.6, 
-            max_tokens: 4096 
+            temperature: 0.6,
+            max_tokens: 4096
         });
 
         let analysis = completion.choices[0].message.content;
@@ -166,11 +215,17 @@ JSON format (USE ONLY this format):
 
         // Temizlik
         analysis = analysis.replace(/[\u4E00-\u9FFF\u3040-\u30FF\uAC00-\uD7AF\u0400-\u04FF]/g, "");
-        
-        res.json({ 
+
+        const responseData = {
             result: analysis,
             scoring: scoringData
-        });
+        };
+
+        // Save to cache (Analysis Enhancement #3)
+        setCachedAnalysis(cacheKey, responseData);
+        console.log(`💾 Cached analysis for: ${idea.substring(0, 50)}...`);
+
+        res.json(responseData);
 
     } catch (error) {
         console.error("HATA:", error);
