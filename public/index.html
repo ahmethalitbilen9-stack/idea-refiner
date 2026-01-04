@@ -166,50 +166,7 @@
         </div>
     </div>
 
-    <!-- Badge Notification Modal (Phase 3 - Gamification) -->
-    <div id="badge-notification"
-        class="fixed top-20 right-4 z-[100] hidden transform translate-x-[400px] transition-transform duration-500">
-        <div
-            class="bg-gradient-to-r from-yellow-400 to-orange-500 text-white rounded-2xl shadow-2xl p-4 max-w-sm border-2 border-yellow-300">
-            <div class="flex items-center gap-4">
-                <div class="text-5xl animate-bounce" id="badge-icon">🎯</div>
-                <div>
-                    <h3 class="font-bold text-lg" id="badge-title">Yeni Rozet!</h3>
-                    <p class="text-sm opacity-90" id="badge-desc">İlk fikrini analiz ettin!</p>
-                </div>
-            </div>
-            <div class="mt-2 text-xs opacity-75 text-center">+10 XP</div>
-        </div>
-    </div>
 
-    <!-- Usage Limit Modal (Phase 3 - Freemium) -->
-    <div id="limit-modal"
-        class="hidden fixed inset-0 z-[100] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
-        <div
-            class="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl w-full max-w-md border border-gray-200 dark:border-gray-700 p-6">
-            <div class="text-center">
-                <div class="text-6xl mb-4">⚠️</div>
-                <h3 class="font-bold text-2xl mb-3 dark:text-white">Ücretsiz Limitiniz Doldu</h3>
-                <p class="text-gray-600 dark:text-gray-300 mb-4">
-                    Bu ay <strong>3 ücretsiz analiz</strong> hakkınızı kullandınız.
-                </p>
-                <div class="bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-xl p-6 mb-4">
-                    <h4 class="font-bold text-xl mb-2">Premium'a Geçin 🚀</h4>
-                    <p class="text-sm opacity-90 mb-3">Sınırsız analiz + Gelişmiş özellikler</p>
-                    <div class="text-3xl font-bold">$9.99/ay</div>
-                </div>
-                <div class="flex gap-2">
-                    <button onclick="closeLimitModal()"
-                        class="flex-1 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white px-4 py-2 rounded-lg font-semibold">
-                        Kapat
-                    </button>
-                    <button class="flex-1 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-bold">
-                        Premium Al
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <!-- Comparison Modal (Analysis Enhancement #7) -->
     <div id="compare-modal"
@@ -218,7 +175,7 @@
             class="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl w-full max-w-4xl border border-gray-200 dark:border-gray-700 max-h-[90vh] overflow-y-auto">
             <div class="p-6">
                 <div class="flex justify-between items-center mb-4">
-                    <h3 class="font-bold text-2xl dark:text-white">⚖️ Fikir Karşılaştırması</h3>
+                    <h3 id="compare-title" class="font-bold text-2xl dark:text-white">⚖️ Fikir Karşılaştırması</h3>
                     <button onclick="closeCompareModal()" class="text-gray-500 hover:text-gray-700 dark:text-gray-400">
                         <i class="fas fa-times text-xl"></i>
                     </button>
@@ -228,13 +185,15 @@
                 <div id="compare-input-section">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                         <div>
-                            <label class="block text-sm font-semibold mb-2 dark:text-white">Fikir A</label>
+                            <label id="compare-label-a" class="block text-sm font-semibold mb-2 dark:text-white">Fikir
+                                A</label>
                             <textarea id="compare-idea-a" rows="4"
                                 class="w-full p-3 border rounded-lg dark:bg-gray-700 dark:text-white dark:border-gray-600"
                                 placeholder="İlk fikrinizi yazın..."></textarea>
                         </div>
                         <div>
-                            <label class="block text-sm font-semibold mb-2 dark:text-white">Fikir B</label>
+                            <label id="compare-label-b" class="block text-sm font-semibold mb-2 dark:text-white">Fikir
+                                B</label>
                             <textarea id="compare-idea-b" rows="4"
                                 class="w-full p-3 border rounded-lg dark:bg-gray-700 dark:text-white dark:border-gray-600"
                                 placeholder="İkinci fikrinizi yazın..."></textarea>
@@ -257,12 +216,13 @@
                                 <div class="text-3xl font-bold text-blue-600" id="score-a">7.5</div>
                             </div>
                             <div class="mb-3">
-                                <div class="text-sm font-semibold text-green-600 dark:text-green-400 mb-1">✅ Artılar:
-                                </div>
+                                <div class="text-sm font-semibold text-green-600 dark:text-green-400 mb-1"><span
+                                        class="comp-pros-title">✅ Artılar:</span></div>
                                 <ul id="pros-a" class="text-xs space-y-1 list-disc list-inside dark:text-gray-300"></ul>
                             </div>
                             <div>
-                                <div class="text-sm font-semibold text-red-600 dark:text-red-400 mb-1">❌ Eksiler:</div>
+                                <div class="text-sm font-semibold text-red-600 dark:text-red-400 mb-1"><span
+                                        class="comp-cons-title">❌ Eksiler:</span></div>
                                 <ul id="cons-a" class="text-xs space-y-1 list-disc list-inside dark:text-gray-300"></ul>
                             </div>
                         </div>
@@ -275,12 +235,13 @@
                                 <div class="text-3xl font-bold text-gray-600 dark:text-gray-400" id="score-b">6.8</div>
                             </div>
                             <div class="mb-3">
-                                <div class="text-sm font-semibold text-green-600 dark:text-green-400 mb-1">✅ Artılar:
-                                </div>
+                                <div class="text-sm font-semibold text-green-600 dark:text-green-400 mb-1"><span
+                                        class="comp-pros-title">✅ Artılar:</span></div>
                                 <ul id="pros-b" class="text-xs space-y-1 list-disc list-inside dark:text-gray-300"></ul>
                             </div>
                             <div>
-                                <div class="text-sm font-semibold text-red-600 dark:text-red-400 mb-1">❌ Eksiler:</div>
+                                <div class="text-sm font-semibold text-red-600 dark:text-red-400 mb-1"><span
+                                        class="comp-cons-title">❌ Eksiler:</span></div>
                                 <ul id="cons-b" class="text-xs space-y-1 list-disc list-inside dark:text-gray-300"></ul>
                             </div>
                         </div>
@@ -292,13 +253,13 @@
                         <div class="flex items-start gap-3">
                             <div class="text-4xl">🏆</div>
                             <div>
-                                <h4 class="font-bold text-lg mb-2 dark:text-white">AI Tavsiyesi</h4>
+                                <h4 id="ai-rec-title" class="font-bold text-lg mb-2 dark:text-white">AI Tavsiyesi</h4>
                                 <p id="recommendation" class="text-sm dark:text-gray-300"></p>
                             </div>
                         </div>
                     </div>
 
-                    <button onclick="resetComparison()"
+                    <button onclick="resetComparison()" id="new-compare-btn"
                         class="w-full mt-4 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white font-semibold py-2 rounded-lg">
                         Yeni Karşılaştırma
                     </button>
@@ -320,8 +281,8 @@
             </div>
             <div class="flex items-center gap-2 md:gap-4">
                 <a href="blog.html" class="text-sm md:text-base hover:text-blue-400 transition">📝 Blog</a>
-                <button onclick="openCompareModal()" class="text-sm md:text-base hover:text-blue-400 transition">⚖️
-                    Karşılaştır</button>
+                <button onclick="openCompareModal()" id="nav-compare"
+                    class="text-sm md:text-base hover:text-blue-400 transition">⚖️ Karşılaştır</button>
                 <button onclick="toggleFeedback()" id="nav-fb-text"
                     class="text-sm md:text-base hover:text-blue-400 transition">💬 Feedback</button>
                 <div class="h-4 w-[1px] bg-gray-300 dark:bg-gray-700"></div>
@@ -465,7 +426,8 @@
                             class="hidden mb-6 bg-gradient-to-r from-blue-900 to-purple-900 rounded-xl p-6 border border-blue-700">
                             <div class="text-center mb-4">
                                 <div class="text-6xl font-bold text-white mb-2" id="overall-score">7.5</div>
-                                <div class="text-sm text-gray-300">Genel Skor (10 üzerinden)</div>
+                                <div class="text-sm text-gray-300" id="overall-score-title">Overall Score (out of 10)
+                                </div>
                                 <div class="mt-2">
                                     <span id="risk-badge"
                                         class="px-3 py-1 rounded-full text-xs font-bold bg-yellow-500 text-black">Orta
@@ -477,7 +439,8 @@
                                 <!-- Market Size -->
                                 <div class="bg-white/10 rounded-lg p-3">
                                     <div class="flex justify-between items-center mb-2">
-                                        <span class="text-sm font-semibold text-white">📊 Pazar Büyüklüğü</span>
+                                        <span class="text-sm font-semibold text-white" id="score-market-label">📊 Market
+                                            Size</span>
                                         <span class="text-sm font-bold text-white" id="score-market">8</span>
                                     </div>
                                     <div class="w-full bg-gray-700 rounded-full h-2">
@@ -490,7 +453,8 @@
                                 <!-- Competition -->
                                 <div class="bg-white/10 rounded-lg p-3">
                                     <div class="flex justify-between items-center mb-2">
-                                        <span class="text-sm font-semibold text-white">⚔️ Rekabet</span>
+                                        <span class="text-sm font-semibold text-white" id="score-competition-label">⚔️
+                                            Competition</span>
                                         <span class="text-sm font-bold text-white" id="score-competition">6</span>
                                     </div>
                                     <div class="w-full bg-gray-700 rounded-full h-2">
@@ -604,19 +568,23 @@
                             <div class="flex items-center gap-3 mb-4">
                                 <div class="text-4xl">🔥</div>
                                 <div>
-                                    <h3 class="text-xl font-bold text-gray-900 dark:text-white">Google Trends Analizi
+                                    <h3 id="trends-title-text" class="text-xl font-bold text-gray-900 dark:text-white">
+                                        Google Trends Analizi
                                     </h3>
-                                    <p class="text-xs text-gray-600 dark:text-gray-400">Gerçek zamanlı pazar trendi</p>
+                                    <p id="trends-subtitle-text" class="text-xs text-gray-600 dark:text-gray-400">Gerçek
+                                        zamanlı pazar trendi</p>
                                 </div>
                             </div>
 
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                                 <div class="bg-white dark:bg-gray-800 rounded-lg p-4">
-                                    <div class="text-sm text-gray-600 dark:text-gray-400 mb-1">Anahtar Kelime</div>
+                                    <div id="trends-keyword-label"
+                                        class="text-sm text-gray-600 dark:text-gray-400 mb-1">Anahtar Kelime</div>
                                     <div class="font-bold text-lg dark:text-white" id="trends-keyword">-</div>
                                 </div>
                                 <div class="bg-white dark:bg-gray-800 rounded-lg p-4">
-                                    <div class="text-sm text-gray-600 dark:text-gray-400 mb-1">Trend Durumu</div>
+                                    <div id="trends-status-label" class="text-sm text-gray-600 dark:text-gray-400 mb-1">
+                                        Trend Durumu</div>
                                     <div class="flex items-center gap-2">
                                         <span id="trends-direction" class="font-bold text-lg">⬆️ Yükselişte</span>
                                     </div>
@@ -624,12 +592,14 @@
                             </div>
 
                             <div class="bg-white dark:bg-gray-800 rounded-lg p-4 mb-4">
-                                <div class="text-sm font-semibold mb-2 dark:text-white">İlgi Düzeyi (Son 12 Ay)</div>
+                                <div id="trends-history-label" class="text-sm font-semibold mb-2 dark:text-white">İlgi
+                                    Düzeyi (Son 12 Ay)</div>
                                 <canvas id="trends-interest-chart" height="80"></canvas>
                             </div>
 
                             <div class="bg-white dark:bg-gray-800 rounded-lg p-4">
-                                <div class="text-sm font-semibold mb-2 dark:text-white">İlgili Aramalar</div>
+                                <div id="trends-related-label" class="text-sm font-semibold mb-2 dark:text-white">İlgili
+                                    Aramalar</div>
                                 <div id="trends-related" class="flex flex-wrap gap-2">
                                     <!-- Will be populated -->
                                 </div>
@@ -672,7 +642,8 @@
                     <!-- Follow-up Questions Section (Analysis Enhancement #8) -->
                     <div id="qa-section"
                         class="hidden mt-6 bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
-                        <h3 class="text-lg font-bold mb-4 text-gray-900 dark:text-white">💬 Rapor Hakkında Soru Sor</h3>
+                        <h3 id="qa-title-text" class="text-lg font-bold mb-4 text-gray-900 dark:text-white">💬 Rapor
+                            Hakkında Soru Sor</h3>
 
                         <!-- Quick Questions -->
                         <div class="flex flex-wrap gap-2 mb-4">
@@ -783,18 +754,126 @@
         };
 
         const trans = {
-            tr: {
-                alert: 'Lütfen bir fikir girin!', btn: 'Analiz Et', title: 'Fikrini <span class="text-blue-500">Gerçeğe</span> Dönüştür', desc: 'Groq Llama 3.3 ile profesyonel analiz.', ph: 'Fikrinizi buraya yazın...', pdfBtn: 'PDF İndir', metaDesc: 'Girişimcilik fikirlerinizi yapay zeka ile analiz edin.', navFb: 'Öneri', histTitle: 'GEÇMİŞ', histClear: 'Temizle', repTitle: 'Analiz Raporu', support: 'Destek Ol', fbTitle: 'Öneri & İletişim', fbEmail: 'E-Posta (Opsiyonel)', fbMsg: 'Mesajınız', fbPh: 'Fikriniz nedir?', fbSubmit: 'Gönder 🚀', cookieTxt: 'Size daha iyi hizmet sunmak için çerezleri kullanıyoruz.', cookieRej: 'Reddet', cookieAcc: 'Kabul Et', fRights: 'Tüm hakları saklıdır.', fAbout: 'Hakkımızda', fPrivacy: 'Gizlilik Politikası', fTerms: 'Kullanım Koşulları'
-            },
             en: {
-                alert: 'Please enter an idea!', btn: 'Analyze', title: 'Turn Idea into <span class="text-blue-500">Reality</span>', desc: 'Professional analysis with Groq Llama 3.3.', ph: 'Type your idea here...', pdfBtn: 'Download PDF', metaDesc: 'Analyze your startup ideas instantly with AI.', navFb: 'Feedback', histTitle: 'HISTORY', histClear: 'Clear', repTitle: 'Analysis Report', support: 'Support Us', fbTitle: 'Feedback & Contact', fbEmail: 'Email (Optional)', fbMsg: 'Your Message', fbPh: 'What\'s on your mind?', fbSubmit: 'Send 🚀', cookieTxt: 'We use cookies to provide a better experience.', cookieRej: 'Reject', cookieAcc: 'Accept', fRights: 'All rights reserved.', fAbout: 'About Us', fPrivacy: 'Privacy Policy', fTerms: 'Terms of Use'
+                alert: 'Please enter an idea!',
+                btn: 'Analyze',
+                title: 'Analyze Your <span class="text-blue-500">Startup Idea</span> in 60 Seconds',
+                desc: 'Deep AI analysis powered by Llama 3.3.',
+                ph: 'Type your idea here...',
+                pdfBtn: 'Download PDF',
+                metaDesc: 'Analyze your startup ideas instantly with AI.',
+                navFb: 'Feedback',
+                histTitle: 'HISTORY',
+                histClear: 'Clear',
+                repTitle: 'Analysis Report',
+                support: 'Support Us',
+                fbTitle: 'Feedback & Contact',
+                fbEmail: 'Email (Optional)',
+                fbMsg: 'Message',
+                fbPh: 'What\'s on your mind?',
+                fbSubmit: 'Send 🚀',
+                cookieTxt: 'We use cookies to provide a better experience.',
+                cookieRej: 'Reject',
+                cookieAcc: 'Accept',
+                fRights: 'All rights reserved.',
+                fAbout: 'About Us',
+                fPrivacy: 'Privacy Policy',
+                fTerms: 'Terms of Use',
+                navCompare: '⚖️ Compare',
+                compareTitle: '⚖️ Idea Comparison',
+                compA: 'Idea A',
+                compB: 'Idea B',
+                compareBtn: '🔄 Compare Ideas',
+                compPros: '✅ Pros:',
+                compCons: '❌ Cons:',
+                aiRec: 'AI Recommendation',
+                newCompare: 'New Comparison',
+                scoreTitle: 'Overall Score (out of 10)',
+                mktSize: '📊 Market Size',
+                competition: '⚔️ Competition',
+                feasibility: '⚙️ Feasibility',
+                profitability: '💰 Profitability',
+                innovation: '💡 Innovation',
+                timing: '⏰ Timing',
+                qualityLabel: 'Idea Quality:',
+                wordCount: 'words',
+                trendsTitle: 'Google Trends Analysis',
+                trendsSubtitle: 'Real-time market trend',
+                trendsKeyword: 'Keyword',
+                trendsStatus: 'Trend Status',
+                trendsHistory: 'Interest Over Time (Last 12 Months)',
+                trendsRelated: 'Related Queries',
+                qaTitle: '💬 Ask About Report',
+                qaBtn: 'Send',
+                qaPh: 'Ask a question...',
+                quickQ1: 'What is my advantage?',
+                quickQ2: 'How to find first customer?',
+                quickQ3: 'Biggest risks?',
+                loading: 'Thinking...'
+            },
+            tr: {
+                alert: 'Lütfen bir fikir girin!',
+                btn: 'Analiz Et',
+                title: 'Girişimcilik Fikrinizi <span class="text-blue-500">60 Saniyede</span> Analiz Edin',
+                desc: 'Llama 3.3 ile derinlemesine yapay zeka analizi.',
+                ph: 'Fikrinizi buraya yazın...',
+                pdfBtn: 'PDF İndir',
+                metaDesc: 'Girişimcilik fikirlerinizi yapay zeka ile analiz edin.',
+                navFb: 'Öneri',
+                histTitle: 'GEÇMİŞ',
+                histClear: 'Temizle',
+                repTitle: 'Analiz Raporu',
+                support: 'Destek Ol',
+                fbTitle: 'Öneri & İletişim',
+                fbEmail: 'E-Posta (Opsiyonel)',
+                fbMsg: 'Mesajınız',
+                fbPh: 'Fikriniz nedir?',
+                fbSubmit: 'Gönder 🚀',
+                cookieTxt: 'Size daha iyi hizmet sunmak için çerezleri kullanıyoruz.',
+                cookieRej: 'Reddet',
+                cookieAcc: 'Kabul Et',
+                fRights: 'Tüm hakları saklıdır.',
+                fAbout: 'Hakkımızda',
+                fPrivacy: 'Gizlilik Politikası',
+                fTerms: 'Kullanım Koşulları',
+                navCompare: '⚖️ Karşılaştır',
+                compareTitle: '⚖️ Fikir Karşılaştırması',
+                compA: 'Fikir A',
+                compB: 'Fikir B',
+                compareBtn: '🔄 Karşılaştır',
+                compPros: '✅ Artılar:',
+                compCons: '❌ Eksiler:',
+                aiRec: 'AI Tavsiyesi',
+                newCompare: 'Yeni Karşılaştırma',
+                scoreTitle: 'Genel Skor (10 üzerinden)',
+                mktSize: '📊 Pazar Büyüklüğü',
+                competition: '⚔️ Rekabet',
+                feasibility: '⚙️ Uygulanabilirlik',
+                profitability: '💰 Karlılık',
+                innovation: '💡 İnovasyon',
+                timing: '⏰ Zamanlama',
+                qualityLabel: 'Fikir Kalitesi:',
+                wordCount: 'kelime',
+                trendsTitle: 'Google Trends Analizi',
+                trendsSubtitle: 'Gerçek zamanlı pazar trendi',
+                trendsKeyword: 'Anahtar Kelime',
+                trendsStatus: 'Trend Durumu',
+                trendsHistory: 'İlgi Düzeyi (Son 12 Ay)',
+                trendsRelated: 'İlgili Aramalar',
+                qaTitle: '💬 Rapor Hakkında Soru Sor',
+                qaBtn: 'Gönder',
+                qaPh: 'Sorunuzu yazın...',
+                quickQ1: 'Avantajım ne?',
+                quickQ2: 'İlk müşteriyi nasıl bulurum?',
+                quickQ3: 'En büyük riskler?',
+                loading: 'Düşünüyorum...'
             }
         };
 
         function updateLanguage(lang) {
             document.documentElement.lang = lang;
             const t = trans[lang];
-            // Tüm alanları güncelle
+            // Update all areas
             if (els.heroTitle) els.heroTitle.innerHTML = t.title;
             if (els.heroDesc) els.heroDesc.innerText = t.desc;
             if (els.btnText) els.btnText.innerText = t.btn;
@@ -818,6 +897,51 @@
             if (els.footerAbout) els.footerAbout.innerText = t.fAbout;
             if (els.footerPrivacy) els.footerPrivacy.innerText = t.fPrivacy;
             if (els.footerTerms) els.footerTerms.innerText = t.fTerms;
+
+            // New Features Translations
+            const updateIfExists = (id, text) => { const el = document.getElementById(id); if (el) el.innerText = text; };
+            const updateHTMLIfExists = (id, html) => { const el = document.getElementById(id); if (el) el.innerHTML = html; };
+
+            updateIfExists('nav-compare', t.navCompare);
+            updateIfExists('compare-title', t.compareTitle);
+            updateIfExists('compare-label-a', t.compA);
+            updateIfExists('compare-label-b', t.compB);
+            updateIfExists('compare-btn-text', t.compareBtn);
+            updateIfExists('ai-rec-title', t.aiRec);
+            updateIfExists('new-compare-btn', t.newCompare);
+
+            document.querySelectorAll('.comp-pros-title').forEach(el => el.innerText = t.compPros);
+            document.querySelectorAll('.comp-cons-title').forEach(el => el.innerText = t.compCons);
+
+            updateIfExists('overall-score-title', t.scoreTitle);
+            updateIfExists('score-market-label', t.mktSize);
+            updateIfExists('score-competition-label', t.competition);
+            updateIfExists('score-feasibility-label', t.feasibility);
+            updateIfExists('score-profitability-label', t.profitability);
+            updateIfExists('score-innovation-label', t.innovation);
+            updateIfExists('score-timing-label', t.timing);
+
+            const ql = document.querySelector('#quality-feedback span.font-semibold');
+            if (ql) ql.innerText = t.qualityLabel;
+
+            updateIfExists('trends-title-text', t.trendsTitle);
+            updateIfExists('trends-subtitle-text', t.trendsSubtitle);
+            updateIfExists('trends-keyword-label', t.trendsKeyword);
+            updateIfExists('trends-status-label', t.trendsStatus);
+            updateIfExists('trends-history-label', t.trendsHistory);
+            updateIfExists('trends-related-label', t.trendsRelated);
+
+            updateIfExists('qa-title-text', t.qaTitle);
+            updateIfExists('qa-btn', t.qaBtn);
+            if (document.getElementById('qa-input')) document.getElementById('qa-input').placeholder = t.qaPh;
+
+            // Quick Questions
+            const qqBtns = document.querySelectorAll('#qa-section .flex.flex-wrap button');
+            if (qqBtns.length === 3) {
+                qqBtns[0].innerText = t.quickQ1;
+                qqBtns[1].innerText = t.quickQ2;
+                qqBtns[2].innerText = t.quickQ3;
+            }
         }
 
         if (els.langSelect) {
@@ -837,11 +961,6 @@
                     const text = els.input.value.trim();
                     const lang = els.langSelect.value;
                     if (!text) return alert(trans[lang].alert);
-
-                    // Check usage limit (Phase 3)
-                    if (!checkUsageLimit()) {
-                        return;
-                    }
 
                     // Track analytics
                     gtag('event', 'analyze_clicked', { idea_length: text.length });
@@ -885,14 +1004,8 @@
                             renderTrendsCard(data.trends);
                         }
 
-                        // Increment usage (Phase 3)
-                        incrementUsage();
-
                         // Show email capture section (Phase 2)
                         setTimeout(() => showEmailCapture(), 500);
-
-                        // Check and award badges (Phase 3)
-                        setTimeout(() => checkAndAwardBadges(), 1500);
 
                         // Show Q&A section (Analysis Enhancement #8)
                         setTimeout(() => showQASection(), 2000);
@@ -1135,47 +1248,47 @@ Beslenme ve sağlık teknolojileri pazarı hızla büyüyor. Özellikle AI deste
         // === ANALYSIS ENHANCEMENT #1: SCORE BREAKDOWN ===
 
         function updateScoreCard(scoring) {
-            const scoreCard = document.getElementById('score-card');
-            scoreCard.classList.remove('hidden');
+            const card = document.getElementById('score-card');
+            card.classList.remove('hidden');
 
-            // Update overall score
-            document.getElementById('overall-score').textContent = scoring.overall_score.toFixed(1);
+            const lang = document.getElementById('lang-select').value;
+            const t = trans[lang];
 
-            // Update risk badge
+            document.getElementById('overall-score').textContent = scoring.overall_score;
+
+            // Update badge text based on language
             const riskBadge = document.getElementById('risk-badge');
-            const riskText = {
-                'low': 'Düşük Risk',
-                'medium': 'Orta Risk',
-                'high': 'Yüksek Risk'
-            };
-            const riskColors = {
-                'low': 'bg-green-500',
-                'medium': 'bg-yellow-500',
-                'high': 'bg-red-500'
+            riskBadge.className = 'px-3 py-1 rounded-full text-xs font-bold';
+
+            const riskLevels = {
+                tr: { high: 'Yüksek Risk', medium: 'Orta Risk', low: 'Düşük Risk' },
+                en: { high: 'High Risk', medium: 'Medium Risk', low: 'Low Risk' }
             };
 
-            riskBadge.textContent = riskText[scoring.risk_level] || 'Orta Risk';
-            riskBadge.className = `px-3 py-1 rounded-full text-xs font-bold ${riskColors[scoring.risk_level] || 'bg-yellow-500'} text-black`;
+            if (scoring.risk_level === 'high') {
+                riskBadge.textContent = riskLevels[lang].high;
+                riskBadge.classList.add('bg-red-500', 'text-white');
+            } else if (scoring.risk_level === 'low') {
+                riskBadge.textContent = riskLevels[lang].low;
+                riskBadge.classList.add('bg-green-500', 'text-white');
+            } else {
+                riskBadge.textContent = riskLevels[lang].medium;
+                riskBadge.classList.add('bg-yellow-500', 'text-black');
+            }
 
-            // Update breakdown scores with animation
-            const breakdown = scoring.breakdown;
-            const metrics = ['market', 'competition', 'feasibility', 'profitability', 'innovation', 'timing'];
-
-            metrics.forEach(metric => {
-                const value = breakdown[`${metric}_size`] || breakdown[metric];
-                document.getElementById(`score-${metric}`).textContent = value;
-
-                // Animate progress bar
-                setTimeout(() => {
-                    document.getElementById(`bar-${metric}`).style.width = `${value * 10}%`;
-                }, 300);
-            });
-
-            // Track analytics
-            gtag('event', 'score_card_displayed', {
-                overall_score: scoring.overall_score,
-                risk_level: scoring.risk_level
-            });
+            // Simple mapping for scores
+            document.getElementById('score-market').textContent = scoring.breakdown.market_size;
+            document.getElementById('bar-market').style.width = (scoring.breakdown.market_size * 10) + '%';
+            document.getElementById('score-competition').textContent = scoring.breakdown.competition;
+            document.getElementById('bar-competition').style.width = (scoring.breakdown.competition * 10) + '%';
+            document.getElementById('score-feasibility').textContent = scoring.breakdown.feasibility;
+            document.getElementById('bar-feasibility').style.width = (scoring.breakdown.feasibility * 10) + '%';
+            document.getElementById('score-profitability').textContent = scoring.breakdown.profitability;
+            document.getElementById('bar-profitability').style.width = (scoring.breakdown.profitability * 10) + '%';
+            document.getElementById('score-innovation').textContent = scoring.breakdown.innovation;
+            document.getElementById('bar-innovation').style.width = (scoring.breakdown.innovation * 10) + '%';
+            document.getElementById('score-timing').textContent = scoring.breakdown.timing;
+            document.getElementById('bar-timing').style.width = (scoring.breakdown.timing * 10) + '%';
         }
 
         // === ANALYSIS ENHANCEMENT #4: CHART VISUALIZATION ===
@@ -1405,242 +1518,82 @@ Beslenme ve sağlık teknolojileri pazarı hızla büyüyor. Özellikle AI deste
         // === ANALYSIS ENHANCEMENT #2: IDEA QUALITY CHECK ===
 
         function assessIdeaQuality(idea) {
-            const wordCount = idea.trim().split(/\s+/).filter(w => w.length > 0).length;
-            const lowerIdea = idea.toLowerCase();
+            const lang = document.getElementById('lang-select').value;
+            const t = trans[lang];
 
-            // Checks
-            const hasProblem = /problem|issue|challenge|sorun|zorluk|ihtiyaç|need/i.test(idea);
-            const hasTarget = /for|için|kullanıcı|user|customer|müşteri|people|insan/i.test(idea);
-            const hasMonetization = /subscription|abonelik|pay|ödeme|price|fiyat|revenue|gelir|\$|₺/i.test(idea);
-            const hasTech = /app|uygulama|platform|website|site|ai|yapay zeka|mobile|web/i.test(idea);
-
-            let score = 0;
-            let suggestions = [];
-
-            // Word count scoring
-            if (wordCount < 5) {
-                suggestions.push('❌ Çok kısa! En az 10 kelime yazın.');
-            } else if (wordCount < 10) {
-                score += 1;
-                suggestions.push('⚠️ Biraz daha detay ekleyin (en az 10 kelime)');
-            } else if (wordCount < 20) {
-                score += 2;
-            } else if (wordCount < 40) {
-                score += 3;
-            } else {
-                score += 3;
-            }
-
-            // Problem definition
-            if (!hasProblem) {
-                suggestions.push('💡 Hangi problemi çözüyorsunuz?');
-            } else {
-                score += 1;
-            }
-
-            // Target audience
-            if (!hasTarget) {
-                suggestions.push('🎯 Hedef kitlenizi belirtin (örn: "öğrenciler için", "işletmeler için")');
-            } else {
-                score += 1;
-            }
-
-            // Monetization
-            if (!hasMonetization && wordCount > 15) {
-                suggestions.push('💰 Nasıl para kazanacaksınız? (opsiyonel ama önemli)');
-            } else if (hasMonetization) {
-                score += 1;
-            }
-
-            // Tech mention (bonus)
-            if (hasTech) {
-                score += 1;
-            }
-
-            // Add positive feedback for good quality
-            if (score >= 4 && suggestions.length === 0) {
-                suggestions.push('✅ Harika! Fikriniz analiz için hazır.');
-            }
-
-            return {
-                score: Math.min(score, 5),
-                wordCount,
-                suggestions
-            };
-        }
-
-        function updateQualityFeedback() {
-            const idea = document.getElementById('idea-input').value;
-            const feedbackDiv = document.getElementById('quality-feedback');
-
-            if (idea.trim().length === 0) {
-                feedbackDiv.classList.add('hidden');
+            if (!idea || idea.length < 5) {
+                document.getElementById('quality-feedback').classList.add('hidden');
                 return;
             }
 
-            feedbackDiv.classList.remove('hidden');
-            const quality = assessIdeaQuality(idea);
+            document.getElementById('quality-feedback').classList.remove('hidden');
 
-            // Update word count
-            document.getElementById('word-count').textContent = `${quality.wordCount} kelime`;
+            const words = idea.split(/\s+/).filter(w => w.length > 0);
+            const wordCount = words.length;
+            document.getElementById('word-count').textContent = `${wordCount} ${t.wordCount}`;
 
-            // Update stars
-            const starsContainer = document.getElementById('quality-stars');
-            starsContainer.innerHTML = '';
+            // Smart suggestions in both languages
+            const suggestions = [];
+            const suggestionsEN = {
+                short: "• Your description is a bit short. Add more details.",
+                problem: "• Mention the specific problem you are solving.",
+                audience: "• Define your target audience.",
+                money: "• Mention how you plan to make money.",
+                great: "• Great job! This is a detailed description."
+            };
+            const suggestionsTR = {
+                short: "• Açıklamanız biraz kısa. Daha fazla detay ekleyin.",
+                problem: "• Çözdüğünüz spesifik problemden bahsedin.",
+                audience: "• Hedef kitlenizi tanımlayın.",
+                money: "• Nasıl para kazanacağınızdan bahsedin.",
+                great: "• Harika! Çok detaylı bir açıklama."
+            };
+
+            const s = lang === 'tr' ? suggestionsTR : suggestionsEN;
+
+            let score = 0;
+            if (wordCount > 10) score += 1;
+            if (wordCount > 30) score += 1;
+
+            if (wordCount < 15) suggestions.push(s.short);
+
+            const lowerIdea = idea.toLowerCase();
+            const keywordsProblem = ['problem', 'sıkıntı', 'çözüm', 'sorun', 'solution', 'pain'];
+            if (keywordsProblem.some(k => lowerIdea.includes(k))) score += 1; else suggestions.push(s.problem);
+
+            const keywordsAudience = ['user', 'customer', 'kullanıcı', 'müşteri', 'target', 'kitle', 'people', 'insanlar'];
+            if (keywordsAudience.some(k => lowerIdea.includes(k))) score += 1; else suggestions.push(s.audience);
+
+            const keywordsMoney = ['money', 'earn', 'revenue', 'profit', 'kazanç', 'para', 'gelir', 'subscription', 'fee'];
+            if (keywordsMoney.some(k => lowerIdea.includes(k))) score += 1; else suggestions.push(s.money);
+
+            // Limited to 5 stars
+            const finalScore = Math.min(5, score);
+            const starsEl = document.getElementById('quality-stars');
+            starsEl.innerHTML = '';
             for (let i = 0; i < 5; i++) {
                 const star = document.createElement('span');
                 star.textContent = '⭐';
-                star.className = i < quality.score ? 'text-yellow-500' : 'text-gray-300';
-                starsContainer.appendChild(star);
+                star.className = i < finalScore ? 'text-yellow-500' : 'text-gray-300';
+                starsEl.appendChild(star);
             }
 
-            // Update suggestions
-            const suggestionsDiv = document.getElementById('quality-suggestions');
-            suggestionsDiv.innerHTML = '';
-            quality.suggestions.forEach(suggestion => {
-                const p = document.createElement('p');
-                p.className = 'text-gray-600 dark:text-gray-300';
-                p.textContent = suggestion;
-                suggestionsDiv.appendChild(p);
-            });
+            const sugEl = document.getElementById('quality-suggestions');
+            sugEl.innerHTML = suggestions.length > 0 ? suggestions.join('<br>') : `<span class="text-green-600">${s.great}</span>`;
 
-            // Track analytics (only once when they start typing)
-            if (!window.qualityCheckTracked) {
-                gtag('event', 'quality_feedback_shown', { initial_score: quality.score });
-                window.qualityCheckTracked = true;
-            }
+            gtag('event', 'quality_feedback_shown', { score: finalScore });
         }
 
-        // Attach quality checker to textarea
-        document.getElementById('idea-input').addEventListener('input', function () {
-            updateQualityFeedback();
-        });
+        // Updated input event
+        document.getElementById('idea-input').addEventListener('input', (e) => assessIdeaQuality(e.target.value));
 
-        // === PHASE 3: GAMIFICATION & FREEMIUM ===
-
-        // Badge System
-        const badges = {
-            first_analysis: { icon: '🎯', title: 'İlk Analiz', desc: 'İlk fikrini analiz ettin!', xp: 10 },
-            idea_master: { icon: '🚀', title: 'Fikir Ustası', desc: '5 farklı fikir analiz ettin', xp: 50 },
-            viral_sharer: { icon: '📢', title: 'Viral Paylaşımcı', desc: 'Raporunu sosyal medyada paylaştın', xp: 20 },
-            early_adopter: { icon: '⭐', title: 'Erken Kullanıcı', desc: 'İlk 1000 kullanıcıdan birisin', xp: 100 },
-            email_verified: { icon: '📧', title: 'Email Doğrulandı', desc: 'Email adresini girdin', xp: 15 }
-        };
-
-        function awardBadge(badgeId) {
-            const userBadges = JSON.parse(localStorage.getItem('user_badges') || '[]');
-            if (!userBadges.includes(badgeId)) {
-                userBadges.push(badgeId);
-                localStorage.setItem('user_badges', JSON.stringify(userBadges));
-
-                // Update XP
-                const currentXP = parseInt(localStorage.getItem('user_xp') || '0');
-                const newXP = currentXP + badges[badgeId].xp;
-                localStorage.setItem('user_xp', newXP);
-
-                // Show notification
-                showBadgeNotification(badges[badgeId]);
-
-                // Track analytics
-                gtag('event', 'badge_earned', { badge_id: badgeId, xp: badges[badgeId].xp });
-            }
-        }
-
-        function showBadgeNotification(badge) {
-            const notification = document.getElementById('badge-notification');
-            document.getElementById('badge-icon').textContent = badge.icon;
-            document.getElementById('badge-title').textContent = badge.title;
-            document.getElementById('badge-desc').textContent = badge.desc;
-
-            notification.classList.remove('hidden');
-            setTimeout(() => {
-                notification.classList.remove('translate-x-[400px]');
-            }, 100);
-
-            // Auto hide after 4 seconds
-            setTimeout(() => {
-                notification.classList.add('translate-x-[400px]');
-                setTimeout(() => notification.classList.add('hidden'), 500);
-            }, 4000);
-        }
-
-        // Usage Limit System (Freemium)
-        function checkUsageLimit() {
-            const usageData = JSON.parse(localStorage.getItem('usage_data') || '{"count": 0, "month": ""}');
-            const currentMonth = new Date().toISOString().substring(0, 7); // YYYY-MM
-
-            // Reset if new month
-            if (usageData.month !== currentMonth) {
-                usageData.count = 0;
-                usageData.month = currentMonth;
-                localStorage.setItem('usage_data', JSON.stringify(usageData));
-            }
-
-            const FREE_LIMIT = 3;
-
-            if (usageData.count >= FREE_LIMIT) {
-                showLimitModal();
-                return false;
-            }
-
-            return true;
-        }
-
-        function incrementUsage() {
-            const usageData = JSON.parse(localStorage.getItem('usage_data') || '{"count": 0, "month": ""}');
-            const currentMonth = new Date().toISOString().substring(0, 7);
-
-            if (usageData.month !== currentMonth) {
-                usageData.count = 1;
-                usageData.month = currentMonth;
-            } else {
-                usageData.count++;
-            }
-
-            localStorage.setItem('usage_data', JSON.stringify(usageData));
-
-            // Show warning at 2/3
-            if (usageData.count === 2) {
-                setTimeout(() => {
-                    alert('⚠️ Bu ay 1 ücretsiz analiziniz kaldı. Premium\'a geçerek sınırsız analiz yapabilirsiniz!');
-                }, 1000);
-            }
-        }
-
-        function showLimitModal() {
-            document.getElementById('limit-modal').classList.remove('hidden');
-            gtag('event', 'limit_reached');
-        }
-
-        function closeLimitModal() {
-            document.getElementById('limit-modal').classList.add('hidden');
-        }
-
-        // Award badges at appropriate times
-        function checkAndAwardBadges() {
-            // First analysis badge
-            const analysisCount = parseInt(localStorage.getItem('siteAnalysisCount') || '1247') - 1247;
-            if (analysisCount === 1) {
-                setTimeout(() => awardBadge('first_analysis'), 2000);
-            }
-
-            // Idea master badge (5 analyses)
-            if (analysisCount === 5) {
-                setTimeout(() => awardBadge('idea_master'), 2000);
-            }
-
-            // Email verified badge
-            if (localStorage.getItem('email_submitted') && !JSON.parse(localStorage.getItem('user_badges') || '[]').includes('email_verified')) {
-                setTimeout(() => awardBadge('email_verified'), 1000);
-            }
-        }
-
-        // Add share badge tracking
-        const originalShareToTwitter = shareToTwitter;
-        shareToTwitter = function () {
-            originalShareToTwitter();
-            setTimeout(() => awardBadge('viral_sharer'), 500);
-        };
+        // Delete old unused functions
+        function awardBadge(id) { }
+        function incrementUsage() { }
+        function checkUsageLimit() { return true; }
+        function showLimitModal() { }
+        function closeLimitModal() { }
+        function checkAndAwardBadges() { }
 
         // === ANALYSIS ENHANCEMENT #7: COMPARISON MODE ===
 
