@@ -162,6 +162,51 @@
         </div>
     </div>
 
+    <!-- Badge Notification Modal (Phase 3 - Gamification) -->
+    <div id="badge-notification"
+        class="fixed top-20 right-4 z-[100] hidden transform translate-x-[400px] transition-transform duration-500">
+        <div
+            class="bg-gradient-to-r from-yellow-400 to-orange-500 text-white rounded-2xl shadow-2xl p-4 max-w-sm border-2 border-yellow-300">
+            <div class="flex items-center gap-4">
+                <div class="text-5xl animate-bounce" id="badge-icon">🎯</div>
+                <div>
+                    <h3 class="font-bold text-lg" id="badge-title">Yeni Rozet!</h3>
+                    <p class="text-sm opacity-90" id="badge-desc">İlk fikrini analiz ettin!</p>
+                </div>
+            </div>
+            <div class="mt-2 text-xs opacity-75 text-center">+10 XP</div>
+        </div>
+    </div>
+
+    <!-- Usage Limit Modal (Phase 3 - Freemium) -->
+    <div id="limit-modal"
+        class="hidden fixed inset-0 z-[100] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div
+            class="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl w-full max-w-md border border-gray-200 dark:border-gray-700 p-6">
+            <div class="text-center">
+                <div class="text-6xl mb-4">⚠️</div>
+                <h3 class="font-bold text-2xl mb-3 dark:text-white">Ücretsiz Limitiniz Doldu</h3>
+                <p class="text-gray-600 dark:text-gray-300 mb-4">
+                    Bu ay <strong>3 ücretsiz analiz</strong> hakkınızı kullandınız.
+                </p>
+                <div class="bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-xl p-6 mb-4">
+                    <h4 class="font-bold text-xl mb-2">Premium'a Geçin 🚀</h4>
+                    <p class="text-sm opacity-90 mb-3">Sınırsız analiz + Gelişmiş özellikler</p>
+                    <div class="text-3xl font-bold">$9.99/ay</div>
+                </div>
+                <div class="flex gap-2">
+                    <button onclick="closeLimitModal()"
+                        class="flex-1 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white px-4 py-2 rounded-lg font-semibold">
+                        Kapat
+                    </button>
+                    <button class="flex-1 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-bold">
+                        Premium Al
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <nav
         class="w-full bg-white/95 dark:bg-gray-900/95 backdrop-blur-md sticky top-0 z-50 border-b border-gray-200 dark:border-gray-800">
         <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
@@ -362,20 +407,36 @@
             <div class="mb-4 md:mb-0">
                 &copy; 2024 AI Idea Refiner. <span id="footer-rights">All rights reserved.</span>
             </div>
-            <div class="flex gap-6">
+            <div class="flex flex-col md:flex-row gap-6 items-center">
                 <a href="about.html" class="hover:text-blue-400 transition" id="footer-about">About Us</a>
                 <a href="privacy.html" class="hover:text-blue-400 transition" id="footer-privacy">Privacy Policy</a>
                 <a href="terms.html" class="hover:text-blue-400 transition" id="footer-terms">Terms of Use</a>
             </div>
-            <a href="https://turbo0.com/item/ai-idea-refiner" target="_blank" rel="noopener noreferrer">
-                <img src="https://img.turbo0.com/badge-listed-dark.svg" alt="Listed on Turbo0"
-                    style="height: 54px; width: auto;" />
-            </a>
-            <a href="https://findly.tools/ai-idea-refiner?utm_source=ai-idea-refiner" target="_blank">
-                <img src="https://findly.tools/badges/findly-tools-badge-dark.svg" alt="Featured on findly.tools"
-                    width="150" />
-            </a>
-        </div>
+
+            <!-- Community Links (Phase 3) -->
+            <div class="flex gap-4 items-center mt-4 md:mt-0">
+                <span class="text-gray-400 text-xs font-bold">Join Community:</span>
+                <a href="#" target="_blank" class="text-gray-400 hover:text-blue-400 transition" title="Discord">
+                    <i class="fab fa-discord text-xl"></i>
+                </a>
+                <a href="#" target="_blank" class="text-gray-400 hover:text-blue-400 transition" title="Twitter">
+                    <i class="fab fa-twitter text-xl"></i>
+                </a>
+                <a href="#" target="_blank" class="text-gray-400 hover:text-blue-400 transition" title="Telegram">
+                    <i class="fab fa-telegram text-xl"></i>
+                </a>
+            </div>
+
+            <div class="flex flex-wrap gap-4 items-center justify-center md:justify-end mt-4 md:mt-0">
+                <a href="https://turbo0.com/item/ai-idea-refiner" target="_blank" rel="noopener noreferrer">
+                    <img src="https://img.turbo0.com/badge-listed-dark.svg" alt="Listed on Turbo0"
+                        style="height: 54px; width: auto;" />
+                </a>
+                <a href="https://findly.tools/ai-idea-refiner?utm_source=ai-idea-refiner" target="_blank">
+                    <img src="https://findly.tools/badges/findly-tools-badge-dark.svg" alt="Featured on findly.tools"
+                        width="150" />
+                </a>
+            </div>
     </footer>
 
     <script>
@@ -439,6 +500,11 @@
                     const lang = els.langSelect.value;
                     if (!text) return alert(trans[lang].alert);
 
+                    // Check usage limit (Phase 3)
+                    if (!checkUsageLimit()) {
+                        return;
+                    }
+
                     // Track analytics
                     gtag('event', 'analyze_clicked', { idea_length: text.length });
 
@@ -462,8 +528,14 @@
                         incrementAnalysisCounter();
                         gtag('event', 'result_viewed');
 
+                        // Increment usage (Phase 3)
+                        incrementUsage();
+
                         // Show email capture section (Phase 2)
                         setTimeout(() => showEmailCapture(), 500);
+
+                        // Check and award badges (Phase 3)
+                        setTimeout(() => checkAndAwardBadges(), 1500);
                     } catch (e) {
                         document.getElementById('loading-screen').classList.add('hidden');
                         alert("Error: " + e.message);
@@ -700,6 +772,131 @@ Beslenme ve sağlık teknolojileri pazarı hızla büyüyor. Özellikle AI deste
             }
         });
 
+        // === PHASE 3: GAMIFICATION & FREEMIUM ===
+
+        // Badge System
+        const badges = {
+            first_analysis: { icon: '🎯', title: 'İlk Analiz', desc: 'İlk fikrini analiz ettin!', xp: 10 },
+            idea_master: { icon: '🚀', title: 'Fikir Ustası', desc: '5 farklı fikir analiz ettin', xp: 50 },
+            viral_sharer: { icon: '📢', title: 'Viral Paylaşımcı', desc: 'Raporunu sosyal medyada paylaştın', xp: 20 },
+            early_adopter: { icon: '⭐', title: 'Erken Kullanıcı', desc: 'İlk 1000 kullanıcıdan birisin', xp: 100 },
+            email_verified: { icon: '📧', title: 'Email Doğrulandı', desc: 'Email adresini girdin', xp: 15 }
+        };
+
+        function awardBadge(badgeId) {
+            const userBadges = JSON.parse(localStorage.getItem('user_badges') || '[]');
+            if (!userBadges.includes(badgeId)) {
+                userBadges.push(badgeId);
+                localStorage.setItem('user_badges', JSON.stringify(userBadges));
+
+                // Update XP
+                const currentXP = parseInt(localStorage.getItem('user_xp') || '0');
+                const newXP = currentXP + badges[badgeId].xp;
+                localStorage.setItem('user_xp', newXP);
+
+                // Show notification
+                showBadgeNotification(badges[badgeId]);
+
+                // Track analytics
+                gtag('event', 'badge_earned', { badge_id: badgeId, xp: badges[badgeId].xp });
+            }
+        }
+
+        function showBadgeNotification(badge) {
+            const notification = document.getElementById('badge-notification');
+            document.getElementById('badge-icon').textContent = badge.icon;
+            document.getElementById('badge-title').textContent = badge.title;
+            document.getElementById('badge-desc').textContent = badge.desc;
+
+            notification.classList.remove('hidden');
+            setTimeout(() => {
+                notification.classList.remove('translate-x-[400px]');
+            }, 100);
+
+            // Auto hide after 4 seconds
+            setTimeout(() => {
+                notification.classList.add('translate-x-[400px]');
+                setTimeout(() => notification.classList.add('hidden'), 500);
+            }, 4000);
+        }
+
+        // Usage Limit System (Freemium)
+        function checkUsageLimit() {
+            const usageData = JSON.parse(localStorage.getItem('usage_data') || '{"count": 0, "month": ""}');
+            const currentMonth = new Date().toISOString().substring(0, 7); // YYYY-MM
+
+            // Reset if new month
+            if (usageData.month !== currentMonth) {
+                usageData.count = 0;
+                usageData.month = currentMonth;
+                localStorage.setItem('usage_data', JSON.stringify(usageData));
+            }
+
+            const FREE_LIMIT = 3;
+
+            if (usageData.count >= FREE_LIMIT) {
+                showLimitModal();
+                return false;
+            }
+
+            return true;
+        }
+
+        function incrementUsage() {
+            const usageData = JSON.parse(localStorage.getItem('usage_data') || '{"count": 0, "month": ""}');
+            const currentMonth = new Date().toISOString().substring(0, 7);
+
+            if (usageData.month !== currentMonth) {
+                usageData.count = 1;
+                usageData.month = currentMonth;
+            } else {
+                usageData.count++;
+            }
+
+            localStorage.setItem('usage_data', JSON.stringify(usageData));
+
+            // Show warning at 2/3
+            if (usageData.count === 2) {
+                setTimeout(() => {
+                    alert('⚠️ Bu ay 1 ücretsiz analiziniz kaldı. Premium\'a geçerek sınırsız analiz yapabilirsiniz!');
+                }, 1000);
+            }
+        }
+
+        function showLimitModal() {
+            document.getElementById('limit-modal').classList.remove('hidden');
+            gtag('event', 'limit_reached');
+        }
+
+        function closeLimitModal() {
+            document.getElementById('limit-modal').classList.add('hidden');
+        }
+
+        // Award badges at appropriate times
+        function checkAndAwardBadges() {
+            // First analysis badge
+            const analysisCount = parseInt(localStorage.getItem('siteAnalysisCount') || '1247') - 1247;
+            if (analysisCount === 1) {
+                setTimeout(() => awardBadge('first_analysis'), 2000);
+            }
+
+            // Idea master badge (5 analyses)
+            if (analysisCount === 5) {
+                setTimeout(() => awardBadge('idea_master'), 2000);
+            }
+
+            // Email verified badge
+            if (localStorage.getItem('email_submitted') && !JSON.parse(localStorage.getItem('user_badges') || '[]').includes('email_verified')) {
+                setTimeout(() => awardBadge('email_verified'), 1000);
+            }
+        }
+
+        // Add share badge tracking
+        const originalShareToTwitter = shareToTwitter;
+        shareToTwitter = function () {
+            originalShareToTwitter();
+            setTimeout(() => awardBadge('viral_sharer'), 500);
+        };
 
 
         function toggleFeedback() { const m = document.getElementById('feedback-modal'), c = document.getElementById('feedback-content'); if (m.classList.contains('hidden')) { m.classList.remove('hidden'); setTimeout(() => { c.classList.remove('scale-95', 'opacity-0'); c.classList.add('scale-100', 'opacity-100') }, 10) } else { c.classList.remove('scale-100', 'opacity-100'); c.classList.add('scale-95', 'opacity-0'); setTimeout(() => { m.classList.add('hidden') }, 300) } }
