@@ -211,6 +211,102 @@
         </div>
     </div>
 
+    <!-- Comparison Modal (Analysis Enhancement #7) -->
+    <div id="compare-modal"
+        class="hidden fixed inset-0 z-[100] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div
+            class="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl w-full max-w-4xl border border-gray-200 dark:border-gray-700 max-h-[90vh] overflow-y-auto">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="font-bold text-2xl dark:text-white">⚖️ Fikir Karşılaştırması</h3>
+                    <button onclick="closeCompareModal()" class="text-gray-500 hover:text-gray-700 dark:text-gray-400">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+                </div>
+
+                <!-- Input Section -->
+                <div id="compare-input-section">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <label class="block text-sm font-semibold mb-2 dark:text-white">Fikir A</label>
+                            <textarea id="compare-idea-a" rows="4"
+                                class="w-full p-3 border rounded-lg dark:bg-gray-700 dark:text-white dark:border-gray-600"
+                                placeholder="İlk fikrinizi yazın..."></textarea>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold mb-2 dark:text-white">Fikir B</label>
+                            <textarea id="compare-idea-b" rows="4"
+                                class="w-full p-3 border rounded-lg dark:bg-gray-700 dark:text-white dark:border-gray-600"
+                                placeholder="İkinci fikrinizi yazın..."></textarea>
+                        </div>
+                    </div>
+                    <button id="compare-btn"
+                        class="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-bold py-3 rounded-lg">
+                        🔄 Karşılaştır
+                    </button>
+                </div>
+
+                <!-- Results Section -->
+                <div id="compare-results-section" class="hidden">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                        <!-- Idea A Results -->
+                        <div id="result-a"
+                            class="bg-blue-50 dark:bg-blue-900/20 border-2 border-blue-500 rounded-xl p-4">
+                            <div class="flex items-center justify-between mb-3">
+                                <h4 class="font-bold text-lg dark:text-white" id="name-a">Fikir A</h4>
+                                <div class="text-3xl font-bold text-blue-600" id="score-a">7.5</div>
+                            </div>
+                            <div class="mb-3">
+                                <div class="text-sm font-semibold text-green-600 dark:text-green-400 mb-1">✅ Artılar:
+                                </div>
+                                <ul id="pros-a" class="text-xs space-y-1 list-disc list-inside dark:text-gray-300"></ul>
+                            </div>
+                            <div>
+                                <div class="text-sm font-semibold text-red-600 dark:text-red-400 mb-1">❌ Eksiler:</div>
+                                <ul id="cons-a" class="text-xs space-y-1 list-disc list-inside dark:text-gray-300"></ul>
+                            </div>
+                        </div>
+
+                        <!-- Idea B Results -->
+                        <div id="result-b"
+                            class="bg-gray-50 dark:bg-gray-700/50 border-2 border-gray-300 dark:border-gray-600 rounded-xl p-4">
+                            <div class="flex items-center justify-between mb-3">
+                                <h4 class="font-bold text-lg dark:text-white" id="name-b">Fikir B</h4>
+                                <div class="text-3xl font-bold text-gray-600 dark:text-gray-400" id="score-b">6.8</div>
+                            </div>
+                            <div class="mb-3">
+                                <div class="text-sm font-semibold text-green-600 dark:text-green-400 mb-1">✅ Artılar:
+                                </div>
+                                <ul id="pros-b" class="text-xs space-y-1 list-disc list-inside dark:text-gray-300"></ul>
+                            </div>
+                            <div>
+                                <div class="text-sm font-semibold text-red-600 dark:text-red-400 mb-1">❌ Eksiler:</div>
+                                <ul id="cons-b" class="text-xs space-y-1 list-disc list-inside dark:text-gray-300"></ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recommendation -->
+                    <div
+                        class="bg-gradient-to-r from-yellow-50 to-orange-50 dark:from-yellow-900/20 dark:to-orange-900/20 border-2 border-yellow-400 rounded-xl p-4">
+                        <div class="flex items-start gap-3">
+                            <div class="text-4xl">🏆</div>
+                            <div>
+                                <h4 class="font-bold text-lg mb-2 dark:text-white">AI Tavsiyesi</h4>
+                                <p id="recommendation" class="text-sm dark:text-gray-300"></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button onclick="resetComparison()"
+                        class="w-full mt-4 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white font-semibold py-2 rounded-lg">
+                        Yeni Karşılaştırma
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <nav
         class="w-full bg-white/95 dark:bg-gray-900/95 backdrop-blur-md sticky top-0 z-50 border-b border-gray-200 dark:border-gray-800">
         <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
@@ -222,15 +318,12 @@
                     AI Idea Refiner
                 </span>
             </div>
-            <div class="flex items-center gap-3">
-                <a href="blog.html"
-                    class="hidden md:block text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-blue-500 transition mr-2">Blog</a>
-
-                <button onclick="toggleFeedback()"
-                    class="hidden md:flex items-center text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-blue-500 transition"><i
-                        class="far fa-comment-alt mr-1"></i> <span id="nav-fb-text">Feedback</span></button>
-                <button onclick="toggleFeedback()" class="md:hidden text-gray-600 dark:text-gray-300"><i
-                        class="far fa-comment-alt"></i></button>
+            <div class="flex items-center gap-2 md:gap-4">
+                <a href="blog.html" class="text-sm md:text-base hover:text-blue-400 transition">📝 Blog</a>
+                <button onclick="openCompareModal()" class="text-sm md:text-base hover:text-blue-400 transition">⚖️
+                    Karşılaştır</button>
+                <button onclick="toggleFeedback()" id="nav-fb-text"
+                    class="text-sm md:text-base hover:text-blue-400 transition">💬 Feedback</button>
                 <div class="h-4 w-[1px] bg-gray-300 dark:bg-gray-700"></div>
 
                 <select id="lang-select"
@@ -1374,6 +1467,120 @@ Beslenme ve sağlık teknolojileri pazarı hızla büyüyor. Özellikle AI deste
             originalShareToTwitter();
             setTimeout(() => awardBadge('viral_sharer'), 500);
         };
+
+        // === ANALYSIS ENHANCEMENT #7: COMPARISON MODE ===
+
+        function openCompareModal() {
+            document.getElementById('compare-modal').classList.remove('hidden');
+            gtag('event', 'compare_modal_opened');
+        }
+
+        function closeCompareModal() {
+            document.getElementById('compare-modal').classList.add('hidden');
+        }
+
+        function resetComparison() {
+            document.getElementById('compare-input-section').classList.remove('hidden');
+            document.getElementById('compare-results-section').classList.add('hidden');
+            document.getElementById('compare-idea-a').value = '';
+            document.getElementById('compare-idea-b').value = '';
+        }
+
+        document.getElementById('compare-btn').addEventListener('click', async function () {
+            const idea1 = document.getElementById('compare-idea-a').value.trim();
+            const idea2 = document.getElementById('compare-idea-b').value.trim();
+            const lang = document.getElementById('lang-select').value;
+
+            if (!idea1 || !idea2) {
+                alert('Lütfen her iki fikri de girin!');
+                return;
+            }
+
+            const btn = this;
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Karşılaştırılıyor...';
+
+            try {
+                const res = await fetch('/api/compare', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ idea1, idea2, language: lang })
+                });
+
+                const data = await res.json();
+
+                if (data.error) throw new Error(data.error);
+
+                // Hide input, show results
+                document.getElementById('compare-input-section').classList.add('hidden');
+                document.getElementById('compare-results-section').classList.remove('hidden');
+
+                // Update Idea A
+                document.getElementById('name-a').textContent = data.idea_a.name;
+                document.getElementById('score-a').textContent = data.idea_a.score;
+                const prosA = document.getElementById('pros-a');
+                prosA.innerHTML = '';
+                data.idea_a.pros.forEach(pro => {
+                    const li = document.createElement('li');
+                    li.textContent = pro;
+                    prosA.appendChild(li);
+                });
+                const consA = document.getElementById('cons-a');
+                consA.innerHTML = '';
+                data.idea_a.cons.forEach(con => {
+                    const li = document.createElement('li');
+                    li.textContent = con;
+                    consA.appendChild(li);
+                });
+
+                // Update Idea B
+                document.getElementById('name-b').textContent = data.idea_b.name;
+                document.getElementById('score-b').textContent = data.idea_b.score;
+                const prosB = document.getElementById('pros-b');
+                prosB.innerHTML = '';
+                data.idea_b.pros.forEach(pro => {
+                    const li = document.createElement('li');
+                    li.textContent = pro;
+                    prosB.appendChild(li);
+                });
+                const consB = document.getElementById('cons-b');
+                consB.innerHTML = '';
+                data.idea_b.cons.forEach(con => {
+                    const li = document.createElement('li');
+                    li.textContent = con;
+                    consB.appendChild(li);
+                });
+
+                // Highlight winner
+                const resultA = document.getElementById('result-a');
+                const resultB = document.getElementById('result-b');
+                if (data.winner === 'a') {
+                    resultA.classList.add('border-blue-500');
+                    resultB.classList.remove('border-blue-500');
+                    resultB.classList.add('border-gray-300', 'dark:border-gray-600');
+                } else {
+                    resultB.classList.add('border-blue-500');
+                    resultA.classList.remove('border-blue-500');
+                    resultA.classList.add('border-gray-300', 'dark:border-gray-600');
+                }
+
+                // Show recommendation
+                document.getElementById('recommendation').textContent = data.recommendation;
+
+                // Track analytics
+                gtag('event', 'ideas_compared', {
+                    winner: data.winner,
+                    score_diff: Math.abs(data.idea_a.score - data.idea_b.score)
+                });
+
+            } catch (error) {
+                alert('Hata: ' + error.message);
+                console.error(error);
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '🔄 Karşılaştır';
+            }
+        });
 
 
         function toggleFeedback() { const m = document.getElementById('feedback-modal'), c = document.getElementById('feedback-content'); if (m.classList.contains('hidden')) { m.classList.remove('hidden'); setTimeout(() => { c.classList.remove('scale-95', 'opacity-0'); c.classList.add('scale-100', 'opacity-100') }, 10) } else { c.classList.remove('scale-100', 'opacity-100'); c.classList.add('scale-95', 'opacity-0'); setTimeout(() => { m.classList.add('hidden') }, 300) } }

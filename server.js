@@ -420,6 +420,94 @@ JSON format (USE ONLY this format):
     }
 });
 
+// === ANALYSIS ENHANCEMENT #7: COMPARISON MODE ===
+app.post('/api/compare', async (req, res) => {
+    try {
+        const { idea1, idea2, language } = req.body;
+
+        if (!idea1 || !idea2) return res.status(400).json({ error: "İki fikir de gerekli." });
+
+        console.log('🔄 Comparing two ideas...');
+
+        const currentYear = new Date().getFullYear();
+
+        const comparePrompt = language === 'tr'
+            ? `Sen bir startup danışmanısın. Aşağıdaki iki girişim fikrini karşılaştır ve SADECE JSON formatında yanıt ver.
+
+FİKİR A: ${idea1}
+
+FİKİR B: ${idea2}
+
+JSON formatı (SADECE bu formatı kullan):
+{
+  "idea_a": {
+    "name": "Kısa isim (max 4 kelime)",
+    "score": 7.5,
+    "pros": ["Artı 1", "Artı 2", "Artı 3"],
+    "cons": ["Eksi 1", "Eksi 2"]
+  },
+  "idea_b": {
+    "name": "Kısa isim (max 4 kelime)",
+    "score": 6.8,
+    "pros": ["Artı 1", "Artı 2"],
+    "cons": ["Eksi 1", "Eksi 2", "Eksi 3"]
+  },
+  "winner": "a",
+  "recommendation": "Fikir A daha iyi çünkü... (1-2 cümle)"
+}`
+            : `You are a startup advisor. Compare these two startup ideas and respond ONLY in JSON format.
+
+IDEA A: ${idea1}
+
+IDEA B: ${idea2}
+
+JSON format (USE ONLY this format):
+{
+  "idea_a": {
+    "name": "Short name (max 4 words)",
+    "score": 7.5,
+    "pros": ["Pro 1", "Pro 2", "Pro 3"],
+    "cons": ["Con 1", "Con 2"]
+  },
+  "idea_b": {
+    "name": "Short name (max 4 words)",
+    "score": 6.8,
+    "pros": ["Pro 1", "Pro 2"],
+    "cons": ["Con 1", "Con 2", "Con 3"]
+  },
+  "winner": "a",
+  "recommendation": "Idea A is better because... (1-2 sentences)"
+}`;
+
+        const comparison = await openai.chat.completions.create({
+            messages: [
+                { role: "user", content: comparePrompt }
+            ],
+            model: "llama-3.3-70b-versatile",
+            temperature: 0.4,
+            max_tokens: 1500
+        });
+
+        let comparisonData = {};
+        try {
+            const comparisonText = comparison.choices[0].message.content.trim();
+            const jsonMatch = comparisonText.match(/\{[\s\S]*\}/);
+            if (jsonMatch) {
+                comparisonData = JSON.parse(jsonMatch[0]);
+            }
+        } catch (err) {
+            console.error('Comparison parse error:', err);
+            return res.status(500).json({ error: "Karşılaştırma sonucu parse edilemedi." });
+        }
+
+        res.json(comparisonData);
+
+    } catch (error) {
+        console.error("COMPARISON ERROR:", error);
+        res.status(500).json({ error: "Karşılaştırma hatası.", details: error.message });
+    }
+});
+
 app.listen(port, () => {
     console.log(`🚀 Sunucu çalışıyor: http://localhost:${port}`);
 });
