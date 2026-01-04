@@ -316,6 +316,31 @@
                 <textarea id="idea-input"
                     class="w-full h-40 p-4 bg-transparent text-base focus:outline-none resize-none rounded-lg"
                     placeholder="Type your idea here..."></textarea>
+
+                <!-- Idea Quality Feedback (Analysis Enhancement #2) -->
+                <div id="quality-feedback" class="px-2 pb-2 hidden">
+                    <div
+                        class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-3 mb-2">
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="flex items-center gap-2">
+                                <span class="text-sm font-semibold text-gray-700 dark:text-gray-300">Fikir
+                                    Kalitesi:</span>
+                                <div class="flex gap-1" id="quality-stars">
+                                    <span class="text-yellow-500">⭐</span>
+                                    <span class="text-yellow-500">⭐</span>
+                                    <span class="text-gray-300">⭐</span>
+                                    <span class="text-gray-300">⭐</span>
+                                    <span class="text-gray-300">⭐</span>
+                                </div>
+                            </div>
+                            <span class="text-xs text-gray-500 dark:text-gray-400" id="word-count">0 kelime</span>
+                        </div>
+                        <div id="quality-suggestions" class="text-xs space-y-1">
+                            <!-- Suggestions will be added here dynamically -->
+                        </div>
+                    </div>
+                </div>
+
                 <div class="flex justify-between items-center px-2 pb-2">
                     <span class="text-[10px] text-gray-400"><i class="fas fa-bolt"></i> Powered by Groq</span>
                     <button id="analyze-btn"
@@ -917,6 +942,120 @@ Beslenme ve sağlık teknolojileri pazarı hızla büyüyor. Özellikle AI deste
                 risk_level: scoring.risk_level
             });
         }
+
+        // === ANALYSIS ENHANCEMENT #2: IDEA QUALITY CHECK ===
+
+        function assessIdeaQuality(idea) {
+            const wordCount = idea.trim().split(/\s+/).filter(w => w.length > 0).length;
+            const lowerIdea = idea.toLowerCase();
+
+            // Checks
+            const hasProblem = /problem|issue|challenge|sorun|zorluk|ihtiyaç|need/i.test(idea);
+            const hasTarget = /for|için|kullanıcı|user|customer|müşteri|people|insan/i.test(idea);
+            const hasMonetization = /subscription|abonelik|pay|ödeme|price|fiyat|revenue|gelir|\$|₺/i.test(idea);
+            const hasTech = /app|uygulama|platform|website|site|ai|yapay zeka|mobile|web/i.test(idea);
+
+            let score = 0;
+            let suggestions = [];
+
+            // Word count scoring
+            if (wordCount < 5) {
+                suggestions.push('❌ Çok kısa! En az 10 kelime yazın.');
+            } else if (wordCount < 10) {
+                score += 1;
+                suggestions.push('⚠️ Biraz daha detay ekleyin (en az 10 kelime)');
+            } else if (wordCount < 20) {
+                score += 2;
+            } else if (wordCount < 40) {
+                score += 3;
+            } else {
+                score += 3;
+            }
+
+            // Problem definition
+            if (!hasProblem) {
+                suggestions.push('💡 Hangi problemi çözüyorsunuz?');
+            } else {
+                score += 1;
+            }
+
+            // Target audience
+            if (!hasTarget) {
+                suggestions.push('🎯 Hedef kitlenizi belirtin (örn: "öğrenciler için", "işletmeler için")');
+            } else {
+                score += 1;
+            }
+
+            // Monetization
+            if (!hasMonetization && wordCount > 15) {
+                suggestions.push('💰 Nasıl para kazanacaksınız? (opsiyonel ama önemli)');
+            } else if (hasMonetization) {
+                score += 1;
+            }
+
+            // Tech mention (bonus)
+            if (hasTech) {
+                score += 1;
+            }
+
+            // Add positive feedback for good quality
+            if (score >= 4 && suggestions.length === 0) {
+                suggestions.push('✅ Harika! Fikriniz analiz için hazır.');
+            }
+
+            return {
+                score: Math.min(score, 5),
+                wordCount,
+                suggestions
+            };
+        }
+
+        function updateQualityFeedback() {
+            const idea = document.getElementById('idea-input').value;
+            const feedbackDiv = document.getElementById('quality-feedback');
+
+            if (idea.trim().length === 0) {
+                feedbackDiv.classList.add('hidden');
+                return;
+            }
+
+            feedbackDiv.classList.remove('hidden');
+            const quality = assessIdeaQuality(idea);
+
+            // Update word count
+            document.getElementById('word-count').textContent = `${quality.wordCount} kelime`;
+
+            // Update stars
+            const starsContainer = document.getElementById('quality-stars');
+            starsContainer.innerHTML = '';
+            for (let i = 0; i < 5; i++) {
+                const star = document.createElement('span');
+                star.textContent = '⭐';
+                star.className = i < quality.score ? 'text-yellow-500' : 'text-gray-300';
+                starsContainer.appendChild(star);
+            }
+
+            // Update suggestions
+            const suggestionsDiv = document.getElementById('quality-suggestions');
+            suggestionsDiv.innerHTML = '';
+            quality.suggestions.forEach(suggestion => {
+                const p = document.createElement('p');
+                p.className = 'text-gray-600 dark:text-gray-300';
+                p.textContent = suggestion;
+                suggestionsDiv.appendChild(p);
+            });
+
+            // Track analytics (only once when they start typing)
+            if (!window.qualityCheckTracked) {
+                gtag('event', 'quality_feedback_shown', { initial_score: quality.score });
+                window.qualityCheckTracked = true;
+            }
+        }
+
+        // Attach quality checker to textarea
+        document.getElementById('idea-input').addEventListener('input', function () {
+            updateQualityFeedback();
+        });
 
         // === PHASE 3: GAMIFICATION & FREEMIUM ===
 
