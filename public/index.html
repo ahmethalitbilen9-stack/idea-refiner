@@ -270,22 +270,25 @@
 
     <nav
         class="w-full bg-white/95 dark:bg-gray-900/95 backdrop-blur-md sticky top-0 z-50 border-b border-gray-200 dark:border-gray-800">
-        <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+        <div class="max-w-7xl mx-auto px-3 py-2 md:px-4 md:py-3 flex justify-between items-center">
             <div class="flex items-center gap-2">
                 <img src="images/logo.png" onerror="this.src='https://cdn-icons-png.flaticon.com/512/8637/8637103.png'"
-                    class="h-8 w-8 rounded-full shadow-lg bg-white p-0.5">
+                    class="h-7 w-7 md:h-8 md:w-8 rounded-full shadow-lg bg-white p-0.5">
                 <span
-                    class="text-lg font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-purple-600 truncate max-w-[150px] md:max-w-none">
+                    class="text-base md:text-lg font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-purple-600">
                     AI Idea Refiner
                 </span>
             </div>
-            <div class="flex items-center gap-2 md:gap-4">
-                <a href="blog.html" class="text-sm md:text-base hover:text-blue-400 transition">📝 Blog</a>
+            <div class="flex items-center gap-1 md:gap-4">
+                <a href="blog.html"
+                    class="hidden md:inline-block text-sm md:text-base hover:text-blue-400 transition">📝 Blog</a>
                 <button onclick="openCompareModal()" id="nav-compare"
-                    class="text-sm md:text-base hover:text-blue-400 transition">⚖️ Karşılaştır</button>
+                    class="hidden md:inline-block text-sm md:text-base hover:text-blue-400 transition">⚖️
+                    Compare</button>
                 <button onclick="toggleFeedback()" id="nav-fb-text"
-                    class="text-sm md:text-base hover:text-blue-400 transition">💬 Feedback</button>
-                <div class="h-4 w-[1px] bg-gray-300 dark:bg-gray-700"></div>
+                    class="hidden md:inline-block text-sm md:text-base hover:text-blue-400 transition">💬
+                    Feedback</button>
+                <div class="hidden md:block h-4 w-[1px] bg-gray-300 dark:bg-gray-700"></div>
 
                 <select id="lang-select"
                     class="bg-gray-100 dark:bg-gray-800 border-none rounded-lg px-2 py-1 text-xs font-medium focus:ring-0">
@@ -296,7 +299,23 @@
                 <button id="theme-toggle"
                     class="w-8 h-8 rounded-lg bg-gray-100 dark:bg-gray-800 flex items-center justify-center"><i
                         class="fas fa-moon text-sm" id="theme-icon"></i></button>
+
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-btn" onclick="toggleMobileMenu()"
+                    class="md:hidden w-8 h-8 rounded-lg bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
+                    <i class="fas fa-bars text-sm"></i>
+                </button>
             </div>
+        </div>
+
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobile-menu"
+            class="hidden md:hidden bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700 px-4 py-3 space-y-2">
+            <a href="blog.html" class="block py-2 text-sm hover:text-blue-400 transition">📝 Blog</a>
+            <button onclick="openCompareModal(); toggleMobileMenu();"
+                class="block w-full text-left py-2 text-sm hover:text-blue-400 transition">⚖️ Compare</button>
+            <button onclick="toggleFeedback(); toggleMobileMenu();"
+                class="block w-full text-left py-2 text-sm hover:text-blue-400 transition">💬 Feedback</button>
         </div>
     </nav>
 
@@ -313,33 +332,37 @@
             </div>
         </aside>
 
-        <main class="w-full md:w-3/4 flex flex-col gap-6">
-            <div class="text-center space-y-4 mt-2">
-                <h1 id="hero-title" class="text-4xl md:text-6xl font-extrabold tracking-tight leading-tight">
+        <main class="w-full md:w-3/4 flex flex-col gap-4 md:gap-6">
+            <div class="text-center space-y-3 md:space-y-4 mt-1 md:mt-2 px-2 md:px-0">
+                <h1 id="hero-title"
+                    class="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight">
                     Analyze Your <span class="text-blue-500">Startup Idea</span> in 60 Seconds
                 </h1>
                 <div
-                    class="flex flex-wrap gap-3 md:gap-6 justify-center text-xs md:text-sm text-gray-600 dark:text-gray-300">
-                    <span class="flex items-center gap-2 bg-green-50 dark:bg-green-900/20 px-3 py-1.5 rounded-full">
+                    class="flex flex-wrap gap-2 md:gap-6 justify-center text-[10px] sm:text-xs md:text-sm text-gray-600 dark:text-gray-300">
+                    <span
+                        class="flex items-center gap-1 md:gap-2 bg-green-50 dark:bg-green-900/20 px-2 py-1 md:px-3 md:py-1.5 rounded-full">
                         <span class="text-green-600 dark:text-green-400">✅</span> <span id="feat-1">Market
                             Analysis</span>
                     </span>
-                    <span class="flex items-center gap-2 bg-blue-50 dark:bg-blue-900/20 px-3 py-1.5 rounded-full">
+                    <span
+                        class="flex items-center gap-1 md:gap-2 bg-blue-50 dark:bg-blue-900/20 px-2 py-1 md:px-3 md:py-1.5 rounded-full">
                         <span class="text-blue-600 dark:text-blue-400">✅</span> <span id="feat-2">Competitor
                             Analysis</span>
                     </span>
-                    <span class="flex items-center gap-2 bg-purple-50 dark:bg-purple-900/20 px-3 py-1.5 rounded-full">
+                    <span
+                        class="flex items-center gap-1 md:gap-2 bg-purple-50 dark:bg-purple-900/20 px-2 py-1 md:px-3 md:py-1.5 rounded-full">
                         <span class="text-purple-600 dark:text-purple-400">✅</span> <span id="feat-3">Cost
                             Estimation</span>
                     </span>
                 </div>
-                <div class="mt-6 flex gap-3 justify-center flex-wrap">
+                <div class="mt-4 md:mt-6 flex gap-2 md:gap-3 justify-center flex-wrap">
                     <button onclick="scrollToInput()" id="hero-analyze-btn"
-                        class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-lg shadow-lg transition active:scale-95">
+                        class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 md:py-3 md:px-8 rounded-lg shadow-lg transition active:scale-95 text-sm md:text-base">
                         ANALYZE FOR FREE
                     </button>
                     <button onclick="showExampleReport()" id="hero-example-btn"
-                        class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-3 px-8 rounded-lg shadow-lg transition active:scale-95">
+                        class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 md:py-3 md:px-8 rounded-lg shadow-lg transition active:scale-95 text-sm md:text-base">
                         SEE EXAMPLE REPORT
                     </button>
                 </div>
@@ -1279,25 +1302,46 @@ Beslenme ve sağlık teknolojileri pazarı hızla büyüyor. Özellikle AI deste
         }
 
         function copyLink() {
+            const lang = document.getElementById('lang-select').value;
+            const copiedText = lang === 'tr' ? 'Kopyalandı!' : 'Copied!';
             navigator.clipboard.writeText(window.location.href).then(() => {
                 const btn = event.target.closest('button');
                 const originalText = btn.innerHTML;
-                btn.innerHTML = '<i class="fas fa-check"></i> Kopyalandı!';
+                btn.innerHTML = `<i class="fas fa-check"></i> ${copiedText}`;
                 setTimeout(() => { btn.innerHTML = originalText; }, 2000);
                 gtag('event', 'share', { method: 'Copy Link' });
             });
         }
 
-        // Loading screen progress simulation
-        const loadingSteps = [
-            { progress: 20, emoji: '🔍', title: 'Pazar Analizi', message: '2024-2025 pazar verileri taranıyor...' },
-            { progress: 40, emoji: '⚔️', title: 'Rakip Analizi', message: 'Benzer ürünler karşılaştırılıyor...' },
-            { progress: 60, emoji: '💰', title: 'Maliyet Hesaplama', message: 'Geliştirme ve işletme giderleri tahmin ediliyor...' },
-            { progress: 80, emoji: '📊', title: 'Rapor Hazırlama', message: 'Sonuçlar derleniyor...' },
-            { progress: 100, emoji: '✅', title: 'Tamamlandı!', message: 'Raporunuz hazır' }
-        ];
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        // Loading screen progress simulation (bilingual)
+        function getLoadingSteps() {
+            const lang = document.getElementById('lang-select').value;
+            if (lang === 'tr') {
+                return [
+                    { progress: 20, emoji: '🔍', title: 'Pazar Analizi', message: '2024-2025 pazar verileri taranıyor...' },
+                    { progress: 40, emoji: '⚔️', title: 'Rakip Analizi', message: 'Benzer ürünler karşılaştırılıyor...' },
+                    { progress: 60, emoji: '💰', title: 'Maliyet Hesaplama', message: 'Geliştirme ve işletme giderleri tahmin ediliyor...' },
+                    { progress: 80, emoji: '📊', title: 'Rapor Hazırlama', message: 'Sonuçlar derleniyor...' },
+                    { progress: 100, emoji: '✅', title: 'Tamamlandı!', message: 'Raporunuz hazır' }
+                ];
+            }
+            return [
+                { progress: 20, emoji: '🔍', title: 'Market Analysis', message: 'Scanning 2024-2025 market data...' },
+                { progress: 40, emoji: '⚔️', title: 'Competitor Analysis', message: 'Comparing similar products...' },
+                { progress: 60, emoji: '💰', title: 'Cost Calculation', message: 'Estimating development and operating costs...' },
+                { progress: 80, emoji: '📊', title: 'Preparing Report', message: 'Compiling results...' },
+                { progress: 100, emoji: '✅', title: 'Complete!', message: 'Your report is ready' }
+            ];
+        }
 
         async function simulateProgress() {
+            const loadingSteps = getLoadingSteps();
             for (let step of loadingSteps) {
                 await new Promise(resolve => setTimeout(resolve, 3000));
                 document.getElementById('progress-bar').style.width = step.progress + '%';
@@ -1308,11 +1352,7 @@ Beslenme ve sağlık teknolojileri pazarı hızla büyüyor. Özellikle AI deste
         }
 
         function incrementAnalysisCounter() {
-            let count = parseInt(localStorage.getItem('siteAnalysisCount') || '1247');
-            count++;
-            localStorage.setItem('siteAnalysisCount', count);
-            const el = document.getElementById('total-analyses');
-            if (el) el.textContent = count.toLocaleString();
+            // Removed fake counter - does nothing now
         }
 
         // Track page view
